@@ -112,7 +112,7 @@ export default function VslOnboardingSection() {
               <div className="flex-grow">
                  <h4 className="font-display text-[26px] md:text-[34px] text-white mb-4 md:mb-5 tracking-wide group-hover:text-accent transition-colors font-bold leading-[1.1]">Bezpłatna Konsultacja i Audyt (15–30 min)</h4>
                  <p className="font-sans text-white/70 text-base md:text-lg leading-relaxed max-w-3xl font-medium">
-                    Wybierasz termin w&nbsp;kalendarzu. Zdzwaniamy się i&nbsp;na podstawie Twojej ankiety od razu przechodzimy do konkretów. Oceniam Twoją obecną komunikację i&nbsp;pokazuję, jak możemy opakować Twoją wiedzę w&nbsp;krótkie formy wideo (Rolki/Shorts), by zacząć generować zapytania od klientów premium. Jeśli nie widzę potencjału na zwrot z&nbsp;inwestycji – powiem Ci to wprost.
+                    Wybierasz termin w kalendarzu. Zdzwaniamy się i na podstawie Twojej ankiety od razu przechodzimy do konkretów. Oceniam Twoją obecną komunikację i pokazuję, jak możemy opakować Twoją wiedzę w krótkie formy wideo (Rolki/Shorts), by zacząć generować zapytania od klientów premium. Jeśli nie widzę potencjału na zwrot z inwestycji – powiem Ci to wprost.
                  </p>
               </div>
            </div>

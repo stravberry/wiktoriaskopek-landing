@@ -52,7 +52,7 @@ export default function VslHero() {
         >
           <div className="mb-6 md:mb-8 text-center">
              <span className="font-sans text-accent text-xs sm:text-sm md:text-base font-bold tracking-widest uppercase">
-                Dla ekspertów i&nbsp;solo przedsiębiorców robiących 8–30&nbsp;tys. zł/mies.
+                Dla ekspertów i solo przedsiębiorców robiących 8–30 tys. zł/mies.
              </span>
           </div>
 
@@ -99,9 +99,9 @@ export default function VslHero() {
         >
           <p className="text-white/80 text-lg md:text-2xl lg:text-[clamp(1.1rem,2.5vw,1.4rem)] leading-[1.6] font-sans font-medium tracking-tight">
             Pomogę Ci pozyskać klientów, stworzyć jasną ofertę
-            i&nbsp;
+            i 
             <span className="text-white font-bold underline decoration-accent/40 underline-offset-8">tworzyć konwertujący content</span>
-            {" — bez tracenia czasu na techniczne detale, nawet jeśli jesteś introwertykiem i&nbsp;nigdy nie nagrywałeś."}
+            {" — bez tracenia czasu na techniczne detale, nawet jeśli jesteś introwertykiem i nigdy nie nagrywałeś."}
           </p>
         </div>
 

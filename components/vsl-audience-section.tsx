@@ -81,10 +81,10 @@ export default function VslAudienceSection() {
             </h3>
             
             <p className="text-white/80 text-base md:text-lg leading-relaxed font-sans mb-6 md:mb-8">
-              Dla ekspertów, solo przedsiębiorców i&nbsp;firm usługowych (B2B/B2C),
+              Dla ekspertów, solo przedsiębiorców i firm usługowych (B2B/B2C),
               którzy generują już{" "}
               <span className="text-white font-bold">8–30 tys. zł/miesięcznie</span>{" "}
-              i&nbsp;chcą stabilnie skalować się do{" "}
+              i chcą stabilnie skalować się do{" "}
               <span className="text-accent font-black">50K–100K zł/miesięcznie</span>.
             </p>
             
@@ -106,7 +106,7 @@ export default function VslAudienceSection() {
             <p className="text-white/80 text-base md:text-lg leading-relaxed font-sans mb-6 md:mb-8">
               Jeśli sprzedajesz wiedzę, konsultacje lub usługi{" "}
               <span className="text-white font-bold underline decoration-accent/40 underline-offset-4 font-display text-base md:text-[1.1em] tracking-wide inline-block">High-Ticket</span>{" "}
-              (od 2&nbsp;000 zł wzwyż) i&nbsp;chcesz mieć stały napływ klientów premium
+              (od 2 000 zł wzwyż) i chcesz mieć stały napływ klientów premium
               — ten system jest dla Ciebie.
             </p>
 

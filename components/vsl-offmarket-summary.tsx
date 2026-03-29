@@ -57,9 +57,9 @@ export default function VslOffMarketSummary() {
                 <div className="font-sans text-red-500/90 text-sm font-black tracking-widest uppercase mb-3 flex items-center gap-2">
                   3% RYNKU
                 </div>
-                <h3 className="font-display text-white text-xl tracking-widest uppercase mb-4 opacity-90">Walka tylko o&nbsp;cenę</h3>
+                <h3 className="font-display text-white text-xl tracking-widest uppercase mb-4 opacity-90">Walka tylko o cenę</h3>
                 <p className="text-white/60 text-base md:text-lg leading-relaxed font-sans">
-                   To klienci z&nbsp;portali i&nbsp;Google, którzy wysyłają 10 zapytań naraz. Tam bije się Twoja konkurencja, a&nbsp;wygrywa najtańszy.
+                   To klienci z portali i Google, którzy wysyłają 10 zapytań naraz. Tam bije się Twoja konkurencja, a wygrywa najtańszy.
                 </p>
              </div>
 
@@ -72,7 +72,7 @@ export default function VslOffMarketSummary() {
                    </div>
                    <h3 className="font-display text-white text-xl tracking-widest uppercase mb-4 font-bold">Twój klient Premium</h3>
                    <p className="text-white/90 text-base md:text-lg leading-relaxed font-sans">
-                      To ludzie na Facebooku, Instagramie i&nbsp;YouTube. Mają problem, ale jeszcze nie szukają wykonawcy.
+                      To ludzie na Facebooku, Instagramie i YouTube. Mają problem, ale jeszcze nie szukają wykonawcy.
                    </p>
                 </div>
              </div>
@@ -89,7 +89,7 @@ export default function VslOffMarketSummary() {
                      Docieramy do nich przez <span className="text-white font-bold underline decoration-white/20 underline-offset-4">profesjonalne wideo</span>.
                    </p>
                    <p>
-                     Uświadamiamy im problem i&nbsp;pokazujemy Ciebie jako eksperta, zanim pomyślą o&nbsp;konkurencji.
+                     Uświadamiamy im problem i pokazujemy Ciebie jako eksperta, zanim pomyślą o konkurencji.
                    </p>
                 </div>
              </div>

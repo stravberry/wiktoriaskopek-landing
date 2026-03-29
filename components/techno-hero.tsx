@@ -83,11 +83,11 @@ export default function TechnoHero({ lang = "pl" }: { lang?: Locale }) {
 
         {/* Subtitle */}
         <p className="text-white/60 font-mono text-sm md:text-base lg:text-lg leading-relaxed max-w-2xl mb-8 md:mb-12">
-          Robisz dobrą muzykę, ja&nbsp;dbam o&nbsp;to, żeby ludzie ją&nbsp;zobaczyli.
-          Projektuję strony, montuję rolki i&nbsp;ustawiam procesy tak, żeby promotorzy
+          Robisz dobrą muzykę, ja dbam o to, żeby ludzie ją zobaczyli.
+          Projektuję strony, montuję rolki i ustawiam procesy tak, żeby promotorzy
           traktowali Cię poważnie.{" "}
           <span className="text-white/40">
-            Ty skupiasz się na&nbsp;graniu, ja&nbsp;na&nbsp;Twoim wizerunku w&nbsp;sieci.
+            Ty skupiasz się na graniu, ja na Twoim wizerunku w sieci.
           </span>
         </p>
 
@@ -104,7 +104,7 @@ export default function TechnoHero({ lang = "pl" }: { lang?: Locale }) {
             href="#kontakt"
             className="inline-flex items-center justify-center px-8 py-4 border border-accent/50 text-accent font-mono text-xs md:text-sm tracking-wider uppercase transition-all duration-300 hover:border-accent hover:bg-accent/10 hover:shadow-[0_0_20px_rgba(255,102,0,0.15)]"
           >
-            Porozmawiajmy o&nbsp;Twoim projekcie
+            Porozmawiajmy o Twoim projekcie
           </a>
         </div>
       </div>

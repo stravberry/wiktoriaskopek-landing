@@ -128,27 +128,27 @@ export default function StatsSection() {
   const stats = [
     {
       value: "+300",
-      label: "tyś.\u00A0złotych",
-      description: "Dodatkowego przychodu w\u00A03 miesiące działań dla\u00A0firmy suplementacyjnej",
+      label: "tyś. złotych",
+      description: "Dodatkowego przychodu w 3 miesiące działań dla firmy suplementacyjnej",
       fullAccent: true,
       industry: "Branża fitness",
     },
     {
       value: "+104",
       label: "Hot Leads",
-      description: "Na\u00A0usługę transportu premium osób VIP w\u00A0jednym miesiącu",
+      description: "Na usługę transportu premium osób VIP w jednym miesiącu",
     },
     {
       value: "+4,3",
       label: "mln",
-      description: "Organicznie w\u00A0social mediach \u2013 regularnie 1,5\u00A0mln miesięcznie po\u00A012 miesiącach współpracy",
+      description: "Organicznie w social mediach \u2013 regularnie 1,5 mln miesięcznie po 12 miesiącach współpracy",
       fullAccent: true,
       industry: "zasięgu organicznego",
     },
     {
       value: "+12",
       label: "Miesięcy",
-      description: "Średni czas współpracy z\u00A0klientami \u2013 długofalowe partnerstwa",
+      description: "Średni czas współpracy z klientami \u2013 długofalowe partnerstwa",
     },
   ]
 

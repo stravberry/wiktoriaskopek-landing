@@ -97,10 +97,10 @@ export default function TechnoWhySection({ lang = "pl" }: { lang?: Locale }) {
             >
               <p className="text-white/60 font-mono text-sm md:text-base leading-relaxed mb-6">
                 Wielu DJ-ów myśli, że świetny set obroni się sam. Prawda jest taka,
-                że&nbsp;rynek jest zapchany, a&nbsp;promotorzy dostają dziesiątki wiadomości
+                że rynek jest zapchany, a promotorzy dostają dziesiątki wiadomości
                 dziennie. Jeśli nie masz profesjonalnego portfolio, press kitu (EPK)
-                i&nbsp;dobrze poprowadzonych social mediów,{" "}
-                <span className="text-white font-bold">po prostu giniesz w&nbsp;tłumie.</span>
+                i dobrze poprowadzonych social mediów,{" "}
+                <span className="text-white font-bold">po prostu giniesz w tłumie.</span>
               </p>
 
               {/* Divider */}
@@ -111,16 +111,16 @@ export default function TechnoWhySection({ lang = "pl" }: { lang?: Locale }) {
               </div>
 
               <p className="text-white/50 font-mono text-sm md:text-base leading-relaxed mb-6">
-                Nie musisz znać się na&nbsp;algorytmach, kodowaniu czy montażu wideo.{" "}
+                Nie musisz znać się na algorytmach, kodowaniu czy montażu wideo.{" "}
                 <span className="text-accent">Od tego masz mnie.</span>
               </p>
 
               <p className="text-white/60 font-mono text-sm md:text-base leading-relaxed mb-10">
-                Oferuję pełne wsparcie: od&nbsp;zmontowania dynamicznych materiałów
-                z&nbsp;Twoich występów, przez postawienie profesjonalnej strony,
-                aż&nbsp;po&nbsp;automatyzacje, które ułatwią Ci kontakt z&nbsp;klubami.{" "}
+                Oferuję pełne wsparcie: od zmontowania dynamicznych materiałów
+                z Twoich występów, przez postawienie profesjonalnej strony,
+                aż po automatyzacje, które ułatwią Ci kontakt z klubami.{" "}
                 <span className="text-white/80 font-bold">
-                  Zróbmy z&nbsp;Twojej pasji dobrze prosperujący biznes.
+                  Zróbmy z Twojej pasji dobrze prosperujący biznes.
                 </span>
               </p>
 

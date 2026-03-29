@@ -47,9 +47,9 @@ export default function PodcastKatowiceSection({ lang = "pl" }: { lang?: Locale 
   ]
 
   const features = [
-    "Doświadczony zespół producentów i\u00A0realizatorów",
-    "Kompleksowe wsparcie: od\u00A0pomysłu po\u00A0dystrybucję",
-    "Profesjonalny sprzęt i\u00A0akustyka klasy studyjnej",
+    "Doświadczony zespół producentów i realizatorów",
+    "Kompleksowe wsparcie: od pomysłu po dystrybucję",
+    "Profesjonalny sprzęt i akustyka klasy studyjnej",
   ]
 
   const formats = [

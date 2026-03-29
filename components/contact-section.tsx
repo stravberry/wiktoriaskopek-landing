@@ -94,7 +94,7 @@ export default function ContactSection() {
                 transition: "all 0.8s ease-out 0.7s",
               }}
             >
-              Masz projekt? Pomysł? A\u00A0może po\u00A0prostu chcesz pogadać o\u00A0AI i\u00A0wideo? Napisz do\u00A0mnie.
+              Masz projekt? Pomysł? A może po prostu chcesz pogadać o AI i wideo? Napisz do mnie.
             </p>
 
             <a

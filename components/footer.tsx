@@ -17,7 +17,7 @@ export default function Footer({ lang = "pl" }: { lang?: Locale }) {
   ]
 
   const socials = [
-    { name: "Instagram", icon: Instagram, href: "https://instagram.com/wiktoria.skopek" },
+    { name: "Instagram", icon: Instagram, href: "https://www.instagram.com/wiktoriaskopek" },
     { name: "YouTube", icon: Youtube, href: "https://youtube.com/@wiktoriaskopek" },
   ]
 

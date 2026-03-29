@@ -25,19 +25,19 @@ export default function ServicesTrioSection() {
     {
       icon: <Play className="w-10 h-10" />,
       title: "WIDEO",
-      description: "Treści które przyciągają uwagę i\u00A0konwertują",
+      description: "Treści które przyciągają uwagę i konwertują",
       number: "01",
     },
     {
       icon: <Sparkles className="w-10 h-10" />,
       title: "AI",
-      description: "Optymalizacja kampanii i\u00A0maksymalizacja ROI",
+      description: "Optymalizacja kampanii i maksymalizacja ROI",
       number: "02",
     },
     {
       icon: <Cpu className="w-10 h-10" />,
       title: "AUTOMATYZACJA",
-      description: "Procesy marketingowe na\u00A0autopilocie",
+      description: "Procesy marketingowe na autopilocie",
       number: "03",
     },
   ]

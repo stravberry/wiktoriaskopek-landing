@@ -24,25 +24,25 @@ export default function TestimonialsSection() {
   const testimonials = [
     {
       quote:
-        "Wiktoria to\u00A0osoba, którą wyróżnia niezwykła sumienność i\u00A0konsekwencja \u2013 zawsze doprowadza sprawy do\u00A0końca.",
+        "Wiktoria to osoba, którą wyróżnia niezwykła sumienność i konsekwencja \u2013 zawsze doprowadza sprawy do końca.",
       author: "Paweł Węglarz",
       company: "GlowUp Nutrition",
     },
     {
       quote:
-        "Wyróżnia się szybkością i\u00A0konkretnością w\u00A0realizacji zadań. Współpraca przebiega sprawnie i\u00A0profesjonalnie.",
+        "Wyróżnia się szybkością i konkretnością w realizacji zadań. Współpraca przebiega sprawnie i profesjonalnie.",
       author: "Anna Gajęcka",
       company: "Zastrzyk Piękna",
     },
     {
       quote:
-        "Bardzo polecam Wiktorię. Jeśli tworzysz podcasty lub planujesz tworzyć kursy czy\u00A0inne materiały edukacyjne, to\u00A0podcastkatowice.pl to\u00A0świetne miejsce. Zespół ma\u00A0duże doświadczenie w\u00A0montażu i\u00A0oferuje kilka naprawdę przydatnych usług dodatkowych, m.in. wsparcie w\u00A0tworzeniu contentu pod\u00A0social media. Jakość realizacji stoi na\u00A0bardzo wysokim poziomie. Na\u00A0pewno nie będziecie żałować!",
+        "Bardzo polecam Wiktorię. Jeśli tworzysz podcasty lub planujesz tworzyć kursy czy inne materiały edukacyjne, to podcastkatowice.pl to świetne miejsce. Zespół ma duże doświadczenie w montażu i oferuje kilka naprawdę przydatnych usług dodatkowych, m.in. wsparcie w tworzeniu contentu pod social media. Jakość realizacji stoi na bardzo wysokim poziomie. Na pewno nie będziecie żałować!",
       author: "Adrian Dębowiec",
       company: "Turbo Marketing",
       image: "/images/unnamed-9.png",
     },
     {
-      quote: "Polecam, profesjonalne podejście i\u00A0bardzo miła atmosfera.",
+      quote: "Polecam, profesjonalne podejście i bardzo miła atmosfera.",
       author: "Alex Matoga",
       company: "",
     },

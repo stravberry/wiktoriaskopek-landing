@@ -85,7 +85,7 @@ export default function VslResultsSection() {
            <span className="font-sans text-emerald-500 text-xs md:text-sm tracking-[.3em] uppercase inline-block mb-6 md:mb-8 opacity-80 font-bold">
               Moje case studies
            </span>
-           <h2 id="results-title" className="font-display text-[clamp(2.2rem,8vw,4.5rem)] leading-[0.85] text-white tracking-tighter mb-8 px-4 md:px-0">
+           <h2 id="results-title" className="font-display text-[clamp(2.2rem,8vw,4.5rem)] leading-[0.85] text-white tracking-normal mb-8 px-4 md:px-0">
               <span
                 style={{
                   background: "linear-gradient(135deg, #10b981, #34d399)",

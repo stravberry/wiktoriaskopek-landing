@@ -19,8 +19,10 @@ const painPoints = [
     ],
     solution: (
       <>
-        Projektujemy dla Ciebie profesjonalne, wysoko konwertujące strony internetowe, sklepy (e-commerce) lub dedykowane Landing Page z&nbsp;Wideo Sprzedażowym (VSL). Nasze rozwiązania webowe wykonują czarną robotę i&nbsp;edukują klienta za Ciebie 24/7. Rozmawiasz tylko z&nbsp;osobami, które poznały cały proces współpracy, ufają Ci i&nbsp;są gotowe kupić.
-        <span className="block mt-2 text-[10px] md:text-xs opacity-50 font-normal">We współpracy z&nbsp;Webdkw.net</span>
+        Projektujemy dla Ciebie profesjonalne, wysoko konwertujące strony internetowe, sklepy (e-commerce) lub dedykowane Landing Page z Wideo Sprzedażowym (VSL). Nasze rozwiązania webowe wykonują czarną robotę i edukują klienta za Ciebie 24/7. Rozmawiasz tylko z osobami, które poznały cały proces współpracy, ufają Ci i są gotowe kupić.
+        <span className="block mt-2 text-[10px] md:text-xs opacity-50 font-normal">
+          We współpracy z <a href="https://webdkw.net" target="_blank" rel="noopener noreferrer" className="underline hover:text-accent transition-colors">Webdkw.net</a>
+        </span>
       </>
     ),
   },
@@ -30,7 +32,7 @@ const painPoints = [
       "Nie masz czasu na wymyślanie postów, nie wiesz, co faktycznie konwertuje, brakuje Ci sprzętu albo boisz się, że nagrania będą wyglądać amatorsko.",
     ],
     solution:
-      "Zdejmujemy z&nbsp;Ciebie cały techniczny i&nbsp;kreatywny ciężar. Dostajesz gotową strategię i&nbsp;napisane scenariusze. Wchodzisz do naszego bezpiecznego studia (lub my przyjeżdżamy do Ciebie ze sprzętem). Mamy prompter, reżyserujemy Cię, ucinamy lanie wody i&nbsp;profesjonalnie montujemy materiał. Ty czujesz pełne zaopiekowanie i&nbsp;po prostu jesteś ekspertem.",
+      "Zdejmujemy z Ciebie cały techniczny i kreatywny ciężar. Dostajesz gotową strategię i napisane scenariusze. Wchodzisz do naszego bezpiecznego studia (lub my przyjeżdżamy do Ciebie ze sprzętem). Mamy prompter, reżyserujemy Cię, ucinamy lanie wody i profesjonalnie montujemy materiał. Ty czujesz pełne zaopiekowanie i po prostu jesteś ekspertem.",
   },
   {
     pains: [
@@ -95,7 +97,7 @@ export default function VslPainSection() {
             </span>
           </h2>
           <p className="font-sans font-medium text-white/70 text-base md:text-xl tracking-wide max-w-3xl mx-auto">
-            Znasz ten scenariusz? Zamień chaos i&nbsp;niskie stawki na <span className="underline decoration-accent underline-offset-4 decoration-2">przewidywalny system premium</span> i&nbsp;przejdź z&nbsp;punktu A&nbsp;do punktu B.
+            Znasz ten scenariusz? Zamień chaos i niskie stawki na <span className="underline decoration-accent underline-offset-4 decoration-2">przewidywalny system premium</span> i przejdź z punktu A do punktu B.
           </p>
         </div>
 

@@ -10,7 +10,7 @@ const steps = [
     accent: "#ff3b3b",
     accentGlow: "rgba(255,59,59,0.08)",
     borderAccent: "rgba(255,59,59,0.15)",
-    text: "Jesteś niewidoczny w\u00A0internecie, brakuje Ci rozpoznawalności i\u00A0tracisz potencjalnych klientów premium na\u00A0rzecz konkurencji.",
+    text: "Jesteś niewidoczny w internecie, brakuje Ci rozpoznawalności i tracisz potencjalnych klientów premium na rzecz konkurencji.",
   },
   {
     label: "NASZE ROZWIĄZANIE",
@@ -26,7 +26,7 @@ const steps = [
     accent: "#22c55e",
     accentGlow: "rgba(34,197,94,0.08)",
     borderAccent: "rgba(34,197,94,0.15)",
-    text: "Budujesz silny brand i\u00A0dostajesz gotowe zapytania od\u00A0osób, które już Ci ufają.",
+    text: "Budujesz silny brand i dostajesz gotowe zapytania od osób, które już Ci ufają.",
   },
 ]
 
