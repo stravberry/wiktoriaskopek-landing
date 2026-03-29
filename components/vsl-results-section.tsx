@@ -7,6 +7,9 @@ const caseStudies = [
   {
     name: "Adrian Dębowiec",
     role: "Turbo Marketing",
+    links: [
+       { label: "Adriandebowiec.pl", href: "https://www.adriandebowiec.pl/" }
+    ],
     quote: "Bardzo polecam Wiktorię. Jeśli tworzysz podcasty lub planujesz tworzyć kursy czy inne materiały edukacyjne, to podcastkatowice.pl to świetne miejsce. Zespół ma duże doświadczenie w montażu i oferuje kilka naprawdę przydatnych usług dodatkowych, m.in. wsparcie w tworzeniu contentu pod social media. Jakość realizacji stoi na bardzo wysokim poziomie. Na pewno nie będziecie żałować!",
     result: "Wysokiej jakości montaż edukacyjny i strategiczne wsparcie w content marketingu.",
   },
@@ -79,7 +82,7 @@ export default function VslResultsSection() {
              transform: isVisible ? "translateY(0)" : "translateY(30px)",
            }}
         >
-           <span className="font-display text-emerald-500 text-[10px] md:text-sm tracking-[.3em] uppercase mb-4 opacity-80 font-bold">
+           <span className="font-sans text-emerald-500 text-xs md:text-sm tracking-[.3em] uppercase inline-block mb-6 md:mb-8 opacity-80 font-bold">
               Twoje Case Studies
            </span>
            <h2 id="results-title" className="font-display text-[clamp(2.2rem,8vw,4.5rem)] leading-[0.85] text-white tracking-tighter mb-8 px-4 md:px-0">
@@ -93,7 +96,7 @@ export default function VslResultsSection() {
                 REZULTATY
               </span>
            </h2>
-           <p className="font-sans text-white/70 text-sm md:text-xl leading-relaxed max-w-2xl px-4 md:px-0 font-medium">
+           <p className="font-sans text-white/70 text-base md:text-xl leading-relaxed max-w-2xl px-4 md:px-0 font-medium">
               Efekty mówią same za siebie. Moi klienci zarabiają pieniądze, podnoszą stawki i odzyskują czas. To nie są teorie, tylko realne biznesy zbudowane dzięki systemowi wideo premium.
            </p>
         </div>
@@ -119,7 +122,7 @@ export default function VslResultsSection() {
                   {/* Quote Mark */}
                   <Quote className="w-6 md:w-8 h-6 md:h-8 text-emerald-500/30 mb-6" aria-hidden="true" />
 
-                  <blockquote className="font-serif italic text-white/80 text-xs md:text-lg leading-relaxed mb-8 flex-grow tracking-tight font-medium">
+                  <blockquote className="font-sans italic text-white/80 text-base md:text-lg leading-relaxed mb-8 flex-grow tracking-tight font-medium">
                     &ldquo;{cs.quote}&rdquo;
                   </blockquote>
 
@@ -128,14 +131,14 @@ export default function VslResultsSection() {
                      <div className="flex items-start gap-3 mb-6 p-4 md:p-5 rounded-xl border border-emerald-500/20 bg-emerald-500/5 group-hover:bg-emerald-500/10 transition-colors">
                         <CheckCircle2 className="w-4 md:w-5 h-4 md:w-5 text-emerald-500 mt-1 flex-shrink-0" aria-hidden="true" />
                         <div>
-                           <span className="font-display text-[9px] text-emerald-500 tracking-widest uppercase mb-1 block font-bold">Wynik</span>
-                           <p className="font-sans text-xs md:text-base text-white/90 font-bold leading-snug">{cs.result}</p>
+                           <span className="font-sans text-xs text-emerald-500 tracking-widest uppercase mb-1 block font-bold">Wynik</span>
+                           <p className="font-sans text-base md:text-lg text-white/90 font-bold leading-snug">{cs.result}</p>
                         </div>
                      </div>
 
                      <div className="flex items-center justify-between">
                         <div>
-                           <h4 className="font-display text-white text-base md:text-lg tracking-wide group-hover:text-emerald-400 transition-colors font-bold">{cs.name}</h4>
+                           <h4 className="font-display text-white text-[20px] md:text-[24px] tracking-wide group-hover:text-emerald-400 transition-colors font-bold">{cs.name}</h4>
                            
                            {/* Role / Links */}
                            <div className="flex flex-wrap gap-x-3 gap-y-1">
@@ -146,14 +149,14 @@ export default function VslResultsSection() {
                                       href={link.href}
                                       target="_blank"
                                       rel="noopener noreferrer"
-                                      className="font-sans text-[10px] md:text-sm text-emerald-500/60 hover:text-emerald-400 uppercase tracking-widest font-bold underline decoration-emerald-500/20 underline-offset-4 transition-all"
+                                      className="font-sans text-xs md:text-sm text-emerald-500/60 hover:text-emerald-400 uppercase tracking-widest font-bold underline decoration-emerald-500/20 underline-offset-4 transition-all"
                                     >
                                        {link.label}
                                        {idx < cs.links!.length - 1 && <span className="ml-3 text-white/20">&</span>}
                                     </a>
                                  ))
                               ) : (
-                                 <p className="font-sans text-[10px] md:text-sm text-white/50 uppercase tracking-widest font-bold">{cs.role}</p>
+                                 <p className="font-sans text-xs md:text-sm text-white/50 uppercase tracking-widest font-bold">{cs.role}</p>
                               )}
                            </div>
                         </div>

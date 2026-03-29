@@ -40,7 +40,7 @@ export default function VslAboutSection() {
         
         {/* Header Area */}
         <div className="flex flex-col mb-8 md:mb-12">
-           <span className="font-display text-accent text-[10px] md:text-sm tracking-[.3em] uppercase mb-4 opacity-80 font-bold">
+           <span className="font-display text-accent text-[10px] md:text-sm tracking-[.3em] uppercase inline-block mb-6 md:mb-8 opacity-80 font-bold">
               Kim jestem
            </span>
            <h2 id="about-title" className="font-display text-[clamp(2.5rem,10vw,4.5rem)] leading-[0.85] text-white tracking-tighter mb-4 px-4 md:px-0">
@@ -107,23 +107,23 @@ export default function VslAboutSection() {
             }}
           >
             <p className="text-white text-base md:text-xl leading-relaxed font-sans font-medium tracking-tight px-4 md:px-0">
-              Nie jestem <span className="font-serif italic text-white/50">&ldquo;agencją od wrzucania postów za 400 zł&rdquo;</span>. 
+              Nie jestem <span className="font-sans italic text-white/60">&ldquo;agencją od wrzucania postów za 400 zł&rdquo;</span>. 
               Jestem Twoim <span className="text-accent underline decoration-accent/40 underline-offset-8 decoration-2 font-bold">partnerem strategicznym</span>, który bierze na siebie pełną odpowiedzialność za proces pozyskiwania Twoich klientów.
             </p>
 
             <div className="space-y-6 md:space-y-8 px-4 md:px-0">
-              <p className="text-white/80 text-sm md:text-lg leading-relaxed font-sans font-medium">
+              <p className="text-white/80 text-base md:text-lg leading-relaxed font-sans font-medium">
                 Mój &ldquo;main core&rdquo; to coś znacznie więcej niż same social media. Łączę produkcję wideo premium, doradztwo biznesowe i pracę nad Twoim mindsetem. Wiem, że wystąpienia przed kamerą potrafią stresować. Dlatego pracuję z Tobą na planie, pomagam przełamać blokady psychologiczne – nawet jeśli jesteś introwertykiem – i pokazuję, że z odpowiednim wsparciem nagrywanie staje się proste.
               </p>
 
-              <p className="text-white/70 text-sm md:text-lg leading-relaxed font-sans border-l-2 border-accent/30 pl-4 md:pl-6 font-medium">
+              <p className="text-white/70 text-base md:text-lg leading-relaxed font-sans border-l-2 border-accent/30 pl-4 md:pl-6 font-medium">
                 Działam ze sprawdzonym zespołem ekspertów (od operatorów i montażystów, po specjalistów od sprzedaży). Dzięki temu dostarczam Ci kompletny system &ldquo;Plug & Play&rdquo;. Ty wchodzisz do studia i dzielisz się swoją wiedzą, a my ucinamy &ldquo;lanie wody&rdquo; i przekuwamy to w zyskowne formaty wideo (Rolki i VSL).
               </p>
 
               <div className="p-6 md:p-8 rounded-2xl border border-white/[0.08] bg-white/[0.04] relative overflow-hidden group hover:border-accent/40 transition-all duration-500 shadow-xl">
                  <div className="relative z-10">
                     <h4 className="font-display text-accent text-[9px] tracking-[.3em] uppercase mb-4 font-bold opacity-90">Wynik Współpracy</h4>
-                    <p className="text-white/80 text-sm md:text-lg leading-relaxed font-sans mb-0 font-medium">
+                    <p className="text-white/80 text-base md:text-lg leading-relaxed font-sans mb-0 font-medium">
                       Efekt? Twoje wideo edukuje rynek za Ciebie 24/7. Przestajesz tłumaczyć każdemu klientowi od zera, czym się zajmujesz, a Twoja marka staje się realnym silnikiem napędzającym sprzedaż usług High-Ticket.
                     </p>
                  </div>

@@ -27,15 +27,15 @@ function StatItem({ number, label, description, id, isVisible, delay }: StatItem
       </div>
       
       <div className="relative mb-6">
-         <span className="font-display text-4xl md:text-5xl lg:text-6xl text-white tracking-tighter block group-hover:text-accent transition-colors duration-500">
+         <span className="font-display text-[48px] md:text-[64px] lg:text-[80px] text-white tracking-tighter block group-hover:text-accent transition-colors duration-500 leading-none">
             {number}
          </span>
-         <span className="font-display text-xs md:text-sm text-accent tracking-[.3em] uppercase block mt-2 font-bold opacity-80">
+         <span className="font-display text-sm md:text-base text-accent tracking-[.3em] uppercase block mt-2 font-bold opacity-80">
             {label}
          </span>
       </div>
 
-      <p className="font-sans text-white/50 text-xs md:text-sm leading-relaxed font-medium group-hover:text-white/70 transition-colors">
+      <p className="font-sans text-white/50 text-base md:text-lg leading-relaxed font-medium group-hover:text-white/70 transition-colors">
          {description}
       </p>
     </div>

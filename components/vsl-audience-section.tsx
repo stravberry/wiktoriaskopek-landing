@@ -46,7 +46,7 @@ export default function VslAudienceSection() {
         
         {/* Section Header */}
         <div className="max-w-4xl mx-auto text-center mb-12 md:mb-24">
-          <span className="inline-block font-display text-xs md:text-base text-accent tracking-[.49em] uppercase mb-4 opacity-80">
+          <span className="inline-block font-display text-xs md:text-base text-accent tracking-[.49em] uppercase mb-6 md:mb-8 opacity-80">
             Grupa docelowa
           </span>
           <h2 id="audience-title" className="font-display text-[clamp(2.2rem,8vw,4rem)] leading-[0.85] text-white tracking-tighter mb-8 px-4 md:px-0">
@@ -79,11 +79,11 @@ export default function VslAudienceSection() {
                <Target className="w-10 h-10 text-accent/20" />
             </div>
             
-            <h3 className="font-display text-xl md:text-3xl text-white mb-6 md:mb-8 tracking-wide">
+            <h3 className="font-display text-[26px] md:text-[40px] text-white mb-6 md:mb-8 tracking-wide font-bold leading-[1.1]">
                Eksperci i Duo-Team
             </h3>
             
-            <p className="text-white/80 text-sm md:text-lg leading-relaxed font-sans mb-6 md:mb-8">
+            <p className="text-white/80 text-base md:text-lg leading-relaxed font-sans mb-6 md:mb-8">
               Dla ekspertów, solo przedsiębiorców i&nbsp;firm usługowych (B2B/B2C),
               którzy generują już{" "}
               <span className="text-white font-bold">8–30 tys. zł/miesięcznie</span>{" "}
@@ -102,11 +102,11 @@ export default function VslAudienceSection() {
               transitionDelay: "200ms"
             }}
           >
-            <h3 className="font-display text-xl md:text-3xl text-white mb-6 md:mb-8 tracking-wide text-left">
+            <h3 className="font-display text-[26px] md:text-[40px] text-white mb-6 md:mb-8 tracking-wide text-left font-bold leading-[1.1]">
                Sprzedaż Wiedzy i High-Ticket
             </h3>
             
-            <p className="text-white/80 text-sm md:text-lg leading-relaxed font-sans mb-6 md:mb-8">
+            <p className="text-white/80 text-base md:text-lg leading-relaxed font-sans mb-6 md:mb-8">
               Jeśli sprzedajesz wiedzę, konsultacje lub usługi{" "}
               <span className="text-white font-bold underline decoration-accent/40 underline-offset-4 font-display text-base md:text-[1.1em] tracking-wide inline-block">High-Ticket</span>{" "}
               (od 2&nbsp;000 zł wzwyż) i&nbsp;chcesz mieć stały napływ klientów premium
@@ -125,13 +125,13 @@ export default function VslAudienceSection() {
             <span className="text-accent opacity-90">opierające się na autorytecie</span>
           </h3>
           
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-8">
+          <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 md:gap-8">
             {industries.map((item, i) => {
               const Icon = item.icon
               return (
                 <div
                   key={item.label}
-                  className="group relative flex flex-col justify-end min-h-[160px] md:min-h-[220px] p-6 md:p-8 rounded-[1.25rem] md:rounded-2xl border border-white/[0.08] bg-white/[0.02] hover:bg-white/[0.04] transition-all duration-700 hover:border-accent/50 overflow-hidden shadow-xl"
+                  className="group relative flex flex-col justify-end min-h-[240px] md:min-h-[280px] p-3 sm:p-6 md:p-8 rounded-[1rem] md:rounded-2xl border border-white/[0.08] bg-white/[0.02] hover:bg-white/[0.04] transition-all duration-700 hover:border-accent/50 overflow-hidden shadow-xl"
                   style={{
                     opacity: isVisible ? 1 : 0,
                     transform: isVisible ? "translateY(0)" : "translateY(20px)",
@@ -147,15 +147,15 @@ export default function VslAudienceSection() {
                   <div className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-accent/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" aria-hidden="true" />
 
                   <div className="relative z-10 text-left">
-                    <div className="w-10 h-10 md:w-12 md:h-12 rounded-lg bg-accent/15 border border-accent/30 flex items-center justify-center text-accent mb-4 md:mb-6 transform group-hover:scale-110 transition-transform duration-500 shadow-accent/5 shadow-2xl">
-                      <Icon className="w-5 h-5 md:w-6 md:h-6" strokeWidth={1.5} aria-hidden="true" />
+                    <div className="w-8 h-8 md:w-12 md:h-12 rounded-lg bg-accent/15 border border-accent/30 flex items-center justify-center text-accent mb-3 md:mb-6 transform group-hover:scale-110 transition-transform duration-500 shadow-accent/5 shadow-2xl">
+                      <Icon className="w-4 h-4 md:w-6 md:h-6" strokeWidth={1.5} aria-hidden="true" />
                     </div>
                     
-                    <h4 className="font-display text-lg md:text-xl text-white group-hover:text-accent transition-colors mb-2 tracking-wide uppercase font-bold">
+                    <h4 className="font-display text-[28px] sm:text-[30px] md:text-[36px] text-white group-hover:text-accent transition-colors mb-2 md:mb-3 tracking-normal uppercase font-black leading-[0.95] break-words hyphens-auto">
                       {item.label}
                     </h4>
                     {item.desc && (
-                       <p className="text-white/60 text-xs md:text-base font-sans tracking-tight leading-snug font-medium">
+                       <p className="text-white/70 text-[13px] sm:text-sm md:text-base font-sans tracking-tight leading-snug font-medium mt-1">
                          {item.desc}
                        </p>
                     )}
@@ -171,14 +171,14 @@ export default function VslAudienceSection() {
 
         {/* Bottom CTA Area */}
         <div className="mt-8 md:mt-12 pt-8 md:pt-10 border-t border-white/10 text-center flex flex-col items-center">
-            <p className="text-white/60 text-sm md:text-xl font-sans mb-6 max-w-2xl text-center leading-relaxed px-4 md:px-0 font-medium">
+            <p className="text-white/60 text-base md:text-xl font-sans mb-6 max-w-2xl text-center leading-relaxed px-4 md:px-0 font-medium">
                Jeśli prowadzisz firmę i szukasz <br className="hidden md:block" aria-hidden="true" />
                <span className="text-white font-bold inline-block border-b-2 border-accent/40 pb-1">zaufanych klientów</span> na swoje usługi — porozmawiajmy.
             </p>
             
             <a
               href="#contact"
-              className="group relative inline-flex items-center gap-3 px-10 md:px-14 py-4 md:py-6 rounded-full font-sans text-[10px] md:text-sm tracking-widest uppercase text-black font-extrabold overflow-hidden transition-all duration-500 hover:scale-[1.05] hover:shadow-[0_0_60px_rgba(255,102,0,0.6)]"
+              className="group relative inline-flex items-center gap-3 px-10 md:px-14 py-4 md:py-6 rounded-full font-sans text-sm md:text-base tracking-widest uppercase text-black font-extrabold overflow-hidden transition-all duration-500 hover:scale-[1.05] hover:shadow-[0_0_60px_rgba(255,102,0,0.6)]"
               style={{
                 background: "linear-gradient(135deg, #ff6600, #ff8533)",
               }}

@@ -45,7 +45,7 @@ export default function VslFunnelsSection() {
              transform: isVisible ? "translateY(0)" : "translateY(30px)",
            }}
         >
-           <span className="font-display text-accent text-[10px] md:text-sm tracking-[.3em] uppercase mb-4 opacity-80 font-bold">
+           <span className="font-display text-accent text-xs md:text-sm tracking-[.3em] uppercase inline-block mb-6 md:mb-8 opacity-80 font-bold">
               Budowa Autorytetu
            </span>
            <h2 id="funnels-title" className="font-display text-[clamp(2.2rem,8vw,4.5rem)] leading-[0.85] text-white tracking-tighter mb-8 px-4 md:px-0">
@@ -60,7 +60,7 @@ export default function VslFunnelsSection() {
                 I DWÓCH LEJKÓW?
               </span>
            </h2>
-           <p className="font-sans text-white/70 text-sm md:text-xl leading-relaxed max-w-3xl px-4 md:px-0 font-medium">
+           <p className="font-sans text-white/70 text-base md:text-xl leading-relaxed max-w-3xl px-4 md:px-0 font-medium">
               Zwykła strona-wizytówka i sucha oferta to dzisiaj za mało. Klienci premium nie kupują na podstawie cennika – kupują od ludzi, którym ufają. Jeśli nie widzą Cię w akcji, nie rozumieją Twojej wartości. Zamiast tracić godziny na tłumaczenie od zera wdrażamy system wideo, który buduje ten autorytet za Ciebie. Dlatego uruchamiamy dwa połączone lejki:
            </p>
         </div>
@@ -86,14 +86,14 @@ export default function VslFunnelsSection() {
                 <div className="flex items-center gap-2 md:gap-3 mb-8 md:mb-10">
                    <div className="font-display text-2xl md:text-5xl text-white/15 tracking-tighter group-hover:text-accent/30 transition-colors">01</div>
                    <div className="h-px w-8 md:w-12 bg-accent/30" aria-hidden="true" />
-                   <span className="font-display text-[10px] md:text-sm tracking-widest text-accent uppercase font-bold">Edukacja i Zaufanie</span>
+                   <span className="font-display text-xs md:text-sm tracking-widest text-accent uppercase font-bold">Edukacja i Zaufanie</span>
                 </div>
 
-                <h3 className="font-display text-xl md:text-4xl text-white mb-4 md:mb-6 uppercase tracking-tight font-bold">
+                <h3 className="font-display text-[32px] md:text-5xl text-white mb-4 md:mb-6 uppercase tracking-tight font-bold">
                    LEJEK <br /> WIZERUNKOWY
                 </h3>
 
-                <p className="font-sans text-white/70 text-xs md:text-lg leading-relaxed font-medium">
+                <p className="font-sans text-white/70 text-base md:text-lg leading-relaxed font-medium">
                    Wysokiej jakości wideo (Rolki i Shorts) pokazują Twoją wiedzę, Twoje podejście do biznesu i transformację, jaką dajesz klientom. Docieramy do tzw. Off-Marketu — uświadamiamy ludziom ich problemy, zanim w ogóle zaczną szukać najtańszego wykonawcy na portalach. Regularna, profesjonalna obecność wideo dzień po dniu buduje Twój status niepodważalnego eksperta w branży.
                 </p>
              </div>
@@ -117,14 +117,14 @@ export default function VslFunnelsSection() {
                 <div className="flex items-center gap-2 md:gap-3 mb-8 md:mb-10">
                    <div className="font-display text-2xl md:text-5xl text-white/15 tracking-tighter group-hover:text-accent/30 transition-colors">02</div>
                    <div className="h-px w-8 md:w-12 bg-accent/30" aria-hidden="true" />
-                   <span className="font-display text-[10px] md:text-sm tracking-widest text-accent uppercase font-bold">Konwersja i Kwalifikacja</span>
+                   <span className="font-display text-xs md:text-sm tracking-widest text-accent uppercase font-bold">Konwersja i Kwalifikacja</span>
                 </div>
 
-                <h3 className="font-display text-xl md:text-4xl text-white mb-4 md:mb-6 uppercase tracking-tight font-bold">
+                <h3 className="font-display text-[32px] md:text-5xl text-white mb-4 md:mb-6 uppercase tracking-tight font-bold">
                    LEJEK <br /> SPRZEDAŻOWY
                 </h3>
 
-                <p className="font-sans text-white/70 text-xs md:text-lg leading-relaxed font-medium">
+                <p className="font-sans text-white/70 text-base md:text-lg leading-relaxed font-medium">
                    Kiedy klient jest już „ograny” Twoją wiedzą i ufa Ci dzięki rolkom, wpada w lejek sprzedażowy (kampanie leadowe lub kierujące na Twoją dopracowaną ofertę). Wideo odwala za Ciebie najcięższą robotę: pokazuje konkretne case studies, tłumaczy proces współpracy i zbija obiekcje. Kiedy klient w końcu do Ciebie dzwoni, jest już doedukowany i gotowy do działania.
                 </p>
              </div>
@@ -145,7 +145,7 @@ export default function VslFunnelsSection() {
            
            <div className="relative z-10 flex flex-col items-center text-center max-w-4xl mx-auto">
               <p className="font-sans text-white/75 text-base md:text-2xl leading-relaxed tracking-tight mb-0 font-medium">
-                 Inwestycja w profesjonalny wideo marketing to <span className="text-white italic font-serif">nie koszt</span>. To jedyna metoda, by przestać sprzedawać swój czas za grosze, wyróżnić się na tle szarej konkurencji i płynnie przejść na stawki <span className="text-accent font-display tracking-[0.15em] md:tracking-widest uppercase font-bold">High-Ticket</span>.
+                 Inwestycja w profesjonalny wideo marketing to <span className="text-white italic font-sans">nie koszt</span>. To jedyna metoda, by przestać sprzedawać swój czas za grosze, wyróżnić się na tle szarej konkurencji i płynnie przejść na stawki <span className="text-accent font-display tracking-[0.15em] md:tracking-widest uppercase font-bold">High-Ticket</span>.
               </p>
            </div>
         </div>

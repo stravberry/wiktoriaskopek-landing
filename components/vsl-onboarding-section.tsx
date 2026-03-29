@@ -53,7 +53,7 @@ export default function VslOnboardingSection() {
                 transform: isVisible ? "translateY(0)" : "translateY(30px)",
               }}
            >
-              <span className="font-display text-accent text-[10px] md:text-sm tracking-[.3em] uppercase mb-4 opacity-80 font-bold">
+              <span className="font-sans text-accent text-xs md:text-sm tracking-[.3em] uppercase inline-block mb-6 md:mb-8 opacity-80 font-bold">
                  Onboarding
               </span>
               <h2 id="onboarding-title" className="font-display text-[clamp(2.2rem,8vw,4rem)] leading-[0.85] text-white tracking-tighter mb-6 md:mb-8 px-4 md:px-0">
@@ -68,8 +68,8 @@ export default function VslOnboardingSection() {
                    ZACZĄĆ?
                  </span>
               </h2>
-              <h3 className="font-display text-lg md:text-2xl text-white/50 tracking-widest uppercase mb-6 md:mb-8 px-4 md:px-0 font-bold">3 proste kroki do startu</h3>
-              <p className="font-sans text-white/75 text-sm md:text-xl leading-relaxed px-4 md:px-0 font-medium">
+              <h3 className="font-display text-2xl md:text-3xl text-white/50 tracking-widest uppercase mb-6 md:mb-8 px-4 md:px-0 font-bold">3 proste kroki do startu</h3>
+              <p className="font-sans text-white/75 text-base md:text-xl leading-relaxed px-4 md:px-0 font-medium">
                  Bez stresu, bez lania wody i bez technicznego bełkotu. Jedna krótka rozmowa wystarczy, żeby sprawdzić, czy nasz system wideo marketingu sprawdzi się w Twojej branży.
               </p>
            </div>
@@ -92,8 +92,8 @@ export default function VslOnboardingSection() {
            >
               <div className="flex-shrink-0 font-display text-4xl md:text-7xl text-white/15 tracking-tighter group-hover:text-accent/30 transition-all duration-500">01</div>
               <div className="flex-grow">
-                 <h4 className="font-display text-lg md:text-2xl text-white mb-3 md:mb-4 tracking-wide group-hover:text-accent transition-colors font-bold">Wypełnij Krótką Ankietę Kwalifikacyjną</h4>
-                 <p className="font-sans text-white/70 text-xs md:text-lg leading-relaxed max-w-3xl font-medium">
+                 <h4 className="font-display text-[26px] md:text-[34px] text-white mb-4 md:mb-5 tracking-wide group-hover:text-accent transition-colors font-bold leading-[1.1]">Wypełnij Krótką Ankietę Kwalifikacyjną</h4>
+                 <p className="font-sans text-white/70 text-base md:text-lg leading-relaxed max-w-3xl font-medium">
                     Szanujemy swój i Twój czas. Zanim porozmawiamy, chcę poznać Twoją obecną sytuację biznesową. Wypełniasz krótki formularz, w którym pytam m.in. o to, kto jest Twoim idealnym klientem, z jakimi obiekcjami walczysz najczęściej i jakim budżetem operujesz. To pozwala nam odsiać projekty, w których nie będziemy w stanie pomóc.
                  </p>
               </div>
@@ -110,8 +110,8 @@ export default function VslOnboardingSection() {
            >
               <div className="flex-shrink-0 font-display text-4xl md:text-7xl text-white/15 tracking-tighter group-hover:text-accent/30 transition-all duration-500">02</div>
               <div className="flex-grow">
-                 <h4 className="font-display text-lg md:text-2xl text-white mb-3 md:mb-4 tracking-wide group-hover:text-accent transition-colors font-bold">Bezpłatna Konsultacja i Audyt (15–30 min)</h4>
-                 <p className="font-sans text-white/70 text-xs md:text-lg leading-relaxed max-w-3xl font-medium">
+                 <h4 className="font-display text-[26px] md:text-[34px] text-white mb-4 md:mb-5 tracking-wide group-hover:text-accent transition-colors font-bold leading-[1.1]">Bezpłatna Konsultacja i Audyt (15–30 min)</h4>
+                 <p className="font-sans text-white/70 text-base md:text-lg leading-relaxed max-w-3xl font-medium">
                     Wybierasz termin w kalendarzu. Dzwonimy się i na podstawie Twojej ankiety od razu przechodzimy do konkretów. Oceniam Twoją obecną komunikację i pokazuję, jak możemy opakować Twoją wiedzę w krótkie formy wideo (Rolki/Shorts), by zacząć generować zapytania od klientów premium. Jeśli nie widzę potencjału na zwrot z inwestycji – powiem Ci to wprost.
                  </p>
               </div>
@@ -128,8 +128,8 @@ export default function VslOnboardingSection() {
            >
               <div className="flex-shrink-0 font-display text-4xl md:text-7xl text-white/15 tracking-tighter group-hover:text-accent/30 transition-all duration-500">03</div>
               <div className="flex-grow">
-                 <h4 className="font-display text-lg md:text-2xl text-white mb-3 md:mb-4 tracking-wide group-hover:text-accent transition-colors font-bold">Plan Wdrożeniowy i Start (Nagrania)</h4>
-                 <p className="font-sans text-white/70 text-xs md:text-lg leading-relaxed max-w-3xl font-medium">
+                 <h4 className="font-display text-[26px] md:text-[34px] text-white mb-4 md:mb-5 tracking-wide group-hover:text-accent transition-colors font-bold leading-[1.1]">Plan Wdrożeniowy i Start (Nagrania)</h4>
+                 <p className="font-sans text-white/70 text-base md:text-lg leading-relaxed max-w-3xl font-medium">
                     Jeśli decydujemy się na współpracę, dopinamy formalności i od razu przejmujemy stery. W ciągu 3 dni przygotowuję dla Ciebie dedykowane scenariusze. Ustalamy termin Twojego przyjazdu do naszego studia Podcast Katowice (lub naszego przyjazdu do Ciebie ze sprzętem) i odpalamy cały proces produkcji. Ty tylko mówisz, my zajmuje się resztą.
                  </p>
               </div>
@@ -158,7 +158,7 @@ export default function VslOnboardingSection() {
                  WYBIERZ TERMIN ROZMOWY
               </h3>
               
-              <p className="font-sans text-white/60 text-xs md:text-lg max-w-xl mx-auto mb-10 md:mb-12 tracking-tight font-medium">
+              <p className="font-sans text-white/60 text-base md:text-lg max-w-xl mx-auto mb-10 md:mb-12 tracking-tight font-medium">
                  Sprawdzimy, czy nasz system marketingu opartego na autorytecie pasuje do Twojego modelu biznesowego.
               </p>
 
@@ -166,7 +166,7 @@ export default function VslOnboardingSection() {
                 href="https://calendly.com/twoja-nazwa" 
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group relative inline-flex items-center gap-3 md:gap-4 px-8 md:px-20 py-4 md:py-6 rounded-sm font-sans text-[10px] md:text-sm tracking-widest uppercase text-black font-extrabold overflow-hidden transition-all duration-500 hover:scale-[1.05] hover:shadow-[0_0_80px_rgba(255,102,0,0.6)] w-full md:w-auto justify-center"
+                className="group relative inline-flex items-center gap-3 md:gap-4 px-8 md:px-20 py-4 md:py-6 rounded-sm font-sans text-sm md:text-base tracking-widest uppercase text-black font-extrabold overflow-hidden transition-all duration-500 hover:scale-[1.05] hover:shadow-[0_0_80px_rgba(255,102,0,0.6)] w-full md:w-auto justify-center"
                 style={{
                   background: "linear-gradient(135deg, #ff6600, #ff8533)",
                 }}

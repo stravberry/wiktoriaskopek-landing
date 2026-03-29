@@ -110,7 +110,7 @@ export default function VslStepsSection() {
         
         {/* Header Section */}
         <div className="max-w-4xl mx-auto text-center mb-10 md:mb-16">
-          <span className="inline-block font-display text-[10px] md:text-sm text-accent tracking-[.49em] uppercase mb-4 opacity-70">
+          <span className="inline-block font-display text-[10px] md:text-sm text-accent tracking-[.49em] uppercase mb-6 md:mb-8 opacity-70">
             Współpraca krok po kroku
           </span>
           <h2 id="steps-title" className="font-display text-[clamp(2.2rem,8vw,4rem)] leading-none text-white tracking-tighter mb-8 px-4 md:px-0">
@@ -126,7 +126,7 @@ export default function VslStepsSection() {
             </span>
           </h2>
           <div className="relative inline-block px-5 md:px-6 py-4 rounded-xl border border-white/[0.08] bg-white/[0.02] backdrop-blur-sm max-w-xl shadow-2xl">
-             <p className="text-white/60 text-xs md:text-lg font-sans font-medium leading-relaxed italic tracking-tight">
+             <p className="text-white/60 text-base md:text-lg font-sans font-medium leading-relaxed italic tracking-tight">
                &ldquo;Ty skupiasz się na dostarczaniu usługi, ja przejmuję kontrolę nad pozyskiwaniem klientów.&rdquo;
              </p>
           </div>
@@ -167,14 +167,14 @@ export default function VslStepsSection() {
                           {step.num}
                         </div>
                         <div className="h-px w-6 md:w-8 bg-accent/20" aria-hidden="true" />
-                        <span className="font-display text-[9px] md:text-xs tracking-[.49em] text-accent font-bold uppercase">{step.subtitle}</span>
+                        <span className="font-display text-xs md:text-sm tracking-[.49em] text-accent font-bold uppercase">{step.subtitle}</span>
                       </div>
                       
-                      <h3 className="font-display text-lg md:text-2xl text-white mb-3 md:mb-4 tracking-wide group-hover:text-accent transition-colors font-bold">
+                      <h3 className="font-display text-[26px] md:text-[34px] lg:text-[40px] text-white mb-3 md:mb-4 tracking-wide group-hover:text-accent transition-colors font-bold leading-[1.1]">
                         {step.title}
                       </h3>
                       
-                      <p className={`text-white/70 text-xs md:text-base leading-relaxed font-sans font-medium ${isEven ? 'md:max-w-md ml-auto' : 'md:max-w-md mr-auto'}`}>
+                      <p className={`text-white/70 text-base md:text-lg leading-relaxed font-sans font-medium ${isEven ? 'md:max-w-md ml-auto' : 'md:max-w-md mr-auto'}`}>
                         {step.text}
                       </p>
                     </div>
@@ -223,10 +223,10 @@ export default function VslStepsSection() {
               
               <div className="flex flex-col items-center gap-10">
                  <div className="space-y-2">
-                    <p className="font-sans text-white/80 text-sm md:text-xl font-medium tracking-tight">
+                    <p className="font-sans text-white/80 text-base md:text-xl font-medium tracking-tight">
                        Przestań walczyć o 3% klientów i zacznij dominować w Off-Markecie.
                     </p>
-                    <p className="font-serif italic text-white/40 text-xs md:text-base">
+                    <p className="font-sans italic text-white/50 text-base md:text-lg">
                        Zacznij budować autorytet, który sprzedaje za Ciebie.
                     </p>
                  </div>
@@ -234,7 +234,7 @@ export default function VslStepsSection() {
                  <div className="flex flex-col items-center gap-6 w-full">
                     <a
                        href="#contact"
-                       className="group relative inline-flex items-center gap-4 px-12 md:px-16 py-4 md:py-6 rounded-full font-sans text-xs md:text-sm tracking-widest uppercase text-black font-black overflow-hidden transition-all duration-500 hover:scale-[1.05] hover:shadow-[0_0_80px_rgba(255,102,0,0.4)] shadow-xl"
+                       className="group relative inline-flex items-center gap-4 px-12 md:px-16 py-4 md:py-6 rounded-full font-sans text-sm md:text-base tracking-widest uppercase text-black font-black overflow-hidden transition-all duration-500 hover:scale-[1.05] hover:shadow-[0_0_80px_rgba(255,102,0,0.4)] shadow-xl"
                        style={{
                          background: "linear-gradient(135deg, #ff6600, #ff8533)",
                        }}
@@ -249,7 +249,7 @@ export default function VslStepsSection() {
 
                     <div className="flex items-center gap-3 py-2 px-5 rounded-full border border-red-500/10 bg-red-500/5 backdrop-blur-sm">
                        <div className="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse shadow-[0_0_8px_rgba(239,68,68,0.5)]" aria-hidden="true" />
-                       <p className="text-white/60 text-[9px] md:text-[10px] font-sans tracking-[.25em] uppercase font-black">
+                       <p className="text-white/60 text-[10px] md:text-xs font-sans tracking-[.25em] uppercase font-black">
                           Zostały 4 miejsca na kwiecień
                        </p>
                     </div>

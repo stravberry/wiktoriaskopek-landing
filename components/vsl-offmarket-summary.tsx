@@ -34,7 +34,7 @@ export default function VslOffMarketSummary() {
         >
           {/* Section Heading */}
           <div className="text-center mb-8 md:mb-12">
-            <span className="font-display text-accent text-[8px] md:text-[9px] tracking-[.49em] uppercase mb-4 inline-block opacity-70">Filozofia Off-Market</span>
+            <span className="font-display text-accent text-[10px] md:text-sm tracking-[.49em] uppercase mb-4 inline-block opacity-70">Filozofia Off-Market</span>
             <h2 id="offmarket-title" className="font-display text-xl md:text-3xl lg:text-4xl text-white tracking-widest uppercase leading-tight">
               ZAMIEŃ WALKĘ CENOWĄ NA <br className="hidden md:block" />
               <span className="text-accent underline decoration-accent/10 underline-offset-8">AUTORYTET WIDEO</span>
@@ -51,13 +51,13 @@ export default function VslOffMarketSummary() {
                       <Search className="w-4 h-4 md:w-5 md:h-5 text-red-500/30" aria-hidden="true" />
                    </div>
                    <div>
-                      <div className="font-sans text-red-500 text-[9px] md:text-[12px] font-black tracking-widest uppercase mb-0.5 flex items-center gap-2">
+                      <div className="font-sans text-red-500 text-xs md:text-sm font-black tracking-widest uppercase mb-0.5 flex items-center gap-2">
                         🔴 3% RYNKU
                       </div>
                       <div className="font-display text-white text-base md:text-xl tracking-widest uppercase">Walka tylko o cenę</div>
                    </div>
                 </div>
-                <p className="text-white/60 text-xs md:text-base leading-relaxed font-sans font-medium">
+                <p className="text-white/60 text-base md:text-lg leading-relaxed font-sans font-medium">
                    To klienci z portali i Google, którzy wysyłają 10 zapytań naraz. Tam bije się Twoja konkurencja, a wygrywa najtańszy.
                 </p>
              </div>
@@ -70,13 +70,13 @@ export default function VslOffMarketSummary() {
                       <Zap className="w-4 h-4 md:w-5 md:h-5 text-accent" aria-hidden="true" />
                    </div>
                    <div>
-                      <div className="font-sans text-accent text-[9px] md:text-[12px] font-black tracking-widest uppercase mb-0.5 flex items-center gap-2">
+                      <div className="font-sans text-accent text-xs md:text-sm font-black tracking-widest uppercase mb-0.5 flex items-center gap-2">
                         🟢 97% RYNKU
                       </div>
                       <div className="font-display text-white text-base md:text-xl tracking-widest uppercase font-bold">Twój klient PREMIUM</div>
                    </div>
                 </div>
-                <p className="text-white text-xs md:text-base leading-relaxed font-sans font-medium">
+                <p className="text-white text-base md:text-lg leading-relaxed font-sans font-medium">
                    To ludzie na Facebooku, Instagramie i YouTube. Mają problem, ale jeszcze nie szukają wykonawcy.
                 </p>
              </div>
@@ -88,9 +88,9 @@ export default function VslOffMarketSummary() {
              {/* Strategy Card */}
              <div className="relative p-7 rounded-[1.5rem] md:rounded-[2rem] border border-white/[0.08] bg-white/[0.02] overflow-hidden flex flex-col justify-center">
                 <div className="mb-6">
-                   <span className="font-display text-accent text-[10px] tracking-[.49em] uppercase opacity-70">NASZA STRATEGIA</span>
+                   <span className="font-display text-accent text-[10px] md:text-xs tracking-[.49em] uppercase opacity-70">NASZA STRATEGIA</span>
                 </div>
-                <p className="font-sans text-white/95 text-sm md:text-xl leading-relaxed tracking-tight italic border-l-2 border-accent/30 pl-6">
+                <p className="font-sans text-white/95 text-base md:text-xl leading-relaxed tracking-tight italic border-l-2 border-accent/30 pl-6">
                    Docieramy do nich przez <span className="text-white font-black underline decoration-white/20 underline-offset-4">profesjonalne wideo</span>. <br />
                    Uświadamiamy im problem i pokazujemy Ciebie jako eksperta, zanim pomyślą o konkurencji.
                 </p>
@@ -99,9 +99,9 @@ export default function VslOffMarketSummary() {
              {/* Result Card (Unified Aesthetic) */}
              <div className="relative p-7 rounded-[1.5rem] md:rounded-[2rem] border border-white/[0.08] bg-white/[0.04] overflow-hidden flex flex-col justify-center">
                 <div className="mb-6">
-                   <span className="font-display text-accent text-[10px] tracking-[.49em] uppercase opacity-70">EFEKT DOMINACJI</span>
+                   <span className="font-display text-accent text-[10px] md:text-xs tracking-[.49em] uppercase opacity-70">EFEKT DOMINACJI</span>
                 </div>
-                <div className="font-sans text-white text-sm md:text-xl leading-relaxed tracking-tight italic border-l-2 border-accent/30 pl-6 space-y-6">
+                <div className="font-sans text-white text-base md:text-xl leading-relaxed tracking-tight italic border-l-2 border-accent/30 pl-6 space-y-6">
                    <p>
                       Kiedy dojrzeją do decyzji – <span className="text-white font-black underline decoration-white/10 underline-offset-4">nie porównują</span> cen. <br />
                       Dzwonią od razu do <span className="text-accent font-black">CIEBIE!</span>
@@ -118,7 +118,7 @@ export default function VslOffMarketSummary() {
           <div className="flex flex-col items-center">
              <a
                href="#contact"
-               className="group relative inline-flex items-center gap-4 md:gap-6 px-10 md:px-20 py-4 md:py-5 rounded-full font-sans text-[10px] md:text-sm tracking-[.4em] uppercase text-black font-black overflow-hidden transition-all duration-500 hover:scale-[1.05] hover:shadow-[0_0_80px_rgba(255,102,0,0.6)]"
+               className="group relative inline-flex items-center gap-4 md:gap-6 px-10 md:px-20 py-4 md:py-5 rounded-full font-sans text-sm md:text-base tracking-[.4em] uppercase text-black font-black overflow-hidden transition-all duration-500 hover:scale-[1.05] hover:shadow-[0_0_80px_rgba(255,102,0,0.6)]"
                style={{
                  background: "linear-gradient(135deg, #ff6600, #ff8533)",
                }}

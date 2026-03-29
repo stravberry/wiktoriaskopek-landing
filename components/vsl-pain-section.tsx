@@ -130,7 +130,7 @@ export default function VslPainSection() {
                       {item.pains.map((pain, j) => (
                         <div key={j} className="flex gap-3 items-start translate-x-0 transition-transform duration-300">
                           <X className="w-5 h-5 text-red-500/40 flex-shrink-0 mt-0.5" strokeWidth={3} aria-hidden="true" />
-                          <p className="text-white/70 text-sm md:text-lg font-medium leading-relaxed font-sans">
+                          <p className="text-white/70 text-base md:text-lg font-medium leading-relaxed font-sans">
                             {pain}
                           </p>
                         </div>
@@ -150,7 +150,7 @@ export default function VslPainSection() {
                            <div className="mt-1 flex-shrink-0 w-6 h-6 md:w-8 md:h-8 rounded-lg border border-emerald-500/20 flex items-center justify-center bg-emerald-500/10">
                              <Check className="w-4 h-4 md:w-5 md:h-5 text-emerald-500" strokeWidth={3} aria-hidden="true" />
                            </div>
-                           <p className="text-white/95 text-sm md:text-xl font-bold leading-relaxed font-sans">
+                           <p className="text-white/95 text-base md:text-xl font-bold leading-relaxed font-sans">
                              {item.solution}
                            </p>
                          </div>
