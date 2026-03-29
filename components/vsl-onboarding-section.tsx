@@ -112,7 +112,7 @@ export default function VslOnboardingSection() {
               <div className="flex-grow">
                  <h4 className="font-display text-[26px] md:text-[34px] text-white mb-4 md:mb-5 tracking-wide group-hover:text-accent transition-colors font-bold leading-[1.1]">Bezpłatna Konsultacja i Audyt (15–30 min)</h4>
                  <p className="font-sans text-white/70 text-base md:text-lg leading-relaxed max-w-3xl font-medium">
-                    Wybierasz termin w kalendarzu. Dzwonimy się i na podstawie Twojej ankiety od razu przechodzimy do konkretów. Oceniam Twoją obecną komunikację i pokazuję, jak możemy opakować Twoją wiedzę w krótkie formy wideo (Rolki/Shorts), by zacząć generować zapytania od klientów premium. Jeśli nie widzę potencjału na zwrot z inwestycji – powiem Ci to wprost.
+                    Wybierasz termin w&nbsp;kalendarzu. Zdzwaniamy się i&nbsp;na podstawie Twojej ankiety od razu przechodzimy do konkretów. Oceniam Twoją obecną komunikację i&nbsp;pokazuję, jak możemy opakować Twoją wiedzę w&nbsp;krótkie formy wideo (Rolki/Shorts), by zacząć generować zapytania od klientów premium. Jeśli nie widzę potencjału na zwrot z&nbsp;inwestycji – powiem Ci to wprost.
                  </p>
               </div>
            </div>
@@ -137,49 +137,8 @@ export default function VslOnboardingSection() {
 
         </div>
 
-        {/* Final Calendar CTA Block */}
-        <div 
-           className="relative group p-6 md:p-16 rounded-[2rem] md:rounded-3xl border border-white/[0.08] bg-white/[0.04] transition-all duration-1000 delay-700 overflow-hidden text-center flex flex-col items-center shadow-2xl"
-           style={{
-             opacity: isVisible ? 1 : 0,
-             transform: isVisible ? "translateY(0)" : "translateY(20px)",
-           }}
-        >
-           <div className="absolute inset-x-0 bottom-0 h-1/2 bg-accent/10 blur-[100px] rounded-full pointer-events-none" aria-hidden="true" />
 
-           <div className="relative z-10 w-full">
-              <div className="flex justify-center mb-6 md:mb-8">
-                <div className="w-12 h-12 md:w-16 md:h-16 rounded-full flex items-center justify-center border border-accent/30 bg-accent/5 group-hover:bg-accent/10 group-hover:border-accent/50 transition-all duration-500 shadow-accent/5 shadow-2xl">
-                   <CalendarDays className="w-6 md:w-8 h-6 md:h-8 text-accent/80" aria-hidden="true" />
-                </div>
-              </div>
 
-              <h3 className="font-display text-[clamp(1.2rem,5vw,3rem)] text-white tracking-[0.15em] md:tracking-widest uppercase mb-4 md:mb-6 font-bold">
-                 WYBIERZ TERMIN ROZMOWY
-              </h3>
-              
-              <p className="font-sans text-white/60 text-base md:text-lg max-w-xl mx-auto mb-10 md:mb-12 tracking-tight font-medium">
-                 Sprawdzimy, czy nasz system marketingu opartego na autorytecie pasuje do Twojego modelu biznesowego.
-              </p>
-
-              <a
-                href="https://calendly.com/twoja-nazwa" 
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group relative inline-flex items-center gap-3 md:gap-4 px-8 md:px-20 py-4 md:py-6 rounded-sm font-sans text-sm md:text-base tracking-widest uppercase text-black font-extrabold overflow-hidden transition-all duration-500 hover:scale-[1.05] hover:shadow-[0_0_80px_rgba(255,102,0,0.6)] w-full md:w-auto justify-center"
-                style={{
-                  background: "linear-gradient(135deg, #ff6600, #ff8533)",
-                }}
-                aria-label="Umów bezpłatną konsultację w kalendarzu Calendly"
-              >
-                <span className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-1000 bg-gradient-to-r from-transparent via-white/40 to-transparent" aria-hidden="true" />
-                <span className="relative z-10 flex items-center gap-2 md:gap-3">
-                   Umów bezpłatną konsultację
-                   <ArrowRight className="w-4 h-4 md:w-5 md:h-5 group-hover:translate-x-1 transition-transform" aria-hidden="true" />
-                </span>
-              </a>
-           </div>
-        </div>
 
       </div>
     </section>

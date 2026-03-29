@@ -7,37 +7,37 @@ const steps = [
   {
     num: "01",
     icon: ClipboardCheck,
-    title: "Audyt i Strategia Contentu",
+    title: "Audyt i\u00A0Strategia Contentu",
     subtitle: "ZDEJMUJEMY BÓL GŁOWY",
-    text: "Wypełniasz krótką ankietę. Ja analizuję Twoją ofertę, mapuję grupę docelową i w 3 dni robocze przygotowuję dla Ciebie strategię oraz gotowe scenariusze wideo. Zero zgadywania, co masz powiedzieć. Tłumaczymy Twoją wiedzę na krótkie, uderzeniowe formy (Rolki), które przyciągają klientów premium.",
+    text: "Wypełniasz krótką ankietę. Ja analizuję Twoją ofertę, mapuję grupę docelową i\u00A0w\u00A03\u00A0dni robocze przygotowuję dla Ciebie strategię oraz gotowe scenariusze wideo. Zero zgadywania, co masz powiedzieć. Tłumaczymy Twoją wiedzę na krótkie, uderzeniowe formy (Rolki), które przyciągają klientów\u00A0premium.",
   },
   {
     num: "02",
     icon: Video,
     title: "Dzień Nagraniowy (My Przejmujemy Stery)",
     subtitle: "SAMO GĘSTE, BEZ LANIA WODY",
-    text: "Spotykamy się w naszym profesjonalnym studiu Podcast Katowice (lub przyjeżdżamy do Ciebie z pełnym zapleczem). Przejmujemy rolę moderatora: zadajemy pytania, pilnujemy dynamiki i ucinamy rozwlekanie tematów. Boisz się kamery? Masz do dyspozycji prompter — czytasz tekst, nie kując niczego na pamięć.",
+    text: "Spotykamy się w\u00A0naszym profesjonalnym studiu Podcast Katowice (lub przyjeżdżamy do Ciebie z\u00A0pełnym zapleczem). Przejmujemy rolę moderatora: zadajemy pytania, pilnujemy dynamiki i\u00A0ucinamy rozwlekanie tematów. Boisz się kamery? Masz do dyspozycji prompter — czytasz tekst, nie kując niczego na\u00A0pamięć.",
   },
   {
     num: "03",
     icon: Scissors,
-    title: "Błyskawiczny Montaż i Paczki Wideo",
-    subtitle: "\"PLUG & PLAY\"",
-    text: "Zabieramy surowy materiał i wyciągamy samo „mięso”. W max 4 dni robocze od nagrania dostajesz gotowe, wysoce konwertujące paczki wideo (np. 8, 12 lub 16 Rolek Premium) z profesjonalnym dźwiękiem, dynamicznymi napisami i przebitkami (b-roll).",
+    title: "Błyskawiczny Montaż i\u00A0Paczki Wideo",
+    subtitle: '"PLUG & PLAY"',
+    text: "Zabieramy surowy materiał i\u00A0wyciągamy samo „mięso”. W\u00A0max 4\u00A0dni robocze od nagrania dostajesz gotowe, wysoce konwertujące paczki wideo (np.\u00A08, 12 lub 16 Rolek Premium) z\u00A0profesjonalnym dźwiękiem, dynamicznymi napisami i\u00A0przebitkami\u00A0(b-roll).",
   },
   {
     num: "04",
     icon: MonitorPlay,
-    title: "Publikacja i Prowadzenie Profili",
+    title: "Publikacja i\u00A0Prowadzenie Profili",
     subtitle: "ZDJĘCIE ODPOWIEDZIALNOŚCI",
-    text: "Nie musisz pamiętać o wrzucaniu postów ani znać się na algorytmach. Przejmujemy pełną obsługę Twoich social mediów (Instagram, Facebook, TikTok, LinkedIn). Dystrybuujemy materiały według harmonogramu, dbając o spójność wizualną i regularność, która buduje zaufanie do Twojej marki.",
+    text: "Nie musisz pamiętać o\u00A0wrzucaniu postów ani znać się na algorytmach. Przejmujemy pełną obsługę Twoich social mediów (Instagram, Facebook, TikTok, LinkedIn). Dystrybuujemy materiały według harmonogramu, dbając o\u00A0spójność wizualną i\u00A0regularność, która buduje zaufanie do Twojej\u00A0marki.",
   },
   {
     num: "05",
     icon: Filter,
-    title: "Kampanie Ads i Analiza Zapytań",
-    subtitle: "SKALOWANIE I REZULTATY",
-    text: "Kiedy organiczne Rolki edukują i budują Twój autorytet, my dodatkowo (opcjonalnie) dopalamy najlepsze materiały kampaniami płatnymi (Meta Ads). Ty po prostu odbierasz powiadomienia o nowych, zakwalifikowanych leadach i skupiasz się na domykaniu sprzedaży wyedukowanych klientów.",
+    title: "Kampanie Ads i\u00A0Analiza Zapytań",
+    subtitle: "SKALOWANIE I\u00A0REZULTATY",
+    text: "Kiedy organiczne Rolki edukują i\u00A0budują Twój autorytet, my dodatkowo (opcjonalnie) dopalamy najlepsze materiały kampaniami płatnymi (Meta\u00A0Ads). Ty po prostu odbierasz powiadomienia o\u00A0nowych, zakwalifikowanych leadach i\u00A0skupiasz się na domykaniu sprzedaży wyedukowanych\u00A0klientów.",
   },
 ]
 
@@ -196,20 +196,14 @@ export default function VslStepsSection() {
 
         </div>
 
-        {/* Success Focus Footer Area — Tightened */}
-        {/* Unified Final CTA Area — Refined for 'Schludny' Editorial look */}
-        <div className="relative mt-20 pt-20 pb-12 md:pb-20 border-t border-white/5 text-center flex flex-col items-center">
+        {/* Unified Final CTA Area — Slimmed Down */}
+        <div className="relative mt-10 pt-10 pb-4 md:pb-8 border-t border-white/5 text-center flex flex-col items-center">
             
-            {/* More impactful Labeling */}
-            <div className="mb-12 flex items-center gap-6 opacity-60" aria-hidden="true">
-               <div className="h-px w-10 md:w-16 bg-white/20" />
-               <span className="font-display text-xs md:text-sm tracking-[.5em] uppercase text-accent font-bold">KROK 06 — START</span>
-               <div className="h-px w-10 md:w-16 bg-white/20" />
-            </div>
 
-            <div className="relative z-10 max-w-5xl mx-auto px-4">
-              <h3 className="font-display text-[clamp(2.8rem,11vw,5.5rem)] leading-[0.85] text-white tracking-tighter mb-10 text-balance">
-                 GOTOWY NA TWOJĄ <br />
+
+            <div className="relative z-10 max-w-4xl mx-auto px-4">
+              <h3 className="font-display text-[clamp(2rem,7vw,3.5rem)] leading-[0.9] text-white tracking-tight mb-6 text-balance">
+                 GOTOWY NA TWOJĄ{" "}
                  <span
                    style={{
                      background: "linear-gradient(135deg, #ff6600, #ff8533)",
@@ -221,35 +215,34 @@ export default function VslStepsSection() {
                  </span>
               </h3>
               
-              <div className="flex flex-col items-center gap-10">
-                 <div className="space-y-2">
-                    <p className="font-sans text-white/80 text-base md:text-xl font-medium tracking-tight">
+              <div className="flex flex-col items-center gap-6">
+                 <div className="space-y-1">
+                    <p className="font-sans text-white/80 text-sm md:text-base font-medium tracking-tight">
                        Przestań walczyć o 3% klientów i zacznij dominować w Off-Markecie.
                     </p>
-                    <p className="font-sans italic text-white/50 text-base md:text-lg">
+                    <p className="font-sans italic text-white/50 text-sm md:text-base">
                        Zacznij budować autorytet, który sprzedaje za Ciebie.
                     </p>
                  </div>
 
-                 <div className="flex flex-col items-center gap-6 w-full">
+                 <div className="flex flex-col items-center gap-4 w-full">
                     <a
                        href="#contact"
-                       className="group relative inline-flex items-center gap-4 px-12 md:px-16 py-4 md:py-6 rounded-full font-sans text-sm md:text-base tracking-widest uppercase text-black font-black overflow-hidden transition-all duration-500 hover:scale-[1.05] hover:shadow-[0_0_80px_rgba(255,102,0,0.4)] shadow-xl"
+                       className="group relative inline-flex items-center gap-3 px-8 md:px-12 py-3 md:py-4 rounded-full font-sans text-xs md:text-sm tracking-widest uppercase text-black font-black overflow-hidden transition-all duration-300 hover:scale-[1.02] shadow-lg"
                        style={{
                          background: "linear-gradient(135deg, #ff6600, #ff8533)",
                        }}
                        aria-label="Rozpocznij transformację biznesu teraz"
                     >
-                       <span className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-1000 bg-gradient-to-r from-transparent via-white/40 to-transparent" aria-hidden="true" />
-                       <span className="relative z-10 flex items-center gap-3">
-                          Zacznijmy Teraz 
-                          <ArrowRight className="w-5 h-5 group-hover:translate-x-2 transition-transform" aria-hidden="true" />
+                       <span className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 bg-gradient-to-r from-transparent via-white/30 to-transparent" aria-hidden="true" />
+                       <span className="relative z-10 flex items-center gap-2">
+                          ZACZNIJMY TERAZ 
+                          <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" aria-hidden="true" />
                        </span>
                     </a>
 
-                    <div className="flex items-center gap-3 py-2 px-5 rounded-full border border-red-500/10 bg-red-500/5 backdrop-blur-sm">
-                       <div className="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse shadow-[0_0_8px_rgba(239,68,68,0.5)]" aria-hidden="true" />
-                       <p className="text-white/60 text-[10px] md:text-xs font-sans tracking-[.25em] uppercase font-black">
+                    <div className="flex justify-center mt-2">
+                       <p className="text-white/60 text-[9px] md:text-[10px] font-sans tracking-[.2em] uppercase font-bold text-center">
                           Zostały 4 miejsca na kwiecień
                        </p>
                     </div>

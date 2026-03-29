@@ -50,11 +50,8 @@ export default function VslContactForm() {
             transform: isVisible ? "translateY(0)" : "translateY(30px)",
           }}
         >
-          <span className="font-display text-accent text-[10px] md:text-sm tracking-[.4em] uppercase mb-4 block font-bold">
-            Ostatni krok do transformacji
-          </span>
-          <h2 id="form-title" className="font-display text-[clamp(2.5rem,10vw,5rem)] leading-[0.85] text-white tracking-tighter mb-8">
-            KWALIFIKACJA <br />
+          <h2 id="form-title" className="font-display text-[clamp(2rem,7vw,4.5rem)] leading-[0.85] text-white tracking-tighter mb-8 uppercase px-4 md:px-0">
+            Wypełnij formularz i&nbsp;<br className="hidden md:block" />
             <span
               style={{
                 background: "linear-gradient(135deg, #ff6600, #ff8533)",
@@ -62,7 +59,7 @@ export default function VslContactForm() {
                 WebkitTextFillColor: "transparent",
               }}
             >
-              STRATEGICZNA
+              zacznijmy współpracę!
             </span>
           </h2>
           <p className="font-sans text-white/60 text-sm md:text-xl max-w-2xl mx-auto leading-relaxed">

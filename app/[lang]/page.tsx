@@ -19,6 +19,9 @@ export default async function Home() {
       {/* LCP Critical Section (Static) */}
       <VslHero />
       
+      {/* Skopiowana sekcja statystyk pod Hero */}
+      <VslStatsMini />
+      
       {/* Lazy Loaded Sections */}
       <VslPainSection />
       <VslOffMarketSummary />

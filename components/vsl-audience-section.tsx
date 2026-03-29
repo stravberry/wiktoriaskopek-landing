@@ -30,7 +30,7 @@ export default function VslAudienceSection() {
   return (
     <section
       ref={sectionRef}
-      className="relative py-12 md:py-20 overflow-hidden bg-[#050505]"
+      className="relative py-8 md:py-12 overflow-hidden bg-[#050505]"
       aria-labelledby="audience-title"
     >
       {/* Background radial accent */}
@@ -46,10 +46,7 @@ export default function VslAudienceSection() {
         
         {/* Section Header */}
         <div className="max-w-4xl mx-auto text-center mb-12 md:mb-24">
-          <span className="inline-block font-display text-xs md:text-base text-accent tracking-[.49em] uppercase mb-6 md:mb-8 opacity-80">
-            Grupa docelowa
-          </span>
-          <h2 id="audience-title" className="font-display text-[clamp(2.2rem,8vw,4rem)] leading-[0.85] text-white tracking-tighter mb-8 px-4 md:px-0">
+          <h2 id="audience-title" className="font-display text-[clamp(2.2rem,8vw,4rem)] leading-[0.85] text-white tracking-widest mb-8 px-4 md:px-0">
             DLA{" "}
             <span
               style={{

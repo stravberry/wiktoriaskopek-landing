@@ -50,11 +50,16 @@ export default function VslHero() {
             transform: isVisible ? "translateY(0)" : "translateY(20px)",
           }}
         >
+          <div className="mb-6 md:mb-8 text-center">
+             <span className="font-sans text-accent text-xs sm:text-sm md:text-base font-bold tracking-widest uppercase">
+                Dla ekspertów i&nbsp;solo przedsiębiorców robiących 8–30&nbsp;tys. zł/mies.
+             </span>
+          </div>
+
           <h1 
             id="hero-title" 
             className="font-display w-full max-w-full text-5xl sm:text-7xl md:text-8xl lg:text-[clamp(6rem,11vw,9rem)] leading-[0.85] text-white tracking-tighter"
             style={{ 
-              WebkitTextRendering: 'optimizeLegibility',
               textRendering: 'optimizeLegibility',
               lineHeight: '0.85',
               display: 'block'
@@ -95,8 +100,8 @@ export default function VslHero() {
           <p className="text-white/80 text-lg md:text-2xl lg:text-[clamp(1.1rem,2.5vw,1.4rem)] leading-[1.6] font-sans font-medium tracking-tight">
             Pomogę Ci pozyskać klientów, stworzyć jasną ofertę
             i&nbsp;
-            <span className="text-white font-bold underline decoration-accent/40 underline-offset-8">UŁOŻYĆ STRATEGIĘ WIDEO</span>
-            {" — bez tracenia czasu na techniczne detale, nawet jeśli jesteś introwertykiem i nigdy nie nagrywałeś."}
+            <span className="text-white font-bold underline decoration-accent/40 underline-offset-8">tworzyć konwertujący content</span>
+            {" — bez tracenia czasu na techniczne detale, nawet jeśli jesteś introwertykiem i&nbsp;nigdy nie nagrywałeś."}
           </p>
         </div>
 

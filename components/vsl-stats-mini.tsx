@@ -62,7 +62,7 @@ export default function VslStatsMini() {
        id: "01",
        number: "+300 tyś. zł",
        label: "Branża fitness",
-       description: "Dodatkowego przychodu w 3 miesiące działań dla firmy suplementacyjnej",
+       description: "Dodatkowego dochodu w 3 miesiące działań dla firmy suplementacyjnej",
        delay: 0
     },
     {
