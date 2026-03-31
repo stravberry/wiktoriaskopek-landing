@@ -1,7 +1,7 @@
 "use client"
 
-import { useEffect, useRef, useState } from "react"
 import { Quote, ArrowUpRight, TrendingUp, CheckCircle2 } from "lucide-react"
+import { motion } from "framer-motion"
 
 const caseStudies = [
   {
@@ -41,23 +41,32 @@ const caseStudies = [
 ]
 
 export default function VslResultsSection() {
-  const sectionRef = useRef<HTMLDivElement>(null)
-  const [isVisible, setIsVisible] = useState(false)
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) setIsVisible(true)
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.15,
       },
-      { threshold: 0.1 }
-    )
-    if (sectionRef.current) observer.observe(sectionRef.current)
-    return () => observer.disconnect()
-  }, [])
+    },
+  } as const
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 40 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        type: "spring",
+        stiffness: 100,
+        damping: 20,
+        duration: 0.8,
+      },
+    },
+  } as const
 
   return (
     <section
-      ref={sectionRef}
       className="relative py-12 md:py-16 overflow-hidden bg-[#050505]"
       aria-labelledby="results-title"
     >
@@ -75,12 +84,12 @@ export default function VslResultsSection() {
       <div className="relative z-10 max-w-7xl mx-auto px-4 md:px-8">
         
         {/* Header Area */}
-        <div 
-           className="max-w-4xl mb-10 md:mb-16 transition-all duration-1000"
-           style={{
-             opacity: isVisible ? 1 : 0,
-             transform: isVisible ? "translateY(0)" : "translateY(30px)",
-           }}
+        <motion.div 
+           className="max-w-4xl mb-10 md:mb-16"
+           initial={{ opacity: 0, y: 30 }}
+           whileInView={{ opacity: 1, y: 0 }}
+           viewport={{ once: false }}
+           transition={{ duration: 0.8 }}
         >
            <span className="font-sans text-emerald-500 text-xs md:text-sm tracking-[.3em] uppercase inline-block mb-6 md:mb-8 opacity-80 font-bold">
               Moje case studies
@@ -99,19 +108,21 @@ export default function VslResultsSection() {
            <p className="font-sans text-white/70 text-base md:text-xl leading-relaxed max-w-2xl px-4 md:px-0 font-medium">
               Efekty mówią same za siebie. Moi klienci zarabiają pieniądze, podnoszą stawki i odzyskują czas. To nie są teorie, tylko realne biznesy zbudowane dzięki systemowi wideo premium.
            </p>
-        </div>
+        </motion.div>
 
         {/* Case Studies Grid (Stacks on mobile) */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-8">
-          {caseStudies.map((cs, i) => (
-            <div 
+        <motion.div 
+          className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-8"
+          variants={containerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.1 }}
+        >
+          {caseStudies.map((cs) => (
+            <motion.div 
               key={cs.name}
+              variants={itemVariants}
               className="group relative flex flex-col p-6 md:p-10 rounded-2xl md:rounded-3xl border border-white/[0.08] bg-white/[0.02] hover:bg-white/[0.04] hover:border-emerald-500/40 transition-all duration-700 overflow-hidden shadow-2xl"
-              style={{
-                opacity: isVisible ? 1 : 0,
-                transform: isVisible ? "translateY(0)" : "translateY(40px)",
-                transitionDelay: `${i * 150}ms`
-              }}
             >
                {/* Background Icon (Scaled for mobile) */}
                <div className="absolute top-4 right-4 md:top-6 md:right-6 opacity-[0.05] md:opacity-[0.08] group-hover:opacity-[0.12] group-hover:scale-110 transition-all duration-1000 transform origin-top-right" aria-hidden="true">
@@ -164,9 +175,9 @@ export default function VslResultsSection() {
                      </div>
                   </div>
                </div>
-            </div>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
 
       </div>
     </section>

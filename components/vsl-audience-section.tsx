@@ -1,7 +1,7 @@
 "use client"
 
-import { useEffect, useRef, useState } from "react"
 import { Building2, GraduationCap, Briefcase, BookOpen, Scale, HeartPulse, ArrowRight, Target } from "lucide-react"
+import { motion } from "framer-motion"
 
 const industries = [
   { icon: Building2, label: "Nieruchomości", desc: "Deweloperzy i Pośrednicy Premium" },
@@ -13,23 +13,32 @@ const industries = [
 ]
 
 export default function VslAudienceSection() {
-  const sectionRef = useRef<HTMLDivElement>(null)
-  const [isVisible, setIsVisible] = useState(false)
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) setIsVisible(true)
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1,
       },
-      { threshold: 0.1 }
-    )
-    if (sectionRef.current) observer.observe(sectionRef.current)
-    return () => observer.disconnect()
-  }, [])
+    },
+  } as const
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        type: "spring",
+        stiffness: 70,
+        damping: 18,
+        duration: 0.8,
+      },
+    },
+  } as const
 
   return (
     <section
-      ref={sectionRef}
       className="relative py-8 md:py-12 overflow-hidden bg-[#050505]"
       aria-labelledby="audience-title"
     >
@@ -45,7 +54,13 @@ export default function VslAudienceSection() {
       <div className="relative z-10 max-w-7xl mx-auto px-4 md:px-8">
         
         {/* Section Header */}
-        <div className="max-w-4xl mx-auto text-center mb-12 md:mb-24">
+        <motion.div 
+          className="max-w-4xl mx-auto text-center mb-12 md:mb-24"
+          initial={{ opacity: 0, scale: 0.9 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8, type: "spring", stiffness: 50 }}
+        >
           <h2 id="audience-title" className="font-display text-[clamp(2.2rem,8vw,4rem)] leading-[0.85] text-white tracking-widest mb-8 px-4 md:px-0">
             DLA{" "}
             <span
@@ -59,18 +74,17 @@ export default function VslAudienceSection() {
             </span>
             {" "}TO JEST
           </h2>
-        </div>
+        </motion.div>
 
         {/* Main Audience Blocks */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-7 mb-12 md:mb-24">
           
-          <div 
+          <motion.div 
             className="group relative p-6 md:p-10 rounded-[1.5rem] md:rounded-3xl border border-white/[0.08] bg-white/[0.02] hover:border-accent/40 transition-all duration-500 overflow-hidden"
-            style={{
-              opacity: isVisible ? 1 : 0,
-              transform: isVisible ? "translateY(0)" : "translateY(20px)",
-              transitionDelay: "100ms"
-            }}
+            initial={{ opacity: 0, x: -50 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8, type: "spring", stiffness: 60 }}
           >
             <div className="absolute top-0 right-0 p-8 opacity-0 group-hover:opacity-100 transition-opacity duration-700" aria-hidden="true">
                <Target className="w-10 h-10 text-accent/20" />
@@ -89,15 +103,14 @@ export default function VslAudienceSection() {
             </p>
             
             <div className="h-px w-full bg-gradient-to-r from-accent/30 to-transparent" aria-hidden="true" />
-          </div>
+          </motion.div>
 
-          <div 
+          <motion.div 
             className="group relative p-6 md:p-10 rounded-[1.5rem] md:rounded-3xl border border-white/[0.08] bg-white/[0.02] hover:border-accent/40 transition-all duration-500 overflow-hidden"
-            style={{
-              opacity: isVisible ? 1 : 0,
-              transform: isVisible ? "translateY(0)" : "translateY(20px)",
-              transitionDelay: "200ms"
-            }}
+            initial={{ opacity: 0, x: 50 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8, type: "spring", stiffness: 60 }}
           >
             <h3 className="font-display text-[26px] md:text-[40px] text-white mb-6 md:mb-8 tracking-wide text-left font-bold leading-[1.1]">
                Sprzedaż Wiedzy i High-Ticket
@@ -111,29 +124,34 @@ export default function VslAudienceSection() {
             </p>
 
             <div className="h-px w-full bg-gradient-to-r from-accent/30 to-transparent" aria-hidden="true" />
-          </div>
+          </motion.div>
 
         </div>
 
-        {/* Industry Focus List */}
-        <div className="text-center mb-10 md:mb-16">
-          <h3 className="font-display text-[clamp(1.2rem,4vw,2.1rem)] text-white/70 tracking-[.15em] uppercase mb-8 md:mb-12 max-w-3xl mx-auto leading-tight px-4 md:px-0">
+        {/* Coordinated Industry Focus List */}
+        <motion.div 
+          className="text-center mb-10 md:mb-16"
+          variants={containerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.15 }}
+        >
+          <motion.h3 
+            className="font-display text-[clamp(1.2rem,4vw,2.1rem)] text-white/70 tracking-[.15em] uppercase mb-8 md:mb-12 max-w-3xl mx-auto leading-tight px-4 md:px-0"
+            variants={itemVariants}
+          >
             Szczególnie wspieram branże <br className="hidden md:block" aria-hidden="true" />
             <span className="text-accent opacity-90">opierające się na autorytecie</span>
-          </h3>
+          </motion.h3>
           
           <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 md:gap-8">
-            {industries.map((item, i) => {
+            {industries.map((item) => {
               const Icon = item.icon
               return (
-                <div
+                <motion.div
                   key={item.label}
+                  variants={itemVariants}
                   className="group relative flex flex-col justify-end min-h-[240px] md:min-h-[280px] p-3 sm:p-6 md:p-8 rounded-[1rem] md:rounded-2xl border border-white/[0.08] bg-white/[0.02] hover:bg-white/[0.04] transition-all duration-700 hover:border-accent/50 overflow-hidden shadow-xl"
-                  style={{
-                    opacity: isVisible ? 1 : 0,
-                    transform: isVisible ? "translateY(0)" : "translateY(20px)",
-                    transitionDelay: `${300 + i * 50}ms`
-                  }}
                 >
                   {/* Background Oversized Icon - Scale and fade for mobile */}
                   <div className="absolute top-4 right-4 md:top-6 md:right-6 opacity-[0.04] md:opacity-[0.08] group-hover:opacity-[0.15] group-hover:scale-125 group-hover:rotate-12 transition-all duration-1000 transform origin-top-right" aria-hidden="true">
@@ -160,14 +178,20 @@ export default function VslAudienceSection() {
                   
                   {/* Subtle Background Glow on Hover */}
                   <div className="absolute -bottom-8 -right-8 w-32 h-32 bg-accent/20 blur-[60px] rounded-full opacity-0 group-hover:opacity-50 transition-opacity duration-1000" aria-hidden="true" />
-                </div>
+                </motion.div>
               )
             })}
           </div>
-        </div>
+        </motion.div>
 
         {/* Bottom CTA Area */}
-        <div className="mt-8 md:mt-12 pt-8 md:pt-10 border-t border-white/10 text-center flex flex-col items-center">
+        <motion.div 
+          className="mt-8 md:mt-12 pt-8 md:pt-10 border-t border-white/10 text-center flex flex-col items-center"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8, delay: 0.2 }}
+        >
             <p className="text-white/60 text-base md:text-xl font-sans mb-6 max-w-2xl text-center leading-relaxed px-4 md:px-0 font-medium">
                Jeśli prowadzisz firmę i szukasz <br className="hidden md:block" aria-hidden="true" />
                <span className="text-white font-bold inline-block border-b-2 border-accent/40 pb-1">zaufanych klientów</span> na swoje usługi — porozmawiajmy.
@@ -185,7 +209,7 @@ export default function VslAudienceSection() {
               <span className="relative z-10">Porozmawiajmy</span>
               <ArrowRight className="relative z-10 w-4 h-4 group-hover:translate-x-1 transition-transform" aria-hidden="true" />
             </a>
-        </div>
+        </motion.div>
 
       </div>
     </section>

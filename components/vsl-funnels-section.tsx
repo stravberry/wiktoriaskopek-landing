@@ -1,26 +1,36 @@
 "use client"
 
-import { useEffect, useRef, useState } from "react"
-import { Eye, ShoppingCart, ArrowRight, Zap, Target } from "lucide-react"
+import { Zap, Target } from "lucide-react"
+import { motion } from "framer-motion"
 
 export default function VslFunnelsSection() {
-  const sectionRef = useRef<HTMLDivElement>(null)
-  const [isVisible, setIsVisible] = useState(false)
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) setIsVisible(true)
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.2,
       },
-      { threshold: 0.1 }
-    )
-    if (sectionRef.current) observer.observe(sectionRef.current)
-    return () => observer.disconnect()
-  }, [])
+    },
+  } as const
+
+  const itemVariants = {
+    hidden: { opacity: 0, scale: 0.9, y: 30 },
+    visible: {
+      opacity: 1,
+      scale: 1,
+      y: 0,
+      transition: {
+        type: "spring",
+        stiffness: 80,
+        damping: 15,
+        duration: 0.8,
+      },
+    },
+  } as const
 
   return (
     <section
-      ref={sectionRef}
       className="relative py-12 md:py-16 overflow-hidden bg-[#050505]"
       aria-labelledby="funnels-title"
     >
@@ -38,12 +48,12 @@ export default function VslFunnelsSection() {
       <div className="relative z-10 max-w-7xl mx-auto px-4 md:px-8">
         
         {/* Header Area */}
-        <div 
-           className="max-w-4xl mb-12 md:mb-16 transition-all duration-1000"
-           style={{
-             opacity: isVisible ? 1 : 0,
-             transform: isVisible ? "translateY(0)" : "translateY(30px)",
-           }}
+        <motion.div 
+           className="max-w-4xl mb-12 md:mb-16"
+           initial={{ opacity: 0, y: 30 }}
+           whileInView={{ opacity: 1, y: 0 }}
+           viewport={{ once: true }}
+           transition={{ duration: 0.8 }}
         >
            <span className="font-display text-accent text-xs md:text-sm tracking-[.3em] uppercase inline-block mb-6 md:mb-8 opacity-80 font-bold">
               Budowa Autorytetu
@@ -63,19 +73,21 @@ export default function VslFunnelsSection() {
            <p className="font-sans text-white/70 text-base md:text-xl leading-relaxed max-w-3xl px-4 md:px-0 font-medium">
               Zwykła strona-wizytówka i sucha oferta to dzisiaj za mało. Klienci premium nie kupują na podstawie cennika – kupują od ludzi, którym ufają. Jeśli nie widzą Cię w akcji, nie rozumieją Twojej wartości. Zamiast tracić godziny na tłumaczenie od zera wdrażamy system wideo, który buduje ten autorytet za Ciebie. Dlatego uruchamiamy dwa połączone lejki:
            </p>
-        </div>
+        </motion.div>
 
         {/* Funnels Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-12 mb-12 md:mb-28">
+        <motion.div 
+          className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-12 mb-12 md:mb-28"
+          variants={containerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.1 }}
+        >
           
           {/* 01 — LEJEK WIZERUNKOWY */}
-          <div 
+          <motion.div 
+            variants={itemVariants}
             className="group relative p-6 md:p-12 rounded-[1.5rem] md:rounded-3xl border border-white/[0.08] bg-white/[0.02] hover:bg-white/[0.04] hover:border-accent/40 transition-all duration-700 overflow-hidden shadow-xl"
-            style={{
-              opacity: isVisible ? 1 : 0,
-              transform: isVisible ? "translateY(0)" : "translateY(40px)",
-              transitionDelay: "200ms"
-            }}
           >
              {/* Background Oversized Icon (Scaled for mobile) */}
              <div className="absolute top-4 right-4 md:top-6 md:right-6 opacity-[0.05] md:opacity-[0.08] group-hover:opacity-[0.12] group-hover:scale-110 transition-all duration-1000 transform origin-top-right" aria-hidden="true">
@@ -97,16 +109,12 @@ export default function VslFunnelsSection() {
                    Wysokiej jakości wideo (Rolki i Shorts) pokazują Twoją wiedzę, Twoje podejście do biznesu i transformację, jaką dajesz klientom. Docieramy do tzw. Off-Marketu — uświadamiamy ludziom ich problemy, zanim w ogóle zaczną szukać najtańszego wykonawcy na portalach. Regularna, profesjonalna obecność wideo dzień po dniu buduje Twój status niepodważalnego eksperta w branży.
                 </p>
              </div>
-          </div>
+          </motion.div>
 
           {/* 02 — LEJEK SPRZEDAŻOWY */}
-          <div 
+          <motion.div 
+            variants={itemVariants}
             className="group relative p-6 md:p-12 rounded-[1.5rem] md:rounded-3xl border border-white/[0.08] bg-white/[0.02] hover:bg-white/[0.04] hover:border-accent/40 transition-all duration-700 overflow-hidden shadow-xl"
-            style={{
-              opacity: isVisible ? 1 : 0,
-              transform: isVisible ? "translateY(0)" : "translateY(40px)",
-              transitionDelay: "400ms"
-            }}
           >
              {/* Background Oversized Icon (Scaled for mobile) */}
              <div className="absolute top-4 right-4 md:top-6 md:right-6 opacity-[0.05] md:opacity-[0.08] group-hover:opacity-[0.12] group-hover:scale-110 transition-all duration-1000 transform origin-top-right" aria-hidden="true">
@@ -128,17 +136,17 @@ export default function VslFunnelsSection() {
                    Kiedy klient jest już „ograny” Twoją wiedzą i ufa Ci dzięki rolkom, wpada w lejek sprzedażowy (kampanie leadowe lub kierujące na Twoją dopracowaną ofertę). Wideo odwala za Ciebie najcięższą robotę: pokazuje konkretne case studies, tłumaczy proces współpracy i zbija obiekcje. Kiedy klient w końcu do Ciebie dzwoni, jest już doedukowany i gotowy do działania.
                 </p>
              </div>
-          </div>
+          </motion.div>
 
-        </div>
+        </motion.div>
 
         {/* Conclusion / Investment Logic */}
-        <div 
-           className="relative p-7 md:p-16 rounded-[1.5rem] md:rounded-3xl border border-white/[0.08] bg-white/[0.04] transition-all duration-1000 delay-500 overflow-hidden group shadow-2xl"
-           style={{
-             opacity: isVisible ? 1 : 0,
-             transform: isVisible ? "translateY(0)" : "translateY(20px)",
-           }}
+        <motion.div 
+           className="relative p-7 md:p-16 rounded-[1.5rem] md:rounded-3xl border border-white/[0.08] bg-white/[0.04] transition-all duration-1000 overflow-hidden group shadow-2xl"
+           initial={{ opacity: 0, y: 20 }}
+           whileInView={{ opacity: 1, y: 0 }}
+           viewport={{ once: true }}
+           transition={{ duration: 1, delay: 0.4 }}
         >
            {/* Glow behind the logic block */}
            <div className="absolute -bottom-1/2 left-1/2 -translate-x-1/2 w-3/4 h-64 bg-accent/10 blur-[100px] rounded-full pointer-events-none" aria-hidden="true" />
@@ -148,7 +156,7 @@ export default function VslFunnelsSection() {
                  Inwestycja w profesjonalny wideo marketing to <span className="text-white italic font-sans">nie koszt</span>. To jedyna metoda, by przestać sprzedawać swój czas za grosze, wyróżnić się na tle szarej konkurencji i płynnie przejść na stawki <span className="text-accent font-display tracking-[0.15em] md:tracking-widest uppercase font-bold">High-Ticket</span>.
               </p>
            </div>
-        </div>
+        </motion.div>
 
       </div>
     </section>

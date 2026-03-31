@@ -1,24 +1,36 @@
 "use client"
 
-import { useState, useRef, useEffect } from "react"
-import { ArrowRight, Send, CheckCircle2 } from "lucide-react"
+import { useState } from "react"
+import { Send, CheckCircle2 } from "lucide-react"
+import { motion } from "framer-motion"
 
 export default function VslContactForm() {
   const [isSubmitted, setIsSubmitted] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
-  const sectionRef = useRef<HTMLDivElement>(null)
-  const [isVisible, setIsVisible] = useState(false)
 
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) setIsVisible(true)
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1,
       },
-      { threshold: 0.1 }
-    )
-    if (sectionRef.current) observer.observe(sectionRef.current)
-    return () => observer.disconnect()
-  }, [])
+    },
+  } as const
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        type: "spring",
+        stiffness: 100,
+        damping: 15,
+        duration: 0.6,
+      },
+    },
+  } as const
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -31,7 +43,6 @@ export default function VslContactForm() {
 
   return (
     <section 
-      ref={sectionRef}
       id="qualification" 
       className="relative py-20 md:py-32 bg-[#050505] overflow-hidden"
       aria-labelledby="form-title"
@@ -43,12 +54,12 @@ export default function VslContactForm() {
 
       <div className="relative z-10 max-w-4xl mx-auto px-4 md:px-8">
         
-        <div 
-          className="text-center mb-16 md:mb-20 transition-all duration-1000"
-          style={{
-            opacity: isVisible ? 1 : 0,
-            transform: isVisible ? "translateY(0)" : "translateY(30px)",
-          }}
+        <motion.div 
+          className="text-center mb-16 md:mb-20"
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8 }}
         >
           <h2 id="form-title" className="font-display text-[clamp(2rem,7vw,4.5rem)] leading-[0.85] text-white tracking-tighter mb-8 uppercase px-4 md:px-0">
             Wypełnij formularz i <br className="hidden md:block" />
@@ -65,10 +76,14 @@ export default function VslContactForm() {
           <p className="font-sans text-white/60 text-sm md:text-xl max-w-2xl mx-auto leading-relaxed">
             Wypełnij poniższe pola, abyśmy mogli przygotować się do rozmowy i sprawdzić, czy proces wideo-marketingowy jest dla Ciebie odpowiedni.
           </p>
-        </div>
+        </motion.div>
 
         {isSubmitted ? (
-          <div className="bg-white/[0.03] border border-white/10 rounded-2xl p-10 md:p-20 text-center animate-in fade-in zoom-in duration-700">
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="bg-white/[0.03] border border-white/10 rounded-2xl p-10 md:p-20 text-center"
+          >
             <div className="w-20 h-20 bg-accent/20 rounded-full flex items-center justify-center mx-auto mb-8">
               <CheckCircle2 className="w-10 h-10 text-accent" />
             </div>
@@ -80,18 +95,18 @@ export default function VslContactForm() {
             >
               Wyślij kolejne zgłoszenie
             </button>
-          </div>
+          </motion.div>
         ) : (
-          <form 
+          <motion.form 
             onSubmit={handleSubmit}
-            className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-10 transition-all duration-1000 delay-300"
-            style={{
-              opacity: isVisible ? 1 : 0,
-              transform: isVisible ? "translateY(0)" : "translateY(40px)",
-            }}
+            className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-10"
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.1 }}
           >
             {/* Name Field */}
-            <div className="space-y-3">
+            <motion.div variants={itemVariants} className="space-y-3">
               <label htmlFor="name" className="font-display text-[10px] md:text-xs text-white/40 tracking-[.3em] uppercase ml-1">Twoje Imię i Nazwisko</label>
               <input
                 required
@@ -101,10 +116,10 @@ export default function VslContactForm() {
                 placeholder="Jan Kowalski"
                 className="w-full bg-white/[0.03] border border-white/10 rounded-none px-6 py-4 md:py-5 text-white font-sans text-sm md:text-base focus:outline-none focus:border-accent/50 focus:bg-white/[0.05] transition-all"
               />
-            </div>
+            </motion.div>
 
             {/* Social Field */}
-            <div className="space-y-3">
+            <motion.div variants={itemVariants} className="space-y-3">
               <label htmlFor="social" className="font-display text-[10px] md:text-xs text-white/40 tracking-[.3em] uppercase ml-1">Instagram / LinkedIn / Strona WWW</label>
               <input
                 required
@@ -114,10 +129,10 @@ export default function VslContactForm() {
                 placeholder="@twojprofil"
                 className="w-full bg-white/[0.03] border border-white/10 rounded-none px-6 py-4 md:py-5 text-white font-sans text-sm md:text-base focus:outline-none focus:border-accent/50 focus:bg-white/[0.05] transition-all"
               />
-            </div>
+            </motion.div>
 
             {/* Revenue Field */}
-            <div className="space-y-3">
+            <motion.div variants={itemVariants} className="space-y-3">
               <label htmlFor="revenue" className="font-display text-[10px] md:text-xs text-white/40 tracking-[.3em] uppercase ml-1">Obecne Przychody Miesięczne</label>
               <select
                 required
@@ -131,10 +146,10 @@ export default function VslContactForm() {
                 <option value="30-100k" className="bg-black">30 000 - 100 000 zł</option>
                 <option value="100k+" className="bg-black">Powyżej 100 000 zł</option>
               </select>
-            </div>
+            </motion.div>
 
             {/* Phone Field */}
-            <div className="space-y-3">
+            <motion.div variants={itemVariants} className="space-y-3">
               <label htmlFor="phone" className="font-display text-[10px] md:text-xs text-white/40 tracking-[.3em] uppercase ml-1">Numer Telefonu</label>
               <input
                 required
@@ -144,10 +159,10 @@ export default function VslContactForm() {
                 placeholder="+48 000 000 000"
                 className="w-full bg-white/[0.03] border border-white/10 rounded-none px-6 py-4 md:py-5 text-white font-sans text-sm md:text-base focus:outline-none focus:border-accent/50 focus:bg-white/[0.05] transition-all"
               />
-            </div>
+            </motion.div>
 
             {/* Message/Goal Field */}
-            <div className="md:col-span-2 space-y-3">
+            <motion.div variants={itemVariants} className="md:col-span-2 space-y-3">
               <label htmlFor="challenge" className="font-display text-[10px] md:text-xs text-white/40 tracking-[.3em] uppercase ml-1">Co jest Twoim największym wyzwaniem w marketingu?</label>
               <textarea
                 required
@@ -157,10 +172,10 @@ export default function VslContactForm() {
                 placeholder="Np. brak czasu na nagrywanie, niska konwersja z reklam, brak strategii..."
                 className="w-full bg-white/[0.03] border border-white/10 rounded-none px-6 py-4 md:py-5 text-white font-sans text-sm md:text-base focus:outline-none focus:border-accent/50 focus:bg-white/[0.05] transition-all resize-none"
               />
-            </div>
+            </motion.div>
 
             {/* Submit Button */}
-            <div className="md:col-span-2 pt-6">
+            <motion.div variants={itemVariants} className="md:col-span-2 pt-6">
               <button
                 disabled={isSubmitting}
                 type="submit"
@@ -178,11 +193,11 @@ export default function VslContactForm() {
               <p className="mt-6 text-center text-white/30 font-sans text-[10px] uppercase tracking-widest">
                 Gwarantujemy 100% poufności Twoich danych.
               </p>
-            </div>
+            </motion.div>
             
             {/* Honeypot for security */}
             <input type="text" name="_honey" style={{ display: "none" }} aria-hidden="true" />
-          </form>
+          </motion.form>
         )}
       </div>
 

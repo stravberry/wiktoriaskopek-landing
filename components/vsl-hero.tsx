@@ -1,16 +1,34 @@
 "use client"
 
-import { useEffect, useState } from "react"
 import Image from "next/image"
 import { ArrowRight } from "lucide-react"
+import { motion } from "framer-motion"
 
 export default function VslHero() {
-  const [isVisible, setIsVisible] = useState(false)
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.15,
+        delayChildren: 0.1,
+      },
+    },
+  } as const
 
-  useEffect(() => {
-    const timer = setTimeout(() => setIsVisible(true), 100)
-    return () => clearTimeout(timer)
-  }, [])
+  const itemVariants = {
+    hidden: { opacity: 0, y: 30 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        type: "spring",
+        stiffness: 100,
+        damping: 20,
+        duration: 0.8,
+      },
+    },
+  } as const
 
   return (
     <section
@@ -40,15 +58,17 @@ export default function VslHero() {
         aria-hidden="true"
       />
 
-      <div className="relative z-10 max-w-full lg:max-w-6xl mx-auto px-4 md:px-8 w-full flex flex-col items-center">
+      <motion.div 
+        className="relative z-10 max-w-full lg:max-w-6xl mx-auto px-4 md:px-8 w-full flex flex-col items-center"
+        variants={containerVariants}
+        initial="hidden"
+        animate="visible"
+      >
 
         {/* ─── HEADLINE (SAFARI OPTIMIZED) ─── */}
-        <div
-          className="w-full text-center transition-all duration-1000 ease-out flex flex-col items-center"
-          style={{
-            opacity: isVisible ? 1 : 0,
-            transform: isVisible ? "translateY(0)" : "translateY(20px)",
-          }}
+        <motion.div
+          className="w-full text-center flex flex-col items-center"
+          variants={itemVariants}
         >
           <div className="mb-6 md:mb-8 text-center">
              <span className="font-sans text-accent text-xs sm:text-sm md:text-base font-bold tracking-widest uppercase">
@@ -87,15 +107,12 @@ export default function VslHero() {
               zł/mies.
             </span>
           </h1>
-        </div>
+        </motion.div>
 
         {/* ─── MAIN SUB-COPY ─── */}
-        <div
-          className="max-w-3xl mx-auto mt-10 md:mt-14 text-center transition-all duration-1000 ease-out delay-200"
-          style={{
-            opacity: isVisible ? 1 : 0,
-            transform: isVisible ? "translateY(0)" : "translateY(20px)",
-          }}
+        <motion.div
+          className="max-w-3xl mx-auto mt-10 md:mt-14 text-center"
+          variants={itemVariants}
         >
           <p className="text-white/80 text-lg md:text-2xl lg:text-[clamp(1.1rem,2.5vw,1.4rem)] leading-[1.6] font-sans font-medium tracking-tight">
             Pomogę Ci pozyskać klientów, stworzyć jasną ofertę
@@ -103,15 +120,12 @@ export default function VslHero() {
             <span className="text-white font-bold underline decoration-accent/40 underline-offset-8">tworzyć konwertujący content</span>
             {" — bez tracenia czasu na techniczne detale, nawet jeśli jesteś introwertykiem i nigdy nie nagrywałeś."}
           </p>
-        </div>
+        </motion.div>
 
         {/* ─── CTA BUTTON ─── */}
-        <div 
-          className="mt-14 md:mt-20 flex justify-center transition-all duration-1000 ease-out delay-[400ms]"
-          style={{
-            opacity: isVisible ? 1 : 0,
-            transform: isVisible ? "translateY(0)" : "translateY(20px)",
-          }}
+        <motion.div 
+          className="mt-14 md:mt-20 flex justify-center"
+          variants={itemVariants}
         >
           <a
             href="#contact"
@@ -127,8 +141,8 @@ export default function VslHero() {
               <ArrowRight className="w-5 h-5 group-hover:translate-x-2 transition-transform" aria-hidden="true" />
             </span>
           </a>
-        </div>
-      </div>
+        </motion.div>
+      </motion.div>
 
       {/* Bottom fade */}
       <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-[#050505] to-transparent pointer-events-none" aria-hidden="true" />

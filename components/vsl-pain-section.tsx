@@ -1,7 +1,7 @@
 "use client"
 
-import { useEffect, useRef, useState } from "react"
-import { X, Check, ArrowRight } from "lucide-react"
+import { X, Check } from "lucide-react"
+import { motion } from "framer-motion"
 
 const painPoints = [
   {
@@ -44,23 +44,32 @@ const painPoints = [
 ]
 
 export default function VslPainSection() {
-  const sectionRef = useRef<HTMLDivElement>(null)
-  const [isVisible, setIsVisible] = useState(false)
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) setIsVisible(true)
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.2,
       },
-      { threshold: 0.1 }
-    )
-    if (sectionRef.current) observer.observe(sectionRef.current)
-    return () => observer.disconnect()
-  }, [])
+    },
+  } as const
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 30 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        type: "spring",
+        stiffness: 80,
+        damping: 15,
+        duration: 0.8,
+      },
+    },
+  } as const
 
   return (
     <section
-      ref={sectionRef}
       className="relative py-12 md:py-16 overflow-hidden border-t border-white/5 bg-[#050505]"
       aria-labelledby="pain-section-title"
     >
@@ -68,11 +77,11 @@ export default function VslPainSection() {
       <div className="absolute inset-0 pointer-events-none select-none overflow-hidden" aria-hidden="true">
          {/* Massive artistic Red X on the left - Scale for mobile */}
          <div className="absolute left-[-20%] md:left-[-10%] top-1/2 -translate-y-1/2 opacity-[0.02] text-red-600 blur-[2px]">
-            <X size="80vw" md-size="60vw" className="scale-[1.2] md:scale-100" strokeWidth={0.5} />
+            <X size="80vw" className="scale-[1.2] md:scale-100" strokeWidth={0.5} />
          </div>
          {/* Massive artistic Green Check on the right - Scale for mobile */}
          <div className="absolute right-[-20%] md:right-[-10%] top-1/2 -translate-y-1/2 opacity-[0.02] text-emerald-500 blur-[2px]">
-            <Check size="80vw" md-size="60vw" className="scale-[1.2] md:scale-100" strokeWidth={0.5} />
+            <Check size="80vw" className="scale-[1.2] md:scale-100" strokeWidth={0.5} />
          </div>
       </div>
 
@@ -83,7 +92,13 @@ export default function VslPainSection() {
       <div className="relative z-10 max-w-7xl mx-auto px-4 md:px-8">
         
         {/* Header Section */}
-        <div className="mb-12 md:mb-20 text-center">
+        <motion.div 
+          className="mb-12 md:mb-20 text-center"
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8 }}
+        >
           <h2 id="pain-section-title" className="font-display text-[clamp(2.2rem,7vw,3.8rem)] leading-[0.9] text-white tracking-tight mb-6">
             KONIEC Z <br /> 
             <span
@@ -99,7 +114,7 @@ export default function VslPainSection() {
           <p className="font-sans font-medium text-white/70 text-base md:text-xl tracking-wide max-w-3xl mx-auto">
             Znasz ten scenariusz? Zamień chaos i niskie stawki na <span className="underline decoration-accent underline-offset-4 decoration-2">przewidywalny system premium</span> i przejdź z punktu A do punktu B.
           </p>
-        </div>
+        </motion.div>
 
         {/* The Transformation Split Layout */}
         <div className="relative">
@@ -111,16 +126,18 @@ export default function VslPainSection() {
             <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-2 h-2 rounded-full bg-emerald-500 shadow-[0_0_15px_rgba(16,185,129,0.5)]" />
           </div>
 
-          <div className="space-y-10 md:space-y-20">
+          <motion.div 
+            className="space-y-10 md:space-y-20"
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.1 }}
+          >
             {painPoints.map((item, i) => (
-              <div 
+              <motion.div 
                 key={i} 
-                className={`grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-16 items-center transition-all duration-1000`}
-                style={{
-                  opacity: isVisible ? 1 : 0,
-                  transform: isVisible ? "translateY(0)" : "translateY(40px)",
-                  transitionDelay: `${i * 100}ms`
-                }}
+                variants={itemVariants}
+                className={`grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-16 items-center`}
               >
                 
                 {/* LEFT: PAIN */}
@@ -163,9 +180,9 @@ export default function VslPainSection() {
                   </div>
                 </div>
 
-              </div>
+              </motion.div>
             ))}
-          </div>
+          </motion.div>
 
         </div>
 

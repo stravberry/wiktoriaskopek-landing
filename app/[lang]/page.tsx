@@ -1,5 +1,6 @@
 import dynamic from "next/dynamic"
 import VslHero from "@/components/vsl-hero"
+import MotionViewport from "@/components/motion-viewport"
 
 // Lazy Loading Sections below the fold for better LCP & Bundle Size
 const VslPainSection = dynamic(() => import("@/components/vsl-pain-section"), { ssr: true })
@@ -11,11 +12,12 @@ const VslFunnelsSection = dynamic(() => import("@/components/vsl-funnels-section
 const VslStatsMini = dynamic(() => import("@/components/vsl-stats-mini"), { ssr: true })
 const VslResultsSection = dynamic(() => import("@/components/vsl-results-section"), { ssr: true })
 const VslOnboardingSection = dynamic(() => import("@/components/vsl-onboarding-section"), { ssr: true })
+const VslBookingCalendar = dynamic(() => import("@/components/vsl-booking-calendar"), { ssr: true })
 const VslContactForm = dynamic(() => import("@/components/vsl-contact-form"), { ssr: true })
 
 export default async function Home() {
   return (
-    <div className="w-full bg-[#050505]">
+    <div className="w-full bg-[#050505] overflow-x-hidden">
       {/* LCP Critical Section (Static) */}
       <VslHero />
       
@@ -24,17 +26,26 @@ export default async function Home() {
       
       {/* Lazy Loaded Sections */}
       <VslPainSection />
+
       <VslOffMarketSummary />
+
       <VslAudienceSection />
+
       <VslStepsSection />
+
       <VslAboutSection />
+
       <VslFunnelsSection />
       
       {/* CASE STUDIES PRE-HEADER (STATS MINI) */}
       <VslStatsMini />
       
       <VslResultsSection />
+
       <VslOnboardingSection />
+
+      <VslBookingCalendar />
+
       <VslContactForm />
     </div>
   )

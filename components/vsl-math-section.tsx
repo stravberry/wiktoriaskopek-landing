@@ -1,7 +1,7 @@
 "use client"
 
-import { useEffect, useRef, useState } from "react"
 import { AlertTriangle, Zap, TrendingUp } from "lucide-react"
+import { motion } from "framer-motion"
 
 const steps = [
   {
@@ -31,35 +31,33 @@ const steps = [
 ]
 
 export default function VslMathSection() {
-  const sectionRef = useRef<HTMLDivElement>(null)
-  const [visibleCards, setVisibleCards] = useState<boolean[]>([false, false, false])
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            const index = Number(entry.target.getAttribute("data-index"))
-            setVisibleCards((prev) => {
-              const next = [...prev]
-              next[index] = true
-              return next
-            })
-          }
-        })
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.2,
       },
-      { threshold: 0.15, rootMargin: "0px 0px -40px 0px" }
-    )
+    },
+  } as const
 
-    const cards = sectionRef.current?.querySelectorAll("[data-index]")
-    cards?.forEach((card) => observer.observe(card))
-
-    return () => observer.disconnect()
-  }, [])
+  const itemVariants = {
+    hidden: { opacity: 0, y: 30, scale: 0.95 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      scale: 1,
+      transition: {
+        type: "spring",
+        stiffness: 80,
+        damping: 15,
+        duration: 0.8,
+      },
+    },
+  } as const
 
   return (
     <section
-      ref={sectionRef}
       className="relative py-20 md:py-32 overflow-hidden"
       style={{ background: "#050505" }}
     >
@@ -67,7 +65,13 @@ export default function VslMathSection() {
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-40 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
 
       {/* Section title */}
-      <div className="max-w-5xl mx-auto px-4 md:px-8 mb-14 md:mb-20 text-center">
+      <motion.div 
+        className="max-w-5xl mx-auto px-4 md:px-8 mb-14 md:mb-20 text-center"
+        initial={{ opacity: 0, y: 30 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.8 }}
+      >
         <span className="inline-block font-mono text-[10px] md:text-xs text-white/30 tracking-[0.3em] uppercase mb-4">
           Prosta matematyka
         </span>
@@ -84,11 +88,17 @@ export default function VslMathSection() {
             SPODZIEWAĆ
           </span>
         </h2>
-      </div>
+      </motion.div>
 
       {/* Cards + connecting lines */}
       <div className="max-w-5xl mx-auto px-4 md:px-8">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-5 relative">
+        <motion.div 
+          className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-5 relative"
+          variants={containerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.1 }}
+        >
 
           {/* Connecting arrows — desktop only */}
           <div className="hidden md:block absolute top-1/2 left-[33.33%] -translate-x-1/2 -translate-y-1/2 z-20">
@@ -112,31 +122,14 @@ export default function VslMathSection() {
             </div>
           </div>
 
-          {/* Mobile connecting arrows */}
-          {[0, 1].map((i) => (
-            <div
-              key={`mobile-arrow-${i}`}
-              className="md:hidden flex justify-center -my-3 relative z-20"
-              style={{ display: i === 0 ? undefined : undefined }}
-            >
-              {/* This is placed via CSS order, we handle it differently */}
-            </div>
-          ))}
-
           {steps.map((step, i) => {
             const Icon = step.icon
-            const isVisible = visibleCards[i]
 
             return (
-              <div
+              <motion.div
                 key={step.label}
-                data-index={i}
-                className="relative group transition-all duration-700 ease-out"
-                style={{
-                  opacity: isVisible ? 1 : 0,
-                  transform: isVisible ? "translateY(0)" : "translateY(40px)",
-                  transitionDelay: `${i * 150}ms`,
-                }}
+                variants={itemVariants}
+                className="relative group h-full"
               >
                 {/* Mobile arrow between cards */}
                 {i > 0 && (
@@ -205,10 +198,10 @@ export default function VslMathSection() {
                     {step.text}
                   </p>
                 </div>
-              </div>
+              </motion.div>
             )
           })}
-        </div>
+        </motion.div>
       </div>
 
       {/* Bottom separator */}

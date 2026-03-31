@@ -1,26 +1,35 @@
 "use client"
 
-import { useEffect, useRef, useState } from "react"
-import { CalendarDays, ArrowRight, ClipboardList, MessageSquare, Rocket, CheckCircle2, Search, Video } from "lucide-react"
+import { CalendarDays } from "lucide-react"
+import { motion } from "framer-motion"
 
 export default function VslOnboardingSection() {
-  const sectionRef = useRef<HTMLDivElement>(null)
-  const [isVisible, setIsVisible] = useState(false)
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) setIsVisible(true)
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.2,
       },
-      { threshold: 0.1 }
-    )
-    if (sectionRef.current) observer.observe(sectionRef.current)
-    return () => observer.disconnect()
-  }, [])
+    },
+  } as const
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 30 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        type: "spring",
+        stiffness: 100,
+        damping: 20,
+        duration: 0.8,
+      },
+    },
+  } as const
 
   return (
     <section
-      ref={sectionRef}
       id="contact"
       className="relative py-12 md:py-16 overflow-hidden bg-[#050505]"
       aria-labelledby="onboarding-title"
@@ -32,7 +41,7 @@ export default function VslOnboardingSection() {
         </span>
       </div>
 
-      {/* NEW: ONE HUGE ICON IN THE BACKGROUND (As requested) */}
+      {/* ONE HUGE ICON IN THE BACKGROUND */}
       <div className="absolute inset-0 z-0 flex items-center justify-center overflow-hidden pointer-events-none opacity-[0.03]" aria-hidden="true">
          <CalendarDays className="w-[80vw] h-[80vw] text-accent transform rotate-12 translate-x-1/4" strokeWidth={0.5} />
       </div>
@@ -46,12 +55,12 @@ export default function VslOnboardingSection() {
         {/* Header Area & Creative Visuals */}
         <div className="grid lg:grid-cols-2 gap-10 lg:gap-20 items-center mb-12 md:mb-24">
            {/* Left: Text Content */}
-           <div 
-              className="max-w-2xl transition-all duration-1000"
-              style={{
-                opacity: isVisible ? 1 : 0,
-                transform: isVisible ? "translateY(0)" : "translateY(30px)",
-              }}
+           <motion.div 
+              className="max-w-2xl"
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8 }}
            >
               <span className="font-sans text-accent text-xs md:text-sm tracking-[.3em] uppercase inline-block mb-6 md:mb-8 opacity-80 font-bold">
                  Onboarding
@@ -72,23 +81,25 @@ export default function VslOnboardingSection() {
               <p className="font-sans text-white/75 text-base md:text-xl leading-relaxed px-4 md:px-0 font-medium">
                  Bez stresu, bez lania wody i bez technicznego bełkotu. Jedna krótka rozmowa wystarczy, żeby sprawdzić, czy nasz system wideo marketingu sprawdzi się w Twojej branży.
               </p>
-           </div>
+           </motion.div>
 
-           {/* Right: Empty / Spacing for the background icon (As per user request to simplify) */}
+           {/* Right: Empty / Spacing for the background icon */}
            <div className="hidden lg:block h-[300px]" aria-hidden="true" />
         </div>
 
         {/* 3 Steps Vertical Flow */}
-        <div className="relative space-y-10 md:space-y-16 mb-16 md:mb-28">
+        <motion.div 
+          className="relative space-y-10 md:space-y-16 mb-16 md:mb-28"
+          variants={containerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: false, amount: 0.1 }}
+        >
            
            {/* Step 01 */}
-           <div 
-             className="group relative flex flex-col md:flex-row gap-6 md:gap-8 items-start transition-all duration-1000"
-             style={{
-               opacity: isVisible ? 1 : 0,
-               transform: isVisible ? "translateY(0)" : "translateY(40px)",
-               transitionDelay: "200ms"
-             }}
+           <motion.div 
+             variants={itemVariants}
+             className="group relative flex flex-col md:flex-row gap-6 md:gap-8 items-start"
            >
               <div className="flex-shrink-0 font-display text-4xl md:text-7xl text-white/15 tracking-tighter group-hover:text-accent/30 transition-all duration-500">01</div>
               <div className="flex-grow">
@@ -97,16 +108,12 @@ export default function VslOnboardingSection() {
                     Szanujemy swój i Twój czas. Zanim porozmawiamy, chcę poznać Twoją obecną sytuację biznesową. Wypełniasz krótki formularz, w którym pytam m.in. o to, kto jest Twoim idealnym klientem, z jakimi obiekcjami walczysz najczęściej i jakim budżetem operujesz. To pozwala nam odsiać projekty, w których nie będziemy w stanie pomóc.
                  </p>
               </div>
-           </div>
+           </motion.div>
 
            {/* Step 02 */}
-           <div 
-             className="group relative flex flex-col md:flex-row gap-6 md:gap-8 items-start transition-all duration-1000"
-             style={{
-               opacity: isVisible ? 1 : 0,
-               transform: isVisible ? "translateY(0)" : "translateY(40px)",
-               transitionDelay: "400ms"
-             }}
+           <motion.div 
+             variants={itemVariants}
+             className="group relative flex flex-col md:flex-row gap-6 md:gap-8 items-start"
            >
               <div className="flex-shrink-0 font-display text-4xl md:text-7xl text-white/15 tracking-tighter group-hover:text-accent/30 transition-all duration-500">02</div>
               <div className="flex-grow">
@@ -115,16 +122,12 @@ export default function VslOnboardingSection() {
                     Wybierasz termin w kalendarzu. Zdzwaniamy się i na podstawie Twojej ankiety od razu przechodzimy do konkretów. Oceniam Twoją obecną komunikację i pokazuję, jak możemy opakować Twoją wiedzę w krótkie formy wideo (Rolki/Shorts), by zacząć generować zapytania od klientów premium. Jeśli nie widzę potencjału na zwrot z inwestycji – powiem Ci to wprost.
                  </p>
               </div>
-           </div>
+           </motion.div>
 
            {/* Step 03 */}
-           <div 
-             className="group relative flex flex-col md:flex-row gap-6 md:gap-8 items-start transition-all duration-1000"
-             style={{
-               opacity: isVisible ? 1 : 0,
-               transform: isVisible ? "translateY(0)" : "translateY(40px)",
-               transitionDelay: "600ms"
-             }}
+           <motion.div 
+             variants={itemVariants}
+             className="group relative flex flex-col md:flex-row gap-6 md:gap-8 items-start"
            >
               <div className="flex-shrink-0 font-display text-4xl md:text-7xl text-white/15 tracking-tighter group-hover:text-accent/30 transition-all duration-500">03</div>
               <div className="flex-grow">
@@ -133,13 +136,9 @@ export default function VslOnboardingSection() {
                     Jeśli decydujemy się na współpracę, dopinamy formalności i od razu przejmujemy stery. W ciągu 3 dni przygotowuję dla Ciebie dedykowane scenariusze. Ustalamy termin Twojego przyjazdu do naszego studia Podcast Katowice (lub naszego przyjazdu do Ciebie ze sprzętem) i odpalamy cały proces produkcji. Ty tylko mówisz, my zajmuje się resztą.
                  </p>
               </div>
-           </div>
+           </motion.div>
 
-        </div>
-
-
-
-
+        </motion.div>
       </div>
     </section>
   )

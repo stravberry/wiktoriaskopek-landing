@@ -1,7 +1,8 @@
 "use client"
 
-import { useEffect, useRef, useState } from "react"
+import { useRef } from "react"
 import { ClipboardCheck, Video, Scissors, MonitorPlay, Filter, ArrowRight } from "lucide-react"
+import { motion, useScroll, useTransform } from "framer-motion"
 
 const steps = [
   {
@@ -42,42 +43,43 @@ const steps = [
 ]
 
 export default function VslStepsSection() {
-  const sectionRef = useRef<HTMLDivElement>(null)
-  const [isVisible, setIsVisible] = useState(false)
-  const [offsetY, setOffsetY] = useState(0)
+  const sectionRef = useRef<HTMLElement>(null)
+  
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start end", "end start"],
+  })
 
-  useEffect(() => {
-    const handleScroll = () => {
-      if (!sectionRef.current) return
-      const rect = sectionRef.current.getBoundingClientRect()
-      const scrollY = window.scrollY
-      const sectionTop = rect.top + scrollY
-      const windowHeight = window.innerHeight
-      
-      // Calculate scroll progress within and around the section
-      if (rect.top < windowHeight && rect.bottom > 0) {
-        const progress = (windowHeight - rect.top) / (windowHeight + rect.height)
-        // Adjust translation strength for mobile vs desktop
-        const strength = window.innerWidth < 768 ? 80 : 150
-        setOffsetY((progress - 0.5) * strength) 
-      }
-    }
+  const backgroundY = useTransform(scrollYProgress, [0, 1], ["-10%", "10%"])
 
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) setIsVisible(true)
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.2,
       },
-      { threshold: 0.1 }
-    )
-    
-    if (sectionRef.current) observer.observe(sectionRef.current)
-    window.addEventListener("scroll", handleScroll, { passive: true })
-    
-    return () => {
-      observer.disconnect()
-      window.removeEventListener("scroll", handleScroll)
-    }
-  }, [])
+    },
+  } as const
+
+  const stepVariants = (isEven: boolean) => ({
+    hidden: { 
+      opacity: 0, 
+      x: isEven ? 50 : -50,
+      y: 20 
+    },
+    visible: { 
+      opacity: 1, 
+      x: 0, 
+      y: 0,
+      transition: {
+        type: "spring",
+        stiffness: 100,
+        damping: 20,
+        duration: 0.8
+      }
+    },
+  } as const)
 
   return (
     <section
@@ -87,9 +89,9 @@ export default function VslStepsSection() {
     >
       {/* Background Video with Custom Parallax */}
       <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none opacity-40" aria-hidden="true">
-        <div 
-          className="absolute inset-0 w-full h-[140%] -top-[20%] transition-transform duration-100 ease-out will-change-transform"
-          style={{ transform: `translate3d(0, ${offsetY}px, 0)` }}
+        <motion.div 
+          className="absolute inset-0 w-full h-[120%] -top-[10%] will-change-transform"
+          style={{ y: backgroundY }}
         >
           <video
             autoPlay
@@ -100,7 +102,7 @@ export default function VslStepsSection() {
           >
             <source src="/na strone.mp4" type="video/mp4" />
           </video>
-        </div>
+        </motion.div>
         {/* Dark Vignette & Gradient Mask */}
         <div className="absolute inset-0 bg-gradient-to-b from-[#050505] via-transparent to-[#050505] z-1" aria-hidden="true" />
         <div className="absolute inset-0 bg-[#050505]/50 z-1" aria-hidden="true" />
@@ -109,7 +111,13 @@ export default function VslStepsSection() {
       <div className="relative z-10 max-w-7xl mx-auto px-4 md:px-8">
         
         {/* Header Section */}
-        <div className="max-w-4xl mx-auto text-center mb-10 md:mb-16">
+        <motion.div 
+          className="max-w-4xl mx-auto text-center mb-10 md:mb-16"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: false }}
+          transition={{ duration: 0.8 }}
+        >
           <span className="inline-block font-display text-[10px] md:text-sm text-accent tracking-[.49em] uppercase mb-6 md:mb-8 opacity-70">
             Współpraca krok po kroku
           </span>
@@ -130,7 +138,7 @@ export default function VslStepsSection() {
                &ldquo;Ty skupiasz się na dostarczaniu usługi, ja przejmuję kontrolę nad pozyskiwaniem klientów.&rdquo;
              </p>
           </div>
-        </div>
+        </motion.div>
 
         {/* The Process Journey */}
         <div className="relative lg:pb-12">
@@ -138,19 +146,22 @@ export default function VslStepsSection() {
           {/* Central Vertical Line (Desktop only) */}
           <div className="hidden lg:block absolute left-1/2 top-0 bottom-0 w-px -translate-x-1/2 bg-gradient-to-b from-accent/40 via-white/10 to-transparent" aria-hidden="true" />
 
-          <div className="space-y-4 md:space-y-4">
+          <motion.div 
+            className="space-y-4 md:space-y-4"
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: false, amount: 0.1 }}
+          >
             {steps.map((step, i) => {
               const Icon = step.icon
               const isEven = i % 2 !== 0
 
               return (
-                <div 
+                <motion.div 
                   key={step.num}
-                  className={`flex flex-col lg:flex-row items-center gap-4 md:gap-0 transition-all duration-1000 delay-${i * 50} ${isEven ? 'lg:flex-row-reverse text-right' : 'text-left'} relative z-${10 + i} ${i > 0 ? 'lg:-mt-12' : ''}`}
-                  style={{
-                    opacity: isVisible ? 1 : 0,
-                    transform: isVisible ? "translateY(0)" : "translateY(30px)",
-                  }}
+                  variants={stepVariants(isEven)}
+                  className={`flex flex-col lg:flex-row items-center gap-4 md:gap-0 ${isEven ? 'lg:flex-row-reverse text-right' : 'text-left'} relative z-${10 + i} ${i > 0 ? 'lg:-mt-12' : ''}`}
                 >
                   
                   {/* STEP CONTENT - Denser Card */}
@@ -189,18 +200,22 @@ export default function VslStepsSection() {
                   {/* EMPTY SPACE COLUMN (Desktop only) */}
                   <div className="hidden lg:block lg:w-1/2" aria-hidden="true" />
 
-                </div>
+                </motion.div>
               )
             })}
-          </div>
+          </motion.div>
 
         </div>
 
         {/* Unified Final CTA Area — Slimmed Down */}
-        <div className="relative mt-10 pt-10 pb-4 md:pb-8 border-t border-white/5 text-center flex flex-col items-center">
-            
-
-
+        <motion.div 
+          className="relative mt-10 pt-10 pb-4 md:pb-8 border-t border-white/5 text-center flex flex-col items-center"
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8 }}
+          layout
+        >
             <div className="relative z-10 max-w-4xl mx-auto px-4">
               <h3 className="font-display text-[clamp(2rem,7vw,3.5rem)] leading-[0.9] text-white tracking-tight mb-6 text-balance">
                  GOTOWY NA TWOJĄ{" "}
@@ -249,7 +264,7 @@ export default function VslStepsSection() {
                  </div>
               </div>
             </div>
-        </div>
+        </motion.div>
 
       </div>
     </section>
