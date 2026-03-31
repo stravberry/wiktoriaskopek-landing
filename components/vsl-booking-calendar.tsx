@@ -45,17 +45,17 @@ export default function VslBookingCalendar() {
     })(window, "https://app.cal.com/embed/embed.js", "init")
 
     // @ts-ignore
-    window.Cal("init", "30min", { origin: "https://app.cal.com" })
+    window.Cal("init", "darmowa-konsultacja", { origin: "https://app.cal.com" })
 
     // @ts-ignore
-    window.Cal.ns["30min"]("inline", {
-      elementOrSelector: "#my-cal-inline-30min",
+    window.Cal.ns["darmowa-konsultacja"]("inline", {
+      elementOrSelector: "#my-cal-inline-darmowa-konsultacja",
       config: { "layout": "month_view", "useSlotsViewOnSmallScreen": "true", "theme": "dark" },
-      calLink: "wiktoriaskopek/30min",
+      calLink: "team/dkwgroup/darmowa-konsultacja",
     })
 
     // @ts-ignore
-    window.Cal.ns["30min"]("ui", { "hideEventTypeDetails": false, "layout": "month_view", "theme": "dark" })
+    window.Cal.ns["darmowa-konsultacja"]("ui", { "hideEventTypeDetails": false, "layout": "month_view", "theme": "dark" })
   }, [])
 
   return (
@@ -100,7 +100,7 @@ export default function VslBookingCalendar() {
           transition={{ duration: 0.8, delay: 0.2 }}
         >
            <div 
-             id="my-cal-inline-30min" 
+             id="my-cal-inline-darmowa-konsultacja" 
              className="w-full min-h-[600px] md:min-h-[700px] bg-transparent"
            />
         </motion.div>
