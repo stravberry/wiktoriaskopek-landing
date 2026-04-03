@@ -1,12 +1,13 @@
 "use client"
 
 import { useState } from "react"
-import { Send, CheckCircle2 } from "lucide-react"
+import { Send, CheckCircle2, AlertCircle } from "lucide-react"
 import { motion } from "framer-motion"
 
 export default function VslContactForm() {
   const [isSubmitted, setIsSubmitted] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [errorMessage, setErrorMessage] = useState<string | null>(null)
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -32,13 +33,42 @@ export default function VslContactForm() {
     },
   } as const
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     setIsSubmitting(true)
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 1500))
-    setIsSubmitting(false)
-    setIsSubmitted(true)
+    setErrorMessage(null)
+
+    const formData = new FormData(e.currentTarget)
+    const data = {
+      name: formData.get("name") as string,
+      email: formData.get("email") as string,
+      phone: formData.get("phone") as string,
+      social: formData.get("social") as string,
+      revenue: formData.get("revenue") as string,
+      challenge: formData.get("challenge") as string,
+      _honey: formData.get("_honey") as string,
+    }
+
+    try {
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      })
+
+      const result = await response.json()
+
+      if (!response.ok) {
+        setErrorMessage(result.error || "Wystąpił błąd. Spróbuj ponownie.")
+        return
+      }
+
+      setIsSubmitted(true)
+    } catch {
+      setErrorMessage("Nie udało się wysłać wiadomości. Sprawdź połączenie z internetem.")
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   return (
@@ -62,7 +92,7 @@ export default function VslContactForm() {
           transition={{ duration: 0.8 }}
         >
           <h2 id="form-title" className="font-display text-[clamp(2rem,7vw,4.5rem)] leading-[0.85] text-white tracking-tighter mb-8 uppercase px-4 md:px-0">
-            Wypełnij formularz i <br className="hidden md:block" />
+            Wypełnij formularz i <br className="hidden md:block" />
             <span
               style={{
                 background: "linear-gradient(135deg, #ff6600, #ff8533)",
@@ -74,7 +104,7 @@ export default function VslContactForm() {
             </span>
           </h2>
           <p className="font-sans text-white/60 text-sm md:text-xl max-w-2xl mx-auto leading-relaxed">
-            Wypełnij poniższe pola, abyśmy mogli przygotować się do rozmowy i sprawdzić, czy proces wideo-marketingowy jest dla Ciebie odpowiedni.
+            Wypełnij poniższe pola, abyśmy mogli przygotować się do rozmowy i sprawdzić, czy proces wideo-marketingowy jest dla Ciebie odpowiedni.
           </p>
         </motion.div>
 
@@ -88,7 +118,8 @@ export default function VslContactForm() {
               <CheckCircle2 className="w-10 h-10 text-accent" />
             </div>
             <h3 className="font-display text-3xl md:text-5xl text-white mb-4 uppercase tracking-wider">Dziękuję!</h3>
-            <p className="font-sans text-white/60 text-lg mb-10">Twoje zgłoszenie zostało przyjęte. Skontaktuję się z Tobą w ciągu 24h.</p>
+            <p className="font-sans text-white/60 text-lg mb-4">Twoje zgłoszenie zostało przyjęte. Skontaktuję się z Tobą w ciągu 24h.</p>
+            <p className="font-sans text-white/40 text-sm mb-10">Potwierdzenie zostało wysłane na Twój adres email.</p>
             <button 
               onClick={() => setIsSubmitted(false)}
               className="text-accent font-display text-sm tracking-widest uppercase hover:underline underline-offset-8"
@@ -105,6 +136,18 @@ export default function VslContactForm() {
             whileInView="visible"
             viewport={{ once: true, amount: 0.1 }}
           >
+            {/* Error message */}
+            {errorMessage && (
+              <motion.div 
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="md:col-span-2 flex items-center gap-3 p-4 rounded-lg border border-red-500/30 bg-red-500/10"
+              >
+                <AlertCircle className="w-5 h-5 text-red-400 flex-shrink-0" />
+                <p className="font-sans text-sm text-red-300">{errorMessage}</p>
+              </motion.div>
+            )}
+
             {/* Name Field */}
             <motion.div variants={itemVariants} className="space-y-3">
               <label htmlFor="name" className="font-display text-[10px] md:text-xs text-white/40 tracking-[.3em] uppercase ml-1">Twoje Imię i Nazwisko</label>
@@ -114,6 +157,19 @@ export default function VslContactForm() {
                 id="name"
                 name="name"
                 placeholder="Jan Kowalski"
+                className="w-full bg-white/[0.03] border border-white/10 rounded-none px-6 py-4 md:py-5 text-white font-sans text-sm md:text-base focus:outline-none focus:border-accent/50 focus:bg-white/[0.05] transition-all"
+              />
+            </motion.div>
+
+            {/* Email Field */}
+            <motion.div variants={itemVariants} className="space-y-3">
+              <label htmlFor="email" className="font-display text-[10px] md:text-xs text-white/40 tracking-[.3em] uppercase ml-1">Adres Email</label>
+              <input
+                required
+                type="email"
+                id="email"
+                name="email"
+                placeholder="jan@firma.pl"
                 className="w-full bg-white/[0.03] border border-white/10 rounded-none px-6 py-4 md:py-5 text-white font-sans text-sm md:text-base focus:outline-none focus:border-accent/50 focus:bg-white/[0.05] transition-all"
               />
             </motion.div>
@@ -160,6 +216,9 @@ export default function VslContactForm() {
                 className="w-full bg-white/[0.03] border border-white/10 rounded-none px-6 py-4 md:py-5 text-white font-sans text-sm md:text-base focus:outline-none focus:border-accent/50 focus:bg-white/[0.05] transition-all"
               />
             </motion.div>
+
+            {/* Empty spacer for grid alignment */}
+            <motion.div variants={itemVariants} className="hidden md:block" />
 
             {/* Message/Goal Field */}
             <motion.div variants={itemVariants} className="md:col-span-2 space-y-3">

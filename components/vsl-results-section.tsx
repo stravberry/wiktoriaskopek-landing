@@ -15,9 +15,9 @@ const caseStudies = [
   },
   {
     name: "ALEX MATOGA",
-    role: "Ravedrone.com & Limitlesskrk.com",
+    role: "Ravedron.com & Limitlesskrk.com",
     links: [
-       { label: "Ravedrone.com", href: "https://ravedrone.com" },
+       { label: "Ravedron.com", href: "https://ravedron.com" },
        { label: "Limitlesskrk.com", href: "https://limitlesskrk.com" }
     ],
     quote: "Zdecydowanie polecam współpracę — pełen profesjonalizm na każdym etapie realizacji. Strony działają wzorowo, wszystko jest dopracowane i funkcjonuje bez zarzutu. Wszelkie poprawki są wdrażane bardzo szybko, co znacząco ułatwia cały proces. Na duży plus zasługuje również komunikacja oraz atmosfera — wszystko przebiega sprawnie, konkretnie i w bardzo przyjaznym tonie.",
