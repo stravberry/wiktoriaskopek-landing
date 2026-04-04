@@ -4,6 +4,8 @@ import { resend, emailConfig } from "@/lib/resend"
 import ConfirmationEmail from "@/emails/confirmation-email"
 import NotificationEmail from "@/emails/notification-email"
 
+export const dynamic = "force-dynamic"
+
 // ═══════════════ RATE LIMITING ═══════════════
 const rateLimitMap = new Map<string, { count: number; resetTime: number }>()
 const RATE_LIMIT_WINDOW = 60 * 1000 // 1 minute
@@ -73,8 +75,9 @@ export async function POST(request: NextRequest) {
     }).format(new Date())
 
     // Check if API key is configured
-    if (!process.env.RESEND_API_KEY || process.env.RESEND_API_KEY.startsWith("re_XXXX")) {
-      console.warn("⚠️  RESEND_API_KEY is not configured. Skipping email send.")
+    const apiKey = process.env.RESEND_API_KEY
+    if (!apiKey || apiKey.startsWith("re_XXXX") || apiKey === "re_placeholder_for_build") {
+      console.warn("⚠️  RESEND_API_KEY is not configured correctly. Skipping email send.")
       console.log("📧 Contact form submission:", { name, email, phone, social, revenue, challenge })
       return NextResponse.json({ success: true })
     }
