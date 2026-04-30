@@ -32,7 +32,7 @@ const painPoints = [
       "Nie masz czasu na wymyślanie postów, nie wiesz, co faktycznie konwertuje, brakuje Ci sprzętu albo boisz się, że nagrania będą wyglądać amatorsko.",
     ],
     solution:
-      "Zdejmujemy z Ciebie cały techniczny i kreatywny ciężar. Dostajesz gotową strategię i napisane scenariusze. Wchodzisz do naszego bezpiecznego studia (lub my przyjeżdżamy do Ciebie ze sprzętem). Mamy prompter, reżyserujemy Cię, ucinamy lanie wody i profesjonalnie montujemy materiał. Ty czujesz pełne zaopiekowanie i po prostu jesteś ekspertem.",
+      "Zdejmujemy z Ciebie techniczny i kreatywny ciężar. Dostajesz gotową strategię i scenariusze. Nagrywasz w studio nagraniowym podcastkatowice.pl (lub przyjeżdżamy do Ciebie ze sprzętem). Mamy prompter, reżyserujemy, montujemy profesjonalnie. Ty po prostu jesteś ekspertem.",
   },
   {
     pains: [

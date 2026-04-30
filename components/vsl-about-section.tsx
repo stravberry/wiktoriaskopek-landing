@@ -163,7 +163,8 @@ export default function VslAboutSection() {
                  <div className="relative z-10">
                     <h4 className="font-display text-accent text-lg md:text-xl tracking-widest uppercase mb-4 font-bold opacity-90">Wynik Współpracy</h4>
                     <p className="text-white/80 text-base md:text-lg leading-relaxed font-sans mb-0 font-medium">
-                      Efekt? Twoje wideo edukuje rynek za Ciebie 24/7. Przestajesz tłumaczyć każdemu klientowi od zera, czym się zajmujesz, a Twoja marka staje się realnym silnikiem napędzającym sprzedaż usług High-Ticket.
+                      Efekt? Twoje wideo edukuje rynek za Ciebie 24/7.<br />
+                      Przestajesz tłumaczyć każdemu klientowi od zera, czym się zajmujesz, a Twoja marka staje się realnym silnikiem napędzającym sprzedaż usług High-Ticket.
                     </p>
                  </div>
                  {/* Subtle inner highlight */}
@@ -173,23 +174,6 @@ export default function VslAboutSection() {
               </motion.div>
             </div>
             
-            {/* Bottom Accent Bar */}
-            <motion.div 
-              variants={itemVariants}
-              className="mt-8 flex flex-col md:flex-row items-center justify-between gap-6 border-t border-white/10 pt-10 px-4 md:px-0"
-            >
-               <div className="flex items-center gap-4">
-                  <div className="flex -space-x-2" aria-hidden="true">
-                     <div className="w-8 h-8 rounded-full bg-accent/30 border border-white/15 flex items-center justify-center text-[8px] font-bold">WS</div>
-                     <div className="w-8 h-8 rounded-full bg-accent/50 border border-white/15 flex items-center justify-center text-[8px] font-bold">P&P</div>
-                  </div>
-                  <span className="font-sans text-[8px] md:text-[10px] text-white/50 uppercase tracking-[.2em] font-bold">Strategia • Realizacja • Wyniki</span>
-               </div>
-               
-               <a href="#contact" className="group flex items-center gap-2 font-display text-xs md:text-sm text-white/90 hover:text-accent transition-colors tracking-widest uppercase font-bold" aria-label="Dowiedz się więcej o procesie współpracy">
-                  Dowiedz się więcej <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" aria-hidden="true" />
-               </a>
-            </motion.div>
           </motion.div>
 
         </div>

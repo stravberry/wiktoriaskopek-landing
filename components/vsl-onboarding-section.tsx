@@ -103,9 +103,9 @@ export default function VslOnboardingSection() {
            >
               <div className="flex-shrink-0 font-display text-4xl md:text-7xl text-white/15 tracking-tighter group-hover:text-accent/30 transition-all duration-500">01</div>
               <div className="flex-grow">
-                 <h4 className="font-display text-[26px] md:text-[34px] text-white mb-4 md:mb-5 tracking-wide group-hover:text-accent transition-colors font-bold leading-[1.1]">Wypełnij Krótką Ankietę Kwalifikacyjną</h4>
+                 <h4 className="font-display text-[26px] md:text-[34px] text-white mb-4 md:mb-5 tracking-wide group-hover:text-accent transition-colors font-bold leading-[1.1]">Darmowa Konsultacja (+30 minut)</h4>
                  <p className="font-sans text-white/70 text-base md:text-lg leading-relaxed max-w-3xl font-medium">
-                    Szanujemy swój i Twój czas. Zanim porozmawiamy, chcę poznać Twoją obecną sytuację biznesową. Wypełniasz krótki formularz, w którym pytam m.in. o to, kto jest Twoim idealnym klientem, z jakimi obiekcjami walczysz najczęściej i jakim budżetem operujesz. To pozwala nam odsiać projekty, w których nie będziemy w stanie pomóc.
+                    Wybierasz termin w kalendarzu. Zdzwaniamy się i od razu przechodzimy do konkretów. Oceniam Twoją obecną komunikację i pokazuję, jak możemy opakować Twoją wiedzę w krótkie formy wideo, by zacząć generować zapytania od klientów premium. Jeśli nie widzę potencjału na zwrot z inwestycji – powiem Ci to wprost.
                  </p>
               </div>
            </motion.div>
@@ -117,9 +117,9 @@ export default function VslOnboardingSection() {
            >
               <div className="flex-shrink-0 font-display text-4xl md:text-7xl text-white/15 tracking-tighter group-hover:text-accent/30 transition-all duration-500">02</div>
               <div className="flex-grow">
-                 <h4 className="font-display text-[26px] md:text-[34px] text-white mb-4 md:mb-5 tracking-wide group-hover:text-accent transition-colors font-bold leading-[1.1]">Bezpłatna Konsultacja i Audyt (15–30 min)</h4>
+                 <h4 className="font-display text-[26px] md:text-[34px] text-white mb-4 md:mb-5 tracking-wide group-hover:text-accent transition-colors font-bold leading-[1.1]">Ankieta, Plan i Oferta</h4>
                  <p className="font-sans text-white/70 text-base md:text-lg leading-relaxed max-w-3xl font-medium">
-                    Wybierasz termin w kalendarzu. Zdzwaniamy się i na podstawie Twojej ankiety od razu przechodzimy do konkretów. Oceniam Twoją obecną komunikację i pokazuję, jak możemy opakować Twoją wiedzę w krótkie formy wideo (Rolki/Shorts), by zacząć generować zapytania od klientów premium. Jeśli nie widzę potencjału na zwrot z inwestycji – powiem Ci to wprost.
+                    Po konsultacji wypełniasz krótki formularz, który pozwala mi poznać Twoją sytuację biznesową, idealnego klienta i budżet. Na tej podstawie przygotowuję dedykowany plan działania i dopasowania ofertę współpracy.
                  </p>
               </div>
            </motion.div>
@@ -131,9 +131,9 @@ export default function VslOnboardingSection() {
            >
               <div className="flex-shrink-0 font-display text-4xl md:text-7xl text-white/15 tracking-tighter group-hover:text-accent/30 transition-all duration-500">03</div>
               <div className="flex-grow">
-                 <h4 className="font-display text-[26px] md:text-[34px] text-white mb-4 md:mb-5 tracking-wide group-hover:text-accent transition-colors font-bold leading-[1.1]">Plan Wdrożeniowy i Start (Nagrania)</h4>
+                 <h4 className="font-display text-[26px] md:text-[34px] text-white mb-4 md:mb-5 tracking-wide group-hover:text-accent transition-colors font-bold leading-[1.1]">Plan Działania i Start (Nagrania)</h4>
                  <p className="font-sans text-white/70 text-base md:text-lg leading-relaxed max-w-3xl font-medium">
-                    Jeśli decydujemy się na współpracę, dopinamy formalności i od razu przejmujemy stery. W ciągu 3 dni przygotowuję dla Ciebie dedykowane scenariusze. Ustalamy termin Twojego przyjazdu do naszego studia Podcast Katowice (lub naszego przyjazdu do Ciebie ze sprzętem) i odpalamy cały proces produkcji. Ty tylko mówisz, my zajmuje się resztą.
+                    Jeśli decydujemy się na współpracę, dopinamy formalności i od razu przejmujemy stery. W ciągu 3 dni przygotowuję dla Ciebie dedykowane scenariusze. Ustalamy termin nagrania w studio podcastkatowice.pl (lub naszego przyjazdu do Ciebie ze sprzętem) i odpalamy cały proces produkcji. Ty tylko mówisz, my zajmujemy się resztą.
                  </p>
               </div>
            </motion.div>
