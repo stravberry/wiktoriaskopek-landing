@@ -5,7 +5,7 @@ import Image from "next/image"
 import { AnimatePresence, motion } from "framer-motion"
 import { ArrowUp, ArrowUpRight, Moon, Phone, Sun } from "lucide-react"
 
-const SERVICES = [
+const SERVICES: { title: string; text: string; link?: { label: string; href: string } }[] = [
   {
     title: "Nagrania filmowe",
     text: "Rolki, wywiady i materiały eksperckie nagrane w studiu albo u Ciebie. Prompter, reżyseria i montaż biorę na siebie.",
@@ -25,6 +25,7 @@ const SERVICES = [
   {
     title: "Strony internetowe",
     text: "Projektuję i wdrażam strony, które prowadzą klienta od pierwszego wejścia do rezerwacji. Razem z zespołem webdkw.net.",
+    link: { label: "webdkw.net", href: "https://webdkw.net" },
   },
 ]
 
@@ -210,19 +211,33 @@ export default function HomeBooking() {
           <ul className="mt-10 grid gap-3 md:mt-14 md:grid-cols-2 md:gap-4 md:[&>li:last-child:nth-child(odd)]:col-span-2">
             {SERVICES.map((s, i) => (
               <Reveal as="li" key={s.title} delay={i * 0.07}>
-                <a
-                  href="#rezerwacja"
-                  className="home-tile group flex h-full flex-col justify-between gap-10 rounded-[28px] bg-[var(--h-surface)] p-7 md:min-h-[260px] md:p-9"
-                >
+                {/* Cały kafelek klika się jak "Umów konsultację" (after:inset-0); dodatkowy link leży nad nim */}
+                <div className="home-tile group relative flex h-full flex-col justify-between gap-10 rounded-[28px] bg-[var(--h-surface)] p-7 md:min-h-[260px] md:p-9">
                   <div>
                     <h3 className="text-[24px] font-semibold leading-[1.15] tracking-[-0.02em] md:text-[28px]">{s.title}</h3>
                     <p className="mt-3 max-w-[42ch] text-[17px] leading-[1.55] text-[var(--h-ink-2)]">{s.text}</p>
                   </div>
-                  <span className="flex items-center gap-2 text-[16px] font-semibold text-[var(--h-accent-ink)]">
-                    Umów konsultację
-                    <ArrowUp className="home-tile-arrow size-[18px]" strokeWidth={2.25} aria-hidden />
-                  </span>
-                </a>
+                  <div className="flex flex-wrap items-center gap-x-8 gap-y-3 text-[16px] font-semibold">
+                    <a
+                      href="#rezerwacja"
+                      className="flex items-center gap-2 text-[var(--h-accent-ink)] after:absolute after:inset-0 after:rounded-[28px]"
+                    >
+                      Umów konsultację
+                      <ArrowUp className="home-tile-arrow size-[18px]" strokeWidth={2.25} aria-hidden />
+                    </a>
+                    {s.link && (
+                      <a
+                        href={s.link.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="relative z-10 flex items-center gap-1.5 text-[var(--h-ink)] underline decoration-[var(--h-accent)] decoration-2 underline-offset-4 hover:decoration-[var(--h-ink)]"
+                      >
+                        {s.link.label}
+                        <ArrowUpRight className="size-[18px]" strokeWidth={2.25} aria-hidden />
+                      </a>
+                    )}
+                  </div>
+                </div>
               </Reveal>
             ))}
           </ul>
