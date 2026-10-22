@@ -23,6 +23,14 @@ const SERVICES: { title: string; text: string; link?: { label: string; href: str
     text: "Uczę, jak nagrywać, montować i planować treści, żeby kamera przestała stresować, a zaczęła sprzedawać.",
   },
   {
+    title: "Szkolenia AI",
+    text: "Uczę, jak korzystać z narzędzi AI w codziennej pracy, tworzyć treści i oszczędzać czas.",
+  },
+  {
+    title: "Wdrażanie automatyzacji i AI",
+    text: "Wdrażam automatyzacje i narzędzia AI, które usprawniają procesy w Twojej firmie i odciążają zespół od powtarzalnych zadań.",
+  },
+  {
     title: "Strony internetowe",
     text: "Projektuję i wdrażam strony, które prowadzą klienta od pierwszego wejścia do rezerwacji. Razem z zespołem webdkw.net.",
     link: { label: "webdkw.net", href: "https://webdkw.net" },
