@@ -4,7 +4,6 @@ import { useEffect, useState, type ReactNode } from "react"
 import Image from "next/image"
 import { AnimatePresence, motion } from "framer-motion"
 import { ArrowUp, ArrowUpRight, Moon, Phone, Sun } from "lucide-react"
-import ClientsSection from "@/components/clients-section"
 
 const SERVICES: { title: string; text: string; link?: { label: string; href: string } }[] = [
   {
@@ -251,8 +250,6 @@ export default function HomeBooking() {
             ))}
           </ul>
         </section>
-
-        <ClientsSection />
 
         <section className="mt-28 md:mt-40" aria-labelledby="linki-title">
           <Reveal>

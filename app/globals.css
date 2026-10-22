@@ -264,8 +264,6 @@ html[data-home-theme="dark"]:has(.home) { background-color: #0b0b0c; }
   94% { transform: rotate(-6deg); }
 }
 @media (prefers-reduced-motion: reduce) {
-  .home-client-link, .home-client-arrow { transition: none; }
-  .home-client-link:hover .home-client-arrow { transform: none; }
   .home-pulse::after, .home-ring { animation: none; }
   .home-tile, .home-tile-arrow { transition: none; }
 }
