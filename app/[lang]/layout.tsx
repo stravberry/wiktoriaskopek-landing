@@ -95,7 +95,7 @@ export default async function LangLayout({
   const { lang } = await params
 
   return (
-    <html lang={lang} className="scroll-smooth" style={{ backgroundColor: "#050505" }}>
+    <html lang={lang} className="scroll-smooth" style={{ backgroundColor: "#050505" }} suppressHydrationWarning>
       <head>
         <link href="https://api.fontshare.com/v2/css?f[]=satoshi@300,400,500,700,900&display=swap" rel="stylesheet" />
       </head>

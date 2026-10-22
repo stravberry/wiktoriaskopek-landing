@@ -205,3 +205,65 @@ body::-webkit-scrollbar-thumb {
 html {
   background-color: #050505;
 }
+
+/* Nowa strona główna (components/home-booking.tsx): biel + pomarańcz, tryb ciemny przez html[data-home-theme] */
+.home {
+  --h-bg: #ffffff;
+  --h-ink: #1d1d1f;
+  --h-ink-2: #5c5c62;
+  --h-surface: #f5f5f7;
+  --h-surface-hover: #e8e8ed;
+  --h-accent: #ff6a13;
+  --h-accent-ink: #c2410c;
+  color-scheme: light;
+}
+:root[data-home-theme="dark"] .home {
+  --h-bg: #0b0b0c;
+  --h-ink: #f5f5f7;
+  --h-ink-2: #a1a1a6;
+  --h-surface: #1c1c1e;
+  --h-surface-hover: #2c2c2e;
+  --h-accent: #ff7a2e;
+  --h-accent-ink: #ff8a4a;
+  color-scheme: dark;
+}
+html:has(.home) { background-color: #ffffff; }
+html[data-home-theme="dark"]:has(.home) { background-color: #0b0b0c; }
+.home ::selection { background: var(--h-accent); color: #111111; }
+.home :focus-visible { outline: 2px solid var(--h-accent); outline-offset: 3px; }
+.home .home-icon-dark { display: none; }
+:root[data-home-theme="dark"] .home .home-icon-dark { display: block; }
+:root[data-home-theme="dark"] .home .home-icon-light { display: none; }
+.home .sr-only.home-icon-dark { display: none; }
+:root[data-home-theme="dark"] .home .sr-only.home-icon-dark { display: inline; }
+.home-pulse::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: inherit;
+  animation: home-pulse 2.4s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+}
+@keyframes home-pulse {
+  from { transform: scale(1); opacity: 0.6; }
+  to { transform: scale(3); opacity: 0; }
+}
+.home-tile {
+  transition: background-color 200ms cubic-bezier(0.2, 0, 0, 1), transform 150ms cubic-bezier(0.2, 0, 0, 1);
+}
+.home-tile:hover { background-color: var(--h-surface-hover); }
+.home-tile:active { transform: scale(0.985); }
+.home-tile-arrow { transition: transform 250ms cubic-bezier(0.16, 1, 0.3, 1); }
+.home-tile:hover .home-tile-arrow { transform: translateY(-3px); }
+.home-tile:hover .lucide-arrow-up-right.home-tile-arrow { transform: translate(2px, -2px); }
+.home-ring { animation: home-ring 3.2s cubic-bezier(0.4, 0, 0.2, 1) infinite; }
+@keyframes home-ring {
+  0%, 82%, 100% { transform: rotate(0); }
+  86% { transform: rotate(-12deg); }
+  90% { transform: rotate(10deg); }
+  94% { transform: rotate(-6deg); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .home-pulse::after, .home-ring { animation: none; }
+  .home-tile, .home-tile-arrow { transition: none; }
+}

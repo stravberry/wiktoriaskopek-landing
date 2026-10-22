@@ -1,10 +1,14 @@
 "use client"
 
 import Link from "next/link"
+import { usePathname } from "next/navigation"
 import { Mail, Phone, Instagram, Youtube } from "lucide-react"
 import { type Locale } from "@/lib/translations"
 
 export default function Footer({ lang = "pl" }: { lang?: Locale }) {
+  // Nowa strona główna jest na razie samodzielna, bez stopki
+  if (usePathname() === `/${lang}`) return null
+
   const currentYear = new Date().getFullYear()
 
   const navLinks = [
