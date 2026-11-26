@@ -2,7 +2,7 @@
 // Wersja: POLICY_VERSION w lib/mf/config.ts (zapisywana w dzienniku zgód). Nie jest poradą prawną.
 import { SELLER } from "./mf/config.ts"
 
-export const PRIVACY_UPDATED = "25 listopada 2026"
+export const PRIVACY_UPDATED = "25 listopada 2026 (wersja polityka-2026-11-25)"
 
 export const PRIVACY_SECTIONS: { title: string; items: string[] }[] = [
   {

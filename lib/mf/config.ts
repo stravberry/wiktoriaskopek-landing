@@ -39,7 +39,7 @@ export const MF_PRODUCTS: Record<MfProductId, MfProduct> = {
 }
 
 /** Wersje dokumentów zapisywane przy każdej zgodzie. Zmiana treści = nowa wersja. */
-export const MF_TERMS_VERSION = "regulamin-mf-2026-11-25"
+export const MF_TERMS_VERSION = "regulamin-mf-2026-11-26"
 export const POLICY_VERSION = "polityka-2026-11-25"
 export const BANNER_VERSION = "baner-2026-11-25"
 

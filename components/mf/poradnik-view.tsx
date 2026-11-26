@@ -4,7 +4,6 @@ import { useState } from "react"
 import Link from "next/link"
 import { MF_BASE_PATH } from "@/lib/mf/config"
 import type { Block, Chapter } from "@/lib/mf/poradnik"
-import { Todo } from "./ui"
 
 const text = (c: Chapter) =>
   [c.title, c.lead, ...c.blocks.map((b) => ("p" in b ? b.p : "code" in b ? b.code : "list" in b ? b.list.join(" ") : ""))].join(" ").toLowerCase()
@@ -47,9 +46,10 @@ export function Blocks({ blocks }: { blocks: Block[] }) {
           <pre key={i} className="overflow-x-auto rounded-2xl bg-[#1d1d1f] p-5 text-[14px] leading-[1.6] text-white"><code>{b.code}</code></pre>
         ) : "list" in b ? (
           <ul key={i} className="flex list-disc flex-col gap-2 pl-6">{b.list.map((x) => <li key={x}>{x}</li>)}</ul>
-        ) : (
-          <Todo key={i} block>DO UZUPEŁNIENIA: {b.todo}</Todo>
-        ),
+        ) : "img" in b ? (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img key={i} src={b.img} alt={b.alt} loading="lazy" className="w-full rounded-[16px] bg-[var(--h-surface)]" />
+        ) : null,
       )}
     </div>
   )

@@ -2,8 +2,8 @@ import type { Metadata } from "next"
 import Image from "next/image"
 import Link from "next/link"
 import { MF_BASE_PATH, MF_PRODUCTS, MF_REQUIREMENTS, SELLER } from "@/lib/mf/config"
-import { MF_CASES, MF_FAQ, MF_FEATURES, MF_QUALITY_CHECKS, MF_STEPS, MF_STYLES } from "@/lib/mf/content"
-import { Section, Todo, WithTodo } from "@/components/mf/ui"
+import { MF_CASES, MF_FAQ, MF_FEATURES, MF_QUALITY_CHECKS, MF_STEPS, MF_STYLES, TODO } from "@/lib/mf/content"
+import { Section, WithTodo } from "@/components/mf/ui"
 import { BuyButton } from "@/components/mf/client-bits"
 import { ReelFrame, StylePicker } from "@/components/mf/reel"
 import { Reveal } from "@/components/mf/motion"
@@ -11,8 +11,8 @@ import ClaudeTranscript from "@/components/mf/claude-transcript"
 import OrderForm from "@/components/mf/order-form"
 
 const URL = `https://wiktoriaskopek.pl${MF_BASE_PATH}`
-const TITLE = "MontageFrames: montuj filmy i rolki w AI, bez montażysty | Wiktoria Skopek"
-const DESC = `Nakładka na Claude Code do montażu filmów i rolek: 33 style, kreator marki, krytyk jakości, panel w przeglądarce i poradnik online. ${MF_PRODUCTS.paczka.priceLabel} jednorazowo.`
+const TITLE = "Montuj swoje filmy i rolki w AI! Bez montażysty | MontageFrames, Wiktoria Skopek"
+const DESC = `Montuj swoje filmy i rolki w AI! Bez montażysty. Nakładka na Claude Code do montażu filmów i rolek: 33 style, kreator marki, krytyk jakości, panel w przeglądarce i poradnik online. ${MF_PRODUCTS.paczka.priceLabel} jednorazowo.`
 
 export const metadata: Metadata = {
   title: TITLE,
@@ -40,7 +40,7 @@ export default function MontujBezMontazysty() {
 
       {/* Pierwszy ekran: co to jest, ile kosztuje, co zrobić. Obok kadr rolki z napisem w stylu marki. */}
       <section className="mf-wrap pt-10 md:pt-16" aria-labelledby="hero-title">
-        <h1 id="hero-title" className="mf-h1 max-w-[12ch] lg:max-w-none">Montuj rolki w AI. Bez montażysty.</h1>
+        <h1 id="hero-title" className="mf-h1 mf-h1-slogan max-w-[14ch] lg:max-w-[16ch]">Montuj swoje filmy i rolki w AI! Bez montażysty</h1>
         <div className="mt-10 grid items-start gap-10 lg:mt-14 lg:grid-cols-[minmax(0,1fr)_400px] lg:gap-16">
         <div>
           <p className="mf-lead max-w-[46ch]">
@@ -52,7 +52,7 @@ export default function MontujBezMontazysty() {
             <a href="#style" className="text-[17px] font-semibold underline decoration-[var(--h-accent)] decoration-2 underline-offset-4">Zobacz 33 style</a>
           </div>
           <p className="mt-8 max-w-[52ch] text-[15px] leading-[1.6] text-[var(--h-ink-2)]">
-            Jednorazowo, bez limitu komputerów. Gwarancja działania. Potrzebujesz płatnego planu Claude Pro lub Max i min. 15 GB miejsca; instalacja
+            Jednorazowo, bez limitu komputerów, z gwarancją działania. Potrzebujesz płatnego planu Claude Pro lub Max i min. 15 GB miejsca; instalacja
             z Claude Code trwa ok. 15–30 minut.
           </p>
         </div>
@@ -83,7 +83,7 @@ export default function MontujBezMontazysty() {
           <Reveal>
             <p className="text-[21px] font-semibold">Z montażystą</p>
             <p className="mt-3 max-w-[44ch] leading-[1.6]">
-              Płacisz za każdą rolkę, czekasz na wersję i na poprawki. Miesięczny koszt przy regularnych publikacjach: <Todo>kwota z doświadczenia Wiktorii</Todo>.
+              Płacisz za każdą rolkę, czekasz na wersję i na poprawki, a przy regularnych publikacjach koszt rośnie z każdym miesiącem.
             </p>
           </Reveal>
           <Reveal delay={0.08}>
@@ -164,22 +164,22 @@ export default function MontujBezMontazysty() {
             <figure className="relative aspect-[4/3] overflow-hidden rounded-[24px]">
               <Image src="/home-podcast-setup-equipment.jpg" alt="Biurko z laptopem, mikrofonem i kamerą: tyle wystarczy do montażu w Claude Code" fill sizes="(min-width: 1024px) 560px, 90vw" className="object-cover" />
             </figure>
-            <p className="mt-3 text-[15px] text-[#a1a1a6]">Tyle wystarczy: komputer, nagranie i Claude Code. Przykład „przed i po” na materiale bez klientów: <Todo>DO UZUPEŁNIENIA</Todo></p>
+            <p className="mt-3 text-[15px] text-[#a1a1a6]">Tyle wystarczy: komputer, nagranie i Claude Code.</p>
           </Reveal>
         </div>
       </Section>
 
       {/* Case study */}
-      <Section id="case-study" title="Firmy, które montują już na AI" lead="Wiktoria ma zgody tych firm. Liczby i opinie dodamy, gdy je przekażą.">
+      <Section id="case-study" title="Firmy, które montują już na AI" lead="Te firmy montują rolki z MontageFrames. Szczegóły ich wyników opiszemy wkrótce.">
         <ul className="flex flex-col gap-3">
           {MF_CASES.map((c, i) => (
             <Reveal as="li" key={c.name} delay={i * 0.06} className="grid gap-3 bg-[var(--h-surface)] p-6 md:grid-cols-[1.1fr_1fr_1fr] md:items-baseline md:gap-8 md:p-8">
               <div>
                 <p className="text-[24px] font-semibold leading-[1.2]">{c.name}</p>
-                <p className="mt-1 text-[15px] text-[var(--h-ink-2)]">Zakres: <WithTodo text={c.scope} /></p>
+                {c.scope !== TODO && <p className="mt-1 text-[15px] text-[var(--h-ink-2)]">{c.scope}</p>}
               </div>
-              <p className="leading-[1.6]"><b>Efekt w liczbach:</b> <WithTodo text={c.result} /></p>
-              <p className="leading-[1.6]"><b>Opinia:</b> <WithTodo text={c.quote} /></p>
+              <p className="leading-[1.6] md:col-span-2">{c.result !== TODO ? c.result : "Szczegóły wkrótce."}</p>
+              {c.quote !== TODO && <p className="leading-[1.6] italic md:col-start-2 md:col-span-2">„{c.quote}”</p>}
             </Reveal>
           ))}
         </ul>
@@ -200,8 +200,8 @@ export default function MontujBezMontazysty() {
             <p className="text-[24px] font-semibold">W cenie {p.priceLabel}</p>
             <ul className="mt-6 flex list-disc flex-col gap-3 pl-5 leading-[1.6]">
               <li>Paczka w prywatnym repozytorium GitHub z aktualizacjami komendą /aktualizacja</li>
-              <li>Poradnik online po polsku: instalacja, marka, style, poprawki, rozmowa z AI (wersja do pobrania: <Todo />)</li>
-              <li>Aktualizacje bez utraty ustawień marki (okres: <Todo />)</li>
+              <li>Poradnik online po polsku: instalacja, marka, style, poprawki, rozmowa z AI, także w wersji PDF do pobrania</li>
+              <li>Aktualizacje programu przez repozytorium, bez utraty ustawień marki</li>
               <li>Wsparcie mailowe w sprawie instalacji, odpowiedź do 3 dni roboczych</li>
               <li>Bez limitu komputerów w Twojej firmie</li>
             </ul>
@@ -263,24 +263,24 @@ export default function MontujBezMontazysty() {
           <Reveal delay={0.08} className="flex flex-col gap-6 md:flex-row md:items-start">
             <Image src="/images/wiktoria-skopek.jpg" alt="Wiktoria Skopek" width={112} height={112} className="size-24 shrink-0 rounded-full object-cover" />
             <p className="max-w-[52ch] text-[21px] leading-[1.6]">
-              Nagrywam i montuję filmy dla firm, prowadzę social media i studio nagrań{" "}
+              Twój partner strategiczny w budowaniu autorytetu wideo: łączę produkcję premium z psychologią sprzedaży. Nagrywam i montuję filmy dla
+              firm, prowadzę social media i studio nagrań{" "}
               <a className="underline" href="https://podcastkatowice.pl" target="_blank" rel="noopener noreferrer">podcastkatowice.pl</a>. MontageFrames to narzędzie, którym
-              sama montuję rolki na AI. <Todo>krótkie bio do zatwierdzenia</Todo>
+              sama montuję rolki na AI.
             </p>
           </Reveal>
         </div>
       </Section>
 
       {/* Gwarancja */}
-      <Section id="gwarancja" title="Program działa albo oddaję pieniądze" tone="accent">
+      <Section id="gwarancja" title="Gwarancja działania" tone="accent">
         <Reveal className="grid gap-8 md:grid-cols-[1.4fr_1fr]">
           <p className="max-w-[48ch] text-[21px] font-semibold leading-[1.45]">
-            Jeśli po instalacji według poradnika program nie zmontuje rolki na komputerze, który spełnia wymagania, napisz do mnie. Jeśli w ciągu 14 dni od
-            zgłoszenia nie usunę problemu, oddam Ci całą kwotę.
+            Jeśli w ciągu 14 dni nie uruchomisz programu na swoim komputerze mimo naszej pomocy, oddaję pieniądze.
           </p>
           <p className="leading-[1.6]">
-            Zgłoszenie: mail na <a className="underline" href={`mailto:${SELLER.email}`}>{SELLER.email}</a> z opisem i wynikiem komendy /stan. Gwarancja nie ogranicza
-            Twoich praw z ustawy. <span className="rounded bg-white/70 px-1.5 py-0.5 font-semibold">Brzmienie do zatwierdzenia</span>
+            Napisz na <a className="underline" href={`mailto:${SELLER.email}`}>{SELLER.email}</a> z opisem problemu i wynikiem komendy /stan. Pomożemy
+            uruchomić program. Gwarancja nie ogranicza Twoich praw z ustawy.
           </p>
         </Reveal>
       </Section>

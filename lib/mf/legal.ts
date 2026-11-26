@@ -65,7 +65,7 @@ export const TERMS_SECTIONS: LegalSection[] = [
   {
     title: "§7. Gwarancja działania (dobrowolna)",
     items: [
-      "PROPOZYCJA BRZMIENIA, DO ZATWIERDZENIA: Gwarantuję, że Program działa. Jeśli po instalacji według poradnika Program nie zmontuje rolki na komputerze, który spełnia wymagania z §4, napisz do mnie. Jeśli w ciągu 14 dni od zgłoszenia nie usunę problemu, oddam Ci całą kwotę.",
+      "Gwarancja działania: jeśli w ciągu 14 dni od zakupu nie uruchomisz Programu na swoim komputerze, który spełnia wymagania z §4, mimo naszej pomocy, oddaję całą zapłaconą kwotę.",
       "Zgłoszenie z gwarancji wysyłasz mailem z opisem problemu i wynikiem komendy /stan. Gwarancja nie wyłącza ani nie ogranicza ustawowych uprawnień Konsumenta.",
     ],
   },
@@ -81,7 +81,7 @@ export const TERMS_SECTIONS: LegalSection[] = [
   {
     title: "§9. Aktualizacje i zgodność z umową",
     items: [
-      "Aktualizacje pobierasz komendą /aktualizacja (git pull) albo nowym plikiem ZIP z konta. Okres dostarczania aktualizacji: DO UZUPEŁNIENIA (propozycja: co najmniej 12 miesięcy od zakupu).",
+      "Aktualizacje pobierasz komendą /aktualizacja (git pull) albo nowym plikiem ZIP z konta. Sprzedawca dostarcza aktualizacje niezbędne do zachowania zgodności Programu z umową przez okres, którego Konsument może rozsądnie oczekiwać (art. 43k ustawy o prawach konsumenta).",
       "Sprzedawca odpowiada za zgodność treści cyfrowej z umową na zasadach rozdziału 5b ustawy o prawach konsumenta. Jeśli Program nie działa zgodnie z opisem, możesz żądać doprowadzenia go do zgodności, a w przypadkach z ustawy obniżenia ceny albo odstąpienia od umowy.",
     ],
   },
@@ -114,7 +114,7 @@ export const TERMS_SECTIONS: LegalSection[] = [
 
 export function termsPlainText() {
   const lines = [
-    `REGULAMIN SPRZEDAŻY MONTAGEFRAMES — wersja ${MF_TERMS_VERSION}`,
+    `REGULAMIN SPRZEDAŻY MONTAGEFRAMES — wersja ${MF_TERMS_VERSION}, obowiązuje od 26.11.2026`,
     `Sprzedawca: ${SELLER.name}, ${SELLER.address}, ${SELLER.email}, ${SELLER.phone}`,
     "",
   ]
