@@ -148,6 +148,12 @@ export default function MontujBezMontazysty() {
 
       {/* Style: żywy element */}
       <Section id="style" title={`${stylesLabel()} w paczce`} lead="Style różnią się animacją tekstu, krojem i tempem, nie tylko kolorem. Kolor akcentu bierzemy z Twojej marki. „Inspirowane stylem” opisuje kierunek, nie współpracę z tą osobą.">
+        <LazyVideo
+          className="mb-12 aspect-video w-full rounded-[24px] bg-[#1d1d1f] object-cover"
+          src="/mf/funkcje/przeglad-stylow-poziomo.mp4"
+          poster="/mf/funkcje/przeglad-stylow-poziomo.jpg"
+          label="Sześć stylów na tym samym nagraniu: Słowo po słowie, Luksusowy dokument, Elegancki premium, Adnotacje odręczne, Mem / Gen Z, Pytania i odpowiedzi"
+        />
         <StyleReels />
         <h3 className="mt-20 text-[24px] font-semibold">Wszystkie style</h3>
         <p className="mt-2 max-w-[56ch] text-[17px] text-[var(--h-ink-2)]">Kliknij nazwę, a kadr pokaże przybliżony podgląd napisu.</p>
