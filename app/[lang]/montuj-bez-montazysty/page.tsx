@@ -4,6 +4,7 @@ import Link from "next/link"
 import { MF_BASE_PATH, MF_PRODUCTS, MF_REQUIREMENTS, SELLER } from "@/lib/mf/config"
 import { MF_CASES, MF_FAQ, MF_FEATURES, MF_QUALITY_CHECKS, MF_SHOWCASE, MF_STEPS, MF_STYLES, TODO, stylesLabel } from "@/lib/mf/content"
 import { PanelShots, ShowcaseBlock, StyleReels } from "@/components/mf/showcase"
+import { LazyVideo } from "@/components/mf/lazy-video"
 import { Section, WithTodo } from "@/components/mf/ui"
 import { BuyButton } from "@/components/mf/client-bits"
 import { ReelFrame, StylePicker } from "@/components/mf/reel"
@@ -84,17 +85,12 @@ export default function MontujBezMontazysty() {
       {/* Film promo 16:9 (Coding Builder, 26.11; muzyka wygenerowana, bez cudzych nagrań) */}
       <section className="mf-wrap mt-20 md:mt-28" aria-labelledby="promo-title">
         <h2 id="promo-title" className="sr-only">MontageFrames w 20 sekund</h2>
-        <video
+        <LazyVideo
           className="aspect-video w-full rounded-[24px] bg-[#050505] object-cover"
           src="/mf/montageframes-promo-16x9.mp4"
-          poster="/mf/montageframes-promo-16x9.jpg"
-          autoPlay
-          muted
-          loop
-          playsInline
+          poster="/mf/montageframes-promo-poster.jpg"
+          label="Film: MontageFrames w 20 sekund"
           controls
-          preload="metadata"
-          aria-label="Film: MontageFrames w 20 sekund"
         />
       </section>
 
