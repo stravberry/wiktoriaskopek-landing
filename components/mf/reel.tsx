@@ -4,8 +4,6 @@ import Image from "next/image"
 import { useEffect, useState } from "react"
 import { motion, useReducedMotion } from "framer-motion"
 import { CAPTION_LOOKS, type CaptionLook } from "@/lib/mf/caption-styles"
-import type { MfStyle } from "@/lib/mf/content"
-import { LazyVideo } from "@/components/mf/lazy-video"
 
 const WORDS = ["Montujesz", "sam,", "bez", "montażysty"]
 const KEY = 3
@@ -68,49 +66,5 @@ export function ReelFrame({ slug, label, priority = false, className = "" }: { s
         <figcaption className="absolute left-4 top-4 rounded-full bg-black/55 px-3 py-1.5 text-[15px] font-semibold text-white">{label}</figcaption>
       )}
     </figure>
-  )
-}
-
-/** Żywy element strony: wybierasz styl, kadr od razu pokazuje napis w tym stylu. */
-export function StylePicker({ styles }: { styles: MfStyle[] }) {
-  const [slug, setSlug] = useState(styles[0].slug)
-  const current = styles.find((s) => s.slug === slug) ?? styles[0]
-  return (
-    <div className="grid items-start gap-10 lg:grid-cols-[minmax(0,1fr)_380px] lg:gap-16">
-      <div>
-        <ul className="flex flex-wrap gap-2" aria-label="Style montażu">
-          {styles.map((s) => (
-            <li key={s.slug}>
-              <button
-                type="button"
-                aria-pressed={s.slug === slug}
-                onClick={() => setSlug(s.slug)}
-                className={`mf-press min-h-11 rounded-full px-4 text-[15px] font-semibold transition-colors ${
-                  s.slug === slug ? "bg-[var(--h-ink)] text-[var(--h-bg)]" : "bg-[var(--h-surface)] hover:bg-[var(--h-surface-hover)]"
-                }`}
-              >
-                {s.name}
-              </button>
-            </li>
-          ))}
-        </ul>
-      </div>
-      <div>
-        {/* Prawdziwa rolka z programu dla wybranego stylu (to samo nagranie demo dla wszystkich stylów). */}
-        <LazyVideo
-          key={slug}
-          className="mx-auto aspect-[9/16] w-full max-w-[340px] rounded-[32px] bg-[#1d1d1f] object-cover lg:max-w-none"
-          src={`/mf/style/${slug}.mp4`}
-          poster={`/mf/style/${slug}.jpg`}
-          label={`Rolka demo w stylu ${current.name}`}
-        />
-        <div className="mt-5">
-          <p className="text-[21px] font-semibold tracking-[-0.01em]">{current.name}</p>
-          <p className="mt-1 text-[15px] text-[var(--h-ink-2)]">Animacja: {current.motion}{current.inspired && <> · inspirowane stylem: {current.inspired}</>}</p>
-          <p className="mt-2 text-[17px] leading-[1.5]">{current.text}</p>
-          <p className="mt-3 text-[15px] text-[var(--h-ink-2)]">Rolka z programu na tym samym nagraniu demo. Kolor akcentu weźmiemy z Twojej marki.</p>
-        </div>
-      </div>
-    </div>
   )
 }

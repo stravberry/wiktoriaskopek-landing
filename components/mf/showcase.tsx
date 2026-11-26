@@ -1,30 +1,7 @@
 import Image from "next/image"
-import { MF_PANEL_SHOTS, MF_STYLES, MF_STYLE_REELS, styleVideo, type MfShowcase } from "@/lib/mf/content"
+import { MF_PANEL_SHOTS, type MfShowcase } from "@/lib/mf/content"
 import { LazyVideo } from "@/components/mf/lazy-video"
 import { Reveal } from "@/components/mf/motion"
-
-/** Pokaz stylów: prawdziwe rolki, przewijane w poziomie (telefon i komputer). Pliki ładują się dopiero przy wejściu w widok. */
-export function StyleReels() {
-  return (
-    <ul className="-mx-5 flex snap-x snap-mandatory scroll-px-5 gap-4 overflow-x-auto px-5 pb-4 md:gap-6" aria-label="Prawdziwe rolki z programu w różnych stylach">
-      {MF_STYLE_REELS.map((slug) => {
-        const s = MF_STYLES.find((x) => x.slug === slug)
-        if (!s) return null
-        const v = styleVideo(slug)
-        return (
-          <li key={slug} className="mf-lift w-[64vw] max-w-[260px] shrink-0 snap-start">
-            <LazyVideo className="aspect-[9/16] w-full rounded-[20px] bg-[#1d1d1f] object-cover" src={v.src} poster={v.poster} label={`Rolka demo w stylu ${s.name}`} />
-            <p className="mt-3 text-[17px] font-semibold">{s.name}</p>
-            <p className="mt-1 text-[15px] leading-[1.45] text-[var(--h-ink-2)]">
-              {s.motion}
-              {s.inspired && <><br />inspirowane stylem: {s.inspired}</>}
-            </p>
-          </li>
-        )
-      })}
-    </ul>
-  )
-}
 
 /** Jedna funkcja = jedna sekcja z własnym filmem (i zrzutem panelu, jeśli jest). */
 export function ShowcaseBlock({ f, flip }: { f: MfShowcase; flip: boolean }) {

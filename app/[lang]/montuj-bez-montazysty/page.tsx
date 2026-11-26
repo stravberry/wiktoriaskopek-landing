@@ -3,11 +3,12 @@ import Image from "next/image"
 import Link from "next/link"
 import { MF_BASE_PATH, MF_PRODUCTS, MF_REQUIREMENTS, SELLER } from "@/lib/mf/config"
 import { MF_CASES, MF_FAQ, MF_FEATURES, MF_QUALITY_CHECKS, MF_SHOWCASE, MF_STEPS, MF_STYLES, TODO, stylesLabel } from "@/lib/mf/content"
-import { PanelShots, ShowcaseBlock, StyleReels } from "@/components/mf/showcase"
+import { PanelShots, ShowcaseBlock } from "@/components/mf/showcase"
+import { StyleGallery } from "@/components/mf/style-gallery"
 import { LazyVideo } from "@/components/mf/lazy-video"
 import { Section, WithTodo } from "@/components/mf/ui"
 import { BuyButton, BuyDialog, BuyForm, BuyRow, GuaranteeLine, KonsultacjaLink, StickyBuyBar } from "@/components/mf/buy"
-import { ReelFrame, StylePicker } from "@/components/mf/reel"
+import { ReelFrame } from "@/components/mf/reel"
 import { Reveal, ScrollScale } from "@/components/mf/motion"
 import { StepByStep } from "@/components/mf/steps"
 
@@ -154,12 +155,7 @@ export default function MontujBezMontazysty() {
           poster="/mf/funkcje/przeglad-stylow-poziomo.jpg"
           label="Sześć stylów na tym samym nagraniu: Słowo po słowie, Luksusowy dokument, Elegancki premium, Adnotacje odręczne, Mem / Gen Z, Pytania i odpowiedzi"
         />
-        <StyleReels />
-        <h3 className="mt-20 text-[24px] font-semibold">Wszystkie style</h3>
-        <p className="mt-2 max-w-[56ch] text-[17px] text-[var(--h-ink-2)]">Kliknij nazwę, a kadr pokaże przybliżony podgląd napisu.</p>
-        <div className="mt-8">
-          <StylePicker styles={MF_STYLES} />
-        </div>
+        <StyleGallery styles={MF_STYLES} />
       </Section>
 
       <BuyRow source="after_styles" trialHref={TRIAL} />
