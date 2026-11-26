@@ -2,7 +2,7 @@ import type { Metadata } from "next"
 import Image from "next/image"
 import Link from "next/link"
 import { MF_BASE_PATH, MF_PRODUCTS, MF_REQUIREMENTS, SELLER } from "@/lib/mf/config"
-import { MF_CASES, MF_FAQ, MF_FEATURES, MF_QUALITY_CHECKS, MF_SHOWCASE, MF_STEPS, MF_STYLES, TODO, stylesLabel } from "@/lib/mf/content"
+import { MF_FAQ, MF_FEATURES, MF_QUALITY_CHECKS, MF_SHOWCASE, MF_STEPS, MF_STYLES, TODO, stylesLabel } from "@/lib/mf/content"
 import { PanelShots, ShowcaseBlock } from "@/components/mf/showcase"
 import { StyleGallery } from "@/components/mf/style-gallery"
 import { LazyVideo } from "@/components/mf/lazy-video"
@@ -11,6 +11,7 @@ import { BuyButton, BuyDialog, BuyForm, BuyRow, GuaranteeLine, KonsultacjaLink, 
 import { Reveal, ScrollScale } from "@/components/mf/motion"
 import { StepByStep } from "@/components/mf/steps"
 import { Compare } from "@/components/mf/compare"
+import { ClientLogos } from "@/components/mf/clients"
 import { PanelTilt, PhoneSpin } from "@/components/mf/apple"
 
 const URL = `https://www.wiktoriaskopek.pl${MF_BASE_PATH}`
@@ -192,13 +193,8 @@ export default function MontujBezMontazysty() {
 
       <BuyRow source="after_quality" trialHref={TRIAL} />
 
-      {/* Case study: nazwy firm (decyzja Wiktorii, 0c); liczby i cytaty po dostarczeniu. Bez „Szczegóły wkrótce” (audyt Kierownika i Ecom). */}
-      <section id="case-study" aria-label="Firmy, które montują z MontageFrames" className="mf-wrap mt-20 md:mt-28">
-        <p className="text-[15px] font-semibold text-[var(--h-ink-2)]">Z MontageFrames montują już:</p>
-        <ul className="mt-3 flex flex-wrap gap-x-8 gap-y-2 text-[21px] font-semibold tracking-[-0.01em]">
-          {MF_CASES.map((c) => <li key={c.name}>{c.name}</li>)}
-        </ul>
-      </section>
+      {/* Klienci: loga z oficjalnych stron (zlecenie Wiktorii 26.11), nazwy zostają (decyzja Wiktorii, 0c) */}
+      <ClientLogos />
 
       {/* Co dostajesz */}
       <Section id="co-dostajesz" title="Wszystkie funkcje od pierwszego dnia">
