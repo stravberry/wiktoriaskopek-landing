@@ -1,7 +1,7 @@
 import { cspHeader } from "./lib/security/csp.mjs"
 
-// CSP: false = Report-Only (tylko raporty), true = wymuszanie. Report-Only na produkcji 26.11: 0 naruszeń (13 stron, pełna próba), więc wymuszamy.
-const CSP_ENFORCE = true
+// CSP: false = Report-Only (tylko raporty w /api/csp-report), true = wymuszanie. Decyzja Dayli 26.11: najpierw raporty.
+const CSP_ENFORCE = false
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {

@@ -1,4 +1,5 @@
 import type { Metadata } from "next"
+import { pageAlternates } from "@/lib/seo"
 
 // Tytuł i opis SEO tej podstrony (osobne dla każdej; zaakceptował Kierownik 26.11.2026).
 export async function generateMetadata({ params }: { params: Promise<{ lang: string }> }): Promise<Metadata> {
@@ -7,7 +8,7 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
   return {
     title: "Blog: wideo marketing, AI i automatyzacja | Wiktoria Skopek",
     description: "Artykuły Wiktorii Skopek o wideo marketingu, AI i automatyzacji marketingu w małej firmie.",
-    alternates: { canonical: url },
+    alternates: pageAlternates("/blog"),
     openGraph: { title: "Blog: wideo marketing, AI i automatyzacja | Wiktoria Skopek", description: "Artykuły Wiktorii Skopek o wideo marketingu, AI i automatyzacji marketingu w małej firmie.", url },
     robots: { index: false, follow: true }, // bez wpisów: noindex do pierwszego artykułu (audyt Kierownika, 26.11)
   }
