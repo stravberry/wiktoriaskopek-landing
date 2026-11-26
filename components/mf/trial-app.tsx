@@ -79,7 +79,7 @@ function stageIndex(s: Status | null) {
 async function callTrial<T>(base: string, route: string, body: unknown): Promise<T> {
   const res = await fetch(`${base}/${route}`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) })
   const data = await res.json().catch(() => ({}))
-  if (!res.ok) throw new Error(data.error || "Coś poszło nie tak. Spróbuj ponownie za chwilę.")
+  if (!res.ok) throw Object.assign(new Error(data.error || "Coś poszło nie tak. Spróbuj ponownie za chwilę."), { status: res.status })
   return data as T
 }
 
@@ -267,12 +267,29 @@ export function TrialApp({ api, styles, fonts, fontFamilies, limits, consentText
     window.scrollTo({ top: 0, behavior: "smooth" })
   }
 
+  // Token próby jest rotowany przy każdym wejściu na stronę: druga karta (np. z maila „rolka gotowa”) unieważnia token pierwszej.
+  // Na 401 pobieramy świeży token z sesji i ponawiamy, zamiast utknąć na „Trwa to dłużej niż zwykle”.
+  const renewAuth = useCallback(async () => {
+    const res = await fetch("/api/mf/trial/session", { cache: "no-store" })
+    const data = await res.json().catch(() => ({}))
+    if (!res.ok) throw new Error(data.error || "Odśwież stronę.")
+    auth.current = { trialId: data.trialId, token: data.token }
+    setAuthState(auth.current)
+  }, [])
+
   const refresh = useCallback(async () => {
     if (!auth.current) return null
-    const s = await callTrial<Status>(api, "status", auth.current)
+    let s: Status
+    try {
+      s = await callTrial<Status>(api, "status", auth.current)
+    } catch (e) {
+      if ((e as { status?: number }).status !== 401) throw e
+      await renewAuth()
+      s = await callTrial<Status>(api, "status", auth.current!)
+    }
     setStatus(s)
     return s
-  }, [api])
+  }, [api, renewAuth])
 
   useEffect(() => {
     ;(async () => {
@@ -506,9 +523,13 @@ function StyleStep({ styles, brand, fontFamily, onPick, onBack, onNext }: {
           <BrandPreview brand={brand} fontFamily={fontFamily} styleName={current?.name} />
         </div>
       </div>
-      <StyleGallery styles={styles} selected={brand.style} onSelect={onPick} initialCount={10} />
+      {/* pb na telefonie: miejsce pod stałym paskiem „Dalej”, żeby nie zasłaniał ostatnich kart */}
+      <div className="pb-28 sm:pb-0">
+        <StyleGallery styles={styles} selected={brand.style} onSelect={onPick} initialCount={10} />
+      </div>
       {error && <p role="alert" className="rounded-2xl bg-[var(--h-accent)]/15 p-4 text-[15px] font-semibold">{error}</p>}
-      <div className="sticky bottom-[max(0.75rem,env(safe-area-inset-bottom))] z-10 mx-auto flex w-full max-w-full flex-wrap items-center justify-center gap-x-4 gap-y-1 rounded-[28px] bg-[var(--h-bg)]/95 p-2 shadow-[0_8px_30px_-12px_rgba(0,0,0,0.35)] backdrop-blur sm:w-fit sm:rounded-full sm:pr-5">
+      {/* Telefon: stały pasek na dole z pełnym tłem i bezpiecznym obszarem; od 640 px przyklejona pigułka. */}
+      <div className="fixed inset-x-0 bottom-0 z-20 flex items-center justify-center gap-x-4 border-t border-black/10 bg-[var(--h-bg)] px-4 pb-[max(12px,env(safe-area-inset-bottom))] pt-3 sm:sticky sm:inset-x-auto sm:bottom-3 sm:mx-auto sm:w-fit sm:max-w-full sm:rounded-full sm:border-0 sm:bg-[var(--h-bg)]/95 sm:p-2 sm:pr-5 sm:shadow-[0_8px_30px_-12px_rgba(0,0,0,0.35)] sm:backdrop-blur">
         <button
           type="button"
           disabled={busy}

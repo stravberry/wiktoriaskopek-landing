@@ -127,7 +127,8 @@ export function StyleGallery({ styles, selected, onSelect, initialCount = 8 }: {
 
   return (
     <div>
-      <div className="-mx-5 flex gap-2 overflow-x-auto px-5 pb-2 md:mx-0 md:flex-wrap md:px-0" role="group" aria-label="Filtruj style">
+      {/* Telefon: przewijany pasek filtrów z wygaszeniem przy prawej krawędzi (wskazówka, że jest więcej). */}
+      <div className="-mx-5 flex gap-2 overflow-x-auto px-5 pb-2 [mask-image:linear-gradient(to_right,#000_82%,transparent)] after:block after:w-6 after:shrink-0 md:mx-0 md:flex-wrap md:px-0 md:[mask-image:none] md:after:hidden" role="group" aria-label="Filtruj style">
         {FILTERS.map((f) => (
           <button
             key={f.id}
