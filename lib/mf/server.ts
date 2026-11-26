@@ -7,6 +7,7 @@ import { mfDisabledReason, resendConfigured, verifySessionCookie, createSessionC
 import { pgStore, sql } from "./db.ts"
 import { githubAccess, githubConfig } from "./github.ts"
 import MfAccessEmail, { accessEmailText } from "@/emails/mf-access-email"
+import MfTrialReadyEmail from "@/emails/mf-trial-ready-email"
 import MfLoginEmail from "@/emails/mf-login-email"
 import { termsPlainText } from "./legal.ts"
 
@@ -99,6 +100,15 @@ export async function notifySellerGithub(email: string, login: string, sessionId
   const key = `mf-seller-gh/${sessionId}/${login.toLowerCase()}`
   if (outboxMode()) return toOutbox(key, to, `MontageFrames: login GitHub od ${email}`, text)
   const { error } = await resend().emails.send({ from: mailFrom(), to, replyTo: email, subject: `MontageFrames: login GitHub od ${email}`, text }, { idempotencyKey: key })
+  if (error) throw new Error(`Resend: ${error.name}`)
+}
+
+/** Mail „rolka z próby gotowa” (albo nieudana) z jednorazowym linkiem do strony próby. */
+export async function sendTrialReadyMail(email: string, url: string, ok: boolean, until: string | null) {
+  const subject = ok ? "MontageFrames: Twoja rolka z próby jest gotowa" : "MontageFrames: montaż próbnej rolki się nie udał"
+  const text = `${ok ? "Twoja rolka z próby jest gotowa" : "Nie udało się zmontować rolki"}. ${ok && until ? `Pobierz ją do ${until}. ` : ""}Link (działa raz): ${url}`
+  if (outboxMode()) return toOutbox(`mf-trial-ready/${Date.now()}`, email, subject, text, await render(MfTrialReadyEmail({ url, ok, until })))
+  const { error } = await resend().emails.send({ from: mailFrom(), to: email, replyTo: replyTo(), subject, react: MfTrialReadyEmail({ url, ok, until }), text })
   if (error) throw new Error(`Resend: ${error.name}`)
 }
 

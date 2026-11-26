@@ -20,14 +20,17 @@ export async function GET(request: NextRequest) {
   if (!t) return NextResponse.redirect(`${account}?blad=link`)
 
   let to = account
-  if (t.purpose === "trial" || t.purpose === "trial_m") {
+  if (t.purpose.startsWith("trial")) {
     to = `${origin()}${MF_BASE_PATH}/proba`
-    try {
-      await trialOpen(sql(), t.email, null, t.purpose === "trial_m")
-    } catch (e) {
-      console.error("[mf] trial open on verify failed:", e instanceof Error ? e.message : e)
+    if (t.purpose !== "trial_ready") {
+      try {
+        // null = nie zmieniaj zapisanej zgody marketingowej (tylko trial_m ją ustawia).
+        await trialOpen(sql(), t.email, null, t.purpose === "trial_m" ? true : null)
+      } catch (e) {
+        console.error("[mf] trial open on verify failed:", e instanceof Error ? e.message : e)
+      }
+      await logEvent("trial_signup_verified", { marketing: t.purpose === "trial_m" }, t.email)
     }
-    await logEvent("trial_signup_verified", { marketing: t.purpose === "trial_m" }, t.email)
   }
   const res = NextResponse.redirect(to)
   res.cookies.set(SESSION_COOKIE, sessionCookieValue(t.email), sessionCookieOptions)

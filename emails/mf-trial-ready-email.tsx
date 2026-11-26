@@ -1,0 +1,26 @@
+import { Body, Button, Container, Head, Html, Preview, Section, Text } from "@react-email/components"
+
+export default function MfTrialReadyEmail({ url, ok, until }: { url: string; ok: boolean; until: string | null }) {
+  return (
+    <Html lang="pl">
+      <Head />
+      <Preview>{ok ? "Twoja rolka z próby MontageFrames jest gotowa" : "Montaż próbnej rolki się nie udał"}</Preview>
+      <Body style={{ backgroundColor: "#f5f5f7", fontFamily: "Helvetica, Arial, sans-serif", color: "#1d1d1f", margin: 0 }}>
+        <Container style={{ maxWidth: 560, margin: "0 auto", padding: "32px 20px" }}>
+          <Section style={{ backgroundColor: "#ffffff", borderRadius: 20, padding: 28 }}>
+            <Text style={{ fontSize: 22, fontWeight: 700, margin: "0 0 12px" }}>{ok ? "Twoja rolka jest gotowa" : "Nie udało się zmontować rolki"}</Text>
+            <Text style={{ fontSize: 16, lineHeight: "24px" }}>
+              {ok
+                ? `Zobacz ją i pobierz${until ? ` do ${until}` : ""}. To wersja próbna ze znakiem wodnym.`
+                : "Coś poszło nie tak przy montażu. Możesz wgrać nagranie jeszcze raz."}
+            </Text>
+            <Button href={url} style={{ backgroundColor: "#ff6a13", color: "#111111", borderRadius: 999, padding: "14px 24px", fontWeight: 700, fontSize: 16 }}>
+              {ok ? "Zobacz moją rolkę" : "Spróbuj ponownie"}
+            </Button>
+            <Text style={{ fontSize: 13, color: "#5c5c62" }}>Link loguje Cię do próby i działa raz. Jeśli to nie Ty, zignoruj tę wiadomość.</Text>
+          </Section>
+        </Container>
+      </Body>
+    </Html>
+  )
+}

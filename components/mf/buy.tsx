@@ -227,7 +227,7 @@ export function StickyBuyBar({ trialHref }: { trialHref?: string }) {
     >
       <div className="flex items-center gap-3">
         <button type="button" tabIndex={show ? 0 : -1} onClick={() => openBuy("paczka", "sticky")} className="mf-press min-h-12 flex-1 rounded-full bg-[var(--h-accent)] px-5 text-[17px] font-bold text-[#111111]">
-          MontageFrames · {MF_PRODUCTS.paczka.priceLabel} · Kupuję
+          {trialHref ? `Kupuję · ${MF_PRODUCTS.paczka.priceLabel}` : `MontageFrames · ${MF_PRODUCTS.paczka.priceLabel} · Kupuję`}
         </button>
         {trialHref && (
           <Link href={trialHref} tabIndex={show ? 0 : -1} onClick={() => logFunnel("trial_click", { placement: "sticky" })} className="mf-press grid min-h-12 place-items-center rounded-full bg-[var(--h-surface)] px-5 text-[15px] font-semibold">
