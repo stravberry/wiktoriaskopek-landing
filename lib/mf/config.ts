@@ -78,10 +78,10 @@ export const MF_REQUIREMENTS = {
 
 /**
  * Silnik montażu na otwartej licencji (HyperFrames, Apache-2.0; decyzja Wiktorii 26.11).
- * ZALEŻNE OD WYDANIA: ustaw true dopiero, gdy Coding Builder potwierdzi wydanie paczki na HyperFrames.
- * Do tego czasu strona nie mówi nic o licencji silnika.
+ * Wydanie potwierdzone przez Coding Buildera 26.11.2026: MontageFrames-dist 02dc45e, tag wydanie-6-hyperframes,
+ * HyperFrames 0.9.96 (Apache-2.0), bez Remotion w paczce i zależnościach.
  */
-export const MF_ENGINE_OPEN_LICENSE = false
+export const MF_ENGINE_OPEN_LICENSE = true
 
 /** Ważność linków (sekundy). */
 export const MF_TTL = {

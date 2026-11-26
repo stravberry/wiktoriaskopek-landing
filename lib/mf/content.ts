@@ -82,7 +82,7 @@ export const MF_CASES: CaseStudy[] = [
 
 /** FAQ zależne od wydania paczki na HyperFrames (patrz MF_ENGINE_OPEN_LICENSE). */
 const ENGINE_FAQ = MF_ENGINE_OPEN_LICENSE
-  ? [{ q: "Czy muszę kupić licencję na silnik montażu?", a: "Silnik montażu jest na otwartej licencji, nie płacisz dodatkowo za licencję." }]
+  ? [{ q: "Czy muszę kupić licencję na silnik montażu?", a: "Nie. Silnik montażu jest na otwartej licencji, nie płacisz dodatkowo za licencję. Silnik renderowania HyperFrames ma licencję Apache-2.0: z programu możesz korzystać komercyjnie, także w firmie dowolnej wielkości." }]
   : []
 
 export const MF_FAQ: { q: string; a: string }[] = [
