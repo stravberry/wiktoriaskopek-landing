@@ -81,7 +81,7 @@ export const clip = (name: string, label: string): MfClip => ({ name, label })
 // Teksty: „co naprawdę robi” z landing-assets/LISTA.md (Coding Builder, wydanie z 26.11.2026). Filmy: render z programu, bez twarzy i klientów.
 const fn = (name: string, aspect: MfVideo["aspect"] = "9/16"): MfVideo =>
   aspect === "16/9" ? { src: `/mf/funkcje/${name}-poziomo.mp4`, poster: `/mf/funkcje/${name}-poziomo.jpg`, aspect } : { src: `/mf/funkcje/${name}.mp4`, poster: `/mf/funkcje/${name}.jpg`, aspect }
-const shot = (file: string, alt: string) => ({ src: `/mf/panel/${file}.jpg`, alt, w: 1440, h: 900 })
+const shot = (file: string, alt: string) => ({ src: `/mf/panel-0l/${file}.jpg`, alt, w: 1440, h: 900 })
 
 export const MF_SHOWCASE: MfShowcase[] = [
   {
@@ -93,7 +93,7 @@ export const MF_SHOWCASE: MfShowcase[] = [
       "Ustawienia zostają w folderze marka/. Aktualizacje programu ich nie nadpisują.",
     ],
     video: fn("kreator-marki"),
-    image: { src: "/mf/apple/zrzut-3-twoja-marka.jpg", alt: "Panel MontageFrames: Twoja marka z wybranym stylem, zakładkami i podglądem", w: 1440, h: 900 },
+    image: { src: "/mf/panel-0l/11-twoja-marka.jpg", alt: "Panel MontageFrames: Twoja marka, wybór lub dodanie marki i trzy kroki kreatora", w: 1440, h: 900 },
   },
   {
     id: "style-animacje",
@@ -144,7 +144,7 @@ export const MF_SHOWCASE: MfShowcase[] = [
     lead: "Krótka animacja z Twojego tekstu: intro, plansza albo CTA.",
     points: ["Formaty 9:16, 1:1 albo 16:9.", "Najpierw storyboard i podgląd, potem render."],
     video: fn("motion-studio"),
-    image: shot("07b-motion-projekt", "Panel MontageFrames: projekt w Motion Studio z podglądem"),
+    image: shot("10-motion-studio", "Panel MontageFrames: Motion Studio, opis filmu i kroki storyboard, podgląd, render"),
   },
   {
     id: "cutraw",
@@ -155,7 +155,7 @@ export const MF_SHOWCASE: MfShowcase[] = [
       "Eksport XML do Premiere Pro. Oryginały zostają nietknięte.",
     ],
     video: fn("cutraw", "16/9"),
-    image: shot("08b-cutraw-projekt", "Panel MontageFrames: projekt podcastu w CutRaw"),
+    image: shot("09-cutraw", "Panel MontageFrames: CutRaw, nowy projekt z nagrań kamer i mikrofonów"),
   },
   {
     id: "aktualizacje",
@@ -163,16 +163,16 @@ export const MF_SHOWCASE: MfShowcase[] = [
     lead: "Program, silnik i skille aktualizujesz w panelu albo komendą /aktualizacja.",
     points: ["Przed aktualizacją robi się kopia zapasowa.", "Zawsze możesz wrócić do wersji zalecanej."],
     video: fn("aktualizacje"),
-    image: shot("09b-aktualizacje", "Panel MontageFrames: aktualizacje programu i silnika"),
+    image: shot("12-ustawienia", "Panel MontageFrames: ustawienia z wyglądem, kontem Claude i aktualizacjami"),
   },
 ]
 
 /** Zrzuty panelu (lokalny panel w przeglądarce, komenda /panel). */
 export const MF_PANEL_SHOTS = [
-  { src: "/mf/apple/zrzut-1-edytor-lista-slow.jpg", title: "Edytor napisów", alt: "Panel: edytor rolki z podglądem i listą słów do kliknięcia" },
-  { src: "/mf/apple/zrzut-2-galeria-stylow.jpg", title: "Galeria stylów", alt: "Panel: galeria stylów z filtrami" },
-  { src: "/mf/apple/zrzut-4-render-jest-git.jpg", title: "Render i „Jest git”", alt: "Panel: zakładka Render z gotowym filmem i przyciskiem „Jest git”" },
-  { src: "/mf/apple/zrzut-5-quickcontent-propozycje.jpg", title: "QuickContent", alt: "Panel: QuickContent z propozycjami fragmentów z długiego nagrania" },
+  { src: "/mf/panel-0l/03-edytor-slowo.jpg", title: "Edytor napisów", alt: "Panel: edytor rolki, wybrane słowo z opcjami wyróżnienia, lista słów i oś czasu" },
+  { src: "/mf/panel-0l/05-edytuj-styl.jpg", title: "Edytuj styl", alt: "Panel: Edytuj styl, ile słów naraz, animacja słów i intensywność ruchu" },
+  { src: "/mf/panel-0l/06-gotowe-filmy.jpg", title: "Render i gotowe filmy", alt: "Panel: gotowe filmy i opis do publikacji obok podglądu rolki" },
+  { src: "/mf/panel-0l/07-quickcontent.jpg", title: "QuickContent", alt: "Panel: QuickContent, zapisane projekty z propozycjami fragmentów z długiego nagrania" },
 ]
 
 /** „33 style”, „37 stylów”: liczba stylów z poprawną odmianą. */

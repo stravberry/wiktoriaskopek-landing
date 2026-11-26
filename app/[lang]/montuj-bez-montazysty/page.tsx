@@ -109,7 +109,7 @@ export default function MontujBezMontazysty() {
         <h2 id="liczby-title" className="sr-only">MontageFrames w liczbach</h2>
         <dl className="grid gap-x-10 gap-y-14 sm:grid-cols-2 lg:grid-cols-4">
           {[
-            [String(MF_STYLES.length), "stylów", "animacji napisów, każdy z własnym ruchem i tempem"],
+            [String(MF_STYLES.length), stylesLabel().split(" ")[1], "animacji napisów, każdy z własnym ruchem i tempem"],
             [String(p.amountGrosze / 100), "zł", "jednorazowo, bez abonamentu i bez limitu komputerów w firmie"],
             ["14", "dni", "gwarancji działania: uruchomimy program albo oddam pieniądze"],
             ["15–30", "min", "instalacji z rozmową w /start, krok po kroku"],
@@ -141,7 +141,7 @@ export default function MontujBezMontazysty() {
 
       {/* Ciemna scena: duże zbliżenie na panel (3D: zrzut prostuje się przy przewijaniu) */}
       <Section id="panel" title="Każde słowo pod ręką." tone="dark" center lead="Poprawiasz w rozmowie z Claude Code albo w panelu w przeglądarce. Oba sposoby działają na tym samym projekcie.">
-        <PanelTilt src="/mf/apple/zrzut-1-edytor-lista-slow.jpg" alt="Panel: edytor rolki z podglądem i listą słów do kliknięcia" />
+        <PanelTilt src="/mf/panel-0l/03-edytor-slowo.jpg" alt="Panel: edytor rolki, wybrane słowo z opcjami wyróżnienia, lista słów i oś czasu" />
         <div className="mx-auto mt-16 grid max-w-[920px] gap-10 text-left md:mt-24 md:grid-cols-2">
           <Reveal>
             <h3 className="text-[24px] font-semibold">W rozmowie</h3>

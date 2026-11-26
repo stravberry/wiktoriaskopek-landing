@@ -7,6 +7,9 @@ import type { MfStyle, MfStyleUse } from "@/lib/mf/content"
 // Galeria stylów (landing i próba): karta = poster, a podgląd w ruchu dopiero po najechaniu (mysz)
 // albo gdy karta jest na środku ekranu (dotyk). Wideo montujemy tylko dla aktywnej karty, więc reszta nic nie pobiera.
 
+/** Odmiana: 1 styl, 2–4 style (bez 12–14), reszta stylów. Jak stylesLabel w lib/mf/content.ts (bez importu treści do JS klienta). */
+const stylesWord = (n: number) => (n === 1 ? "styl" : n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14) ? "style" : "stylów")
+
 type Filter = "wszystkie" | "spokojne" | "dynamiczne" | MfStyleUse
 const FILTERS: { id: Filter; label: string }[] = [
   { id: "wszystkie", label: "Wszystkie" },
@@ -139,7 +142,7 @@ export function StyleGallery({ styles, selected, onSelect, initialCount = 8 }: {
         ))}
       </div>
       <p className="mt-3 text-[15px] text-[var(--h-ink-2)]" aria-live="polite">
-        {list.length} {list.length === 1 ? "styl" : list.length % 10 >= 2 && list.length % 10 <= 4 && (list.length % 100 < 12 || list.length % 100 > 14) ? "style" : "stylów"}.
+        {list.length} {stylesWord(list.length)}.
         {" "}Najedź na kartę albo przewiń, żeby zobaczyć rolkę w ruchu.
       </p>
       <ul className="-mx-5 mt-5 flex snap-x snap-mandatory scroll-px-5 gap-2 overflow-x-auto px-5 pb-4 sm:mx-0 sm:grid sm:grid-cols-3 sm:gap-3 sm:overflow-visible sm:px-0 md:grid-cols-4 lg:grid-cols-5">
@@ -149,7 +152,7 @@ export function StyleGallery({ styles, selected, onSelect, initialCount = 8 }: {
       </ul>
       {filter === "wszystkie" && !all && list.length > initialCount && (
         <button type="button" onClick={() => setAll(true)} className="mf-press mt-4 min-h-12 rounded-full bg-[var(--h-surface)] px-6 text-[17px] font-semibold hover:bg-[var(--h-surface-hover)]">
-          Pokaż wszystkie {list.length} stylów
+          Pokaż wszystkie {list.length} {stylesWord(list.length)}
         </button>
       )}
     </div>
