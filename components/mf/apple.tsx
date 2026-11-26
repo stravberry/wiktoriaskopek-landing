@@ -4,6 +4,7 @@ import Image from "next/image"
 import { useRef } from "react"
 import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion"
 import { LazyVideo } from "@/components/mf/lazy-video"
+import type { MfClip } from "@/lib/mf/content"
 
 // Oszczędne 3D (00-PLAN 0f, pkt 6): tylko CSS transform sterowany przewijaniem (framer-motion, już w paczce),
 // bez bibliotek 3D. Przy „ogranicz ruch” elementy stoją płasko; wideo ładuje się leniwie, poster widać od razu.
@@ -57,11 +58,22 @@ export function LayerStack({ layers, label }: { layers: { src: string; alt: stri
     <div ref={ref} className="mx-auto w-[min(64vw,300px)] [perspective:1200px]" role="img" aria-label={label}>
       <motion.div style={reduce ? undefined : { rotateY: tilt, rotateX: 10 }} className="relative aspect-[9/16] [transform-style:preserve-3d]">
         {layers.map((l, i) => (
-          <motion.div key={l.src} style={reduce ? undefined : { translateZ: z[i] }} className="absolute inset-0 overflow-hidden rounded-[28px] ring-1 ring-black/10">
+          <motion.div key={l.src} style={reduce ? undefined : { translateZ: z[i] }} className="absolute inset-0 overflow-hidden rounded-[28px] ring-1 ring-white/15">
             <Image src={l.src} alt="" fill sizes="300px" className="object-cover" />
           </motion.div>
         ))}
       </motion.div>
+    </div>
+  )
+}
+
+/** Nagranie panelu: 4:5 na telefonie, 16:9 od tabletu. Ukryte wideo się nie ładuje (LazyVideo patrzy na widoczność). */
+export function PanelClip({ clip, className = "", fit = "contain" }: { clip: MfClip; className?: string; fit?: "contain" | "cover" }) {
+  const v = `size-full ${fit === "cover" ? "object-cover" : "object-contain"}`
+  return (
+    <div className={`relative overflow-hidden bg-[#f5f5f7] ${className}`}>
+      <LazyVideo className={`${v} sm:hidden`} src={`/mf/apple/${clip.name}-4x5.mp4`} poster={`/mf/apple/${clip.name}-4x5.jpg`} label={clip.label} />
+      <LazyVideo className={`${v} hidden sm:block`} src={`/mf/apple/${clip.name}-16x9.mp4`} poster={`/mf/apple/${clip.name}-16x9.jpg`} label={clip.label} />
     </div>
   )
 }

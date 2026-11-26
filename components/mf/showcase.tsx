@@ -2,6 +2,7 @@ import Image from "next/image"
 import { MF_PANEL_SHOTS, type MfShowcase } from "@/lib/mf/content"
 import { LazyVideo } from "@/components/mf/lazy-video"
 import { Reveal } from "@/components/mf/motion"
+import { PanelClip } from "@/components/mf/apple"
 
 /** Jedna funkcja = jedna sekcja z własnym filmem (i zrzutem panelu, jeśli jest). */
 export function ShowcaseBlock({ f, flip, dark = false }: { f: MfShowcase; flip: boolean; dark?: boolean }) {
@@ -14,6 +15,7 @@ export function ShowcaseBlock({ f, flip, dark = false }: { f: MfShowcase; flip: 
           <ul className="mt-6 flex max-w-[56ch] list-disc flex-col gap-3 pl-5 leading-[1.6]">
             {f.points.map((x) => <li key={x}>{x}</li>)}
           </ul>
+          {f.clip && <PanelClip clip={f.clip} className="mt-8 aspect-[4/5] w-full rounded-[20px] sm:aspect-video" />}
           {f.image && (
             <Image src={f.image.src} alt={f.image.alt} width={f.image.w} height={f.image.h} sizes="(min-width: 1024px) 760px, 92vw" className="mt-8 w-full rounded-[20px] bg-[var(--h-surface)]" />
           )}

@@ -12,7 +12,7 @@ import { Reveal, ScrollScale } from "@/components/mf/motion"
 import { StepByStep } from "@/components/mf/steps"
 import { Compare } from "@/components/mf/compare"
 import { ClientLogos } from "@/components/mf/clients"
-import { PanelTilt, PhoneSpin } from "@/components/mf/apple"
+import { LayerStack, PanelTilt, PhoneSpin } from "@/components/mf/apple"
 
 const URL = `https://www.wiktoriaskopek.pl${MF_BASE_PATH}`
 const TITLE = "Montuj swoje filmy i rolki w AI! Bez montażysty | MontageFrames"
@@ -138,7 +138,7 @@ export default function MontujBezMontazysty() {
 
       {/* Ciemna scena: duże zbliżenie na panel (3D: zrzut prostuje się przy przewijaniu) */}
       <Section id="panel" title="Każde słowo pod ręką." tone="dark" center lead="Poprawiasz w rozmowie z Claude Code albo w panelu w przeglądarce. Oba sposoby działają na tym samym projekcie.">
-        <PanelTilt src="/mf/panel/02-edytor-napisow.jpg" alt="Panel: edytor rolki z podglądem, listą słów do kliknięcia i osią czasu" />
+        <PanelTilt src="/mf/apple/zrzut-1-edytor-lista-slow.jpg" alt="Panel: edytor rolki z podglądem i listą słów do kliknięcia" />
         <div className="mx-auto mt-16 grid max-w-[920px] gap-10 text-left md:mt-24 md:grid-cols-2">
           <Reveal>
             <h3 className="text-[24px] font-semibold">W rozmowie</h3>
@@ -164,6 +164,18 @@ export default function MontujBezMontazysty() {
       </Section>
 
       <BuyRow source="after_styles" trialHref={TRIAL} />
+
+      {/* 3D: warstwy prawdziwej klatki rolki (Coding Builder, 0f) rozsuwają się przy przewijaniu */}
+      <Section id="warstwy" title="Kadr, napisy, marka." tone="dark" center lead="Program składa rolkę z trzech warstw: Twoje nagranie, napisy w wybranym stylu i grafiki w kolorach marki.">
+        <LayerStack
+          label="Klatka rolki rozłożona na trzy warstwy: kadr nagrania, napisy i grafiki z oznaczeniem marki"
+          layers={[
+            { src: "/mf/apple/warstwa-1-kadr.webp", alt: "" },
+            { src: "/mf/apple/warstwa-2-napisy.webp", alt: "" },
+            { src: "/mf/apple/warstwa-3-grafiki-marka.webp", alt: "" },
+          ]}
+        />
+      </Section>
 
       {/* Funkcje: każda z własnym filmem, sceny na zmianę ciemne i jasne */}
       <section id="funkcje" aria-labelledby="funkcje-title" className="mt-28 scroll-mt-6 md:mt-44">
