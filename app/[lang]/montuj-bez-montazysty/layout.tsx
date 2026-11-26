@@ -6,6 +6,7 @@ import { MF_BASE_PATH, SELLER } from "@/lib/mf/config"
 import CookieSettingsLink from "@/components/mf/cookie-settings-link"
 import TestModeBar from "@/components/mf/test-mode-bar"
 import { ScrollProgress } from "@/components/mf/motion"
+import { UtmCapture } from "@/components/mf/buy"
 
 const fustat = Fustat({ subsets: ["latin", "latin-ext"], display: "swap", variable: "--font-mf" })
 
@@ -17,6 +18,7 @@ export default async function MfLayout({ children, params }: { children: React.R
     <div className={`${fustat.className} ${fustat.variable} mf-page home min-h-dvh bg-[var(--h-bg)] text-[17px] text-[var(--h-ink)]`}>
       <ScrollProgress />
       <TestModeBar />
+      <UtmCapture />
       <header className="mf-wrap flex items-center justify-between gap-4 pt-5 md:pt-8">
         <Link href={MF_BASE_PATH} className="whitespace-nowrap text-[17px] font-bold tracking-[-0.01em]">
           MontageFrames <span className="hidden font-normal text-[var(--h-ink-2)] sm:inline">od Wiktorii Skopek</span>

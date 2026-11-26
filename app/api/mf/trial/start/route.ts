@@ -1,6 +1,6 @@
 import { NextResponse, type NextRequest } from "next/server"
-import { randomToken, sha256 } from "@/lib/mf/core"
-import { sql } from "@/lib/mf/db"
+import { parseUtm, randomToken, sha256 } from "@/lib/mf/core"
+import { saveAttribution, sql } from "@/lib/mf/db"
 import { logEvent } from "@/lib/mf/events"
 import { clientIp, mfEnv, origin, rateLimited, sendLoginMail } from "@/lib/mf/server"
 import { isDisposable } from "@/lib/mf/trial"
@@ -30,7 +30,9 @@ export async function POST(request: NextRequest) {
       console.error("[mf] trial mail failed:", e instanceof Error ? e.message : e)
       return NextResponse.json({ error: "Nie udało się wysłać maila. Spróbuj ponownie." }, { status: 502 })
     }
-    await logEvent("trial_signup_requested", { marketing: body.marketing === true })
+    const utm = parseUtm(body.utm)
+    await saveAttribution(db, email, utm)
+    await logEvent("trial_signup_requested", { marketing: body.marketing === true, utm_source: utm.utm_source ?? null, utm_campaign: utm.utm_campaign ?? null })
   }
   return NextResponse.json({ ok: true })
 }

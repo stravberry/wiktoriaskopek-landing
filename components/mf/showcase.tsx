@@ -4,12 +4,12 @@ import { LazyVideo } from "@/components/mf/lazy-video"
 import { Reveal } from "@/components/mf/motion"
 
 /** Jedna funkcja = jedna sekcja z własnym filmem (i zrzutem panelu, jeśli jest). */
-export function ShowcaseBlock({ f, flip }: { f: MfShowcase; flip: boolean }) {
+export function ShowcaseBlock({ f, flip, dark = false }: { f: MfShowcase; flip: boolean; dark?: boolean }) {
   return (
-    <section id={f.id} aria-labelledby={`${f.id}-title`} className="mf-wrap scroll-mt-6 mt-24 md:mt-36">
-      <div className={`grid items-center gap-10 md:gap-16 ${!f.video ? "" : f.video.aspect === "16/9" ? "lg:grid-cols-[minmax(0,1fr)_minmax(0,1.3fr)]" : "md:grid-cols-[minmax(0,1fr)_320px]"}`}>
+    <section id={f.id} aria-labelledby={`${f.id}-title`} className={`scroll-mt-6 ${dark ? "mf-tone-dark py-24 md:py-36" : "py-24 md:py-36"}`}>
+      <div className={`mf-wrap grid items-center gap-10 md:gap-16 ${!f.video ? "" : f.video.aspect === "16/9" ? "lg:grid-cols-[minmax(0,1fr)_minmax(0,1.3fr)]" : "md:grid-cols-[minmax(0,1fr)_320px]"}`}>
         <Reveal className={flip && f.video ? "md:order-2" : ""}>
-          <h3 id={`${f.id}-title`} className="text-[clamp(1.75rem,3.4vw,2.75rem)] font-bold leading-[1.05] tracking-[-0.03em]">{f.title}</h3>
+          <h3 id={`${f.id}-title`} className="text-[clamp(2rem,4.2vw,3.5rem)] font-extrabold leading-[1] tracking-[-0.04em] [text-wrap:balance]">{f.title}</h3>
           <p className="mf-lead mt-4 max-w-[46ch]">{f.lead}</p>
           <ul className="mt-6 flex max-w-[56ch] list-disc flex-col gap-3 pl-5 leading-[1.6]">
             {f.points.map((x) => <li key={x}>{x}</li>)}

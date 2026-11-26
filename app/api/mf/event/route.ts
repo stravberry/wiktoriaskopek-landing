@@ -12,6 +12,10 @@ export async function POST(request: NextRequest) {
   const body = await request.json().catch(() => ({}))
   if (!CLIENT_EVENTS.includes(body?.event)) return NextResponse.json({ error: "unknown event" }, { status: 400 })
   await logEvent(body.event, cleanProps(body.props), await currentBuyer())
-  if (Math.random() < 0.01) await sql()`delete from mf_events where ts < now() - interval '14 months'`.catch(() => {}) // retencja z polityki prywatności
+  if (Math.random() < 0.01) {
+    // retencja z polityki prywatności
+    await sql()`delete from mf_events where ts < now() - interval '14 months'`.catch(() => {})
+    await sql()`delete from mf_attribution where created_at < now() - interval '14 months'`.catch(() => {})
+  }
   return new NextResponse(null, { status: 204 })
 }

@@ -5,6 +5,7 @@ import Link from "next/link"
 import { ArrowDown, ArrowRight, Loader2, X } from "lucide-react"
 import { MF_BASE_PATH, MF_PRODUCTS, MF_TEXT, type MfProductId } from "@/lib/mf/config"
 import { trackEvent } from "@/components/consent/consent-provider"
+import { captureUtm, getUtm, utmForEvents } from "@/lib/mf/utm-client"
 
 // Szybki zakup (00-PLAN 0e, pkt 1): ten sam formularz w okienku (z każdego przycisku „Kup”) i w sekcji #zamowienie.
 // Do kasy: wariant (domyślnie program) + 2 wymagane zgody + przycisk. E-mail podaje się w Stripe, login GitHub po zakupie na koncie.
@@ -13,12 +14,26 @@ const BUY_EVENT = "mf:buy"
 
 /** Zdarzenie do własnego dziennika (serwer, bez ciasteczek) i do Vercel Analytics (tylko po zgodzie). */
 export function logFunnel(event: string, props: Record<string, string> = {}) {
-  const utm = Object.fromEntries([...new URLSearchParams(window.location.search)].filter(([k]) => k.startsWith("utm_")))
-  const body = JSON.stringify({ event, props: { ...utm, ...props, device: window.matchMedia("(max-width: 767px)").matches ? "mobile" : "desktop" } })
+  const body = JSON.stringify({ event, props: { ...utmForEvents(), ...props, device: window.matchMedia("(max-width: 767px)").matches ? "mobile" : "desktop" } })
   if (!navigator.sendBeacon?.("/api/mf/event", new Blob([body], { type: "application/json" }))) {
     fetch("/api/mf/event", { method: "POST", headers: { "Content-Type": "application/json" }, body, keepalive: true }).catch(() => {})
   }
   trackEvent(event, props)
+}
+
+/** Zapisuje źródło wejścia (UTM, fbclid) przy pierwszym wejściu w tej karcie. Bez wyglądu. */
+export function UtmCapture() {
+  useEffect(() => {
+    captureUtm()
+    // Wejście do lejka (audyt Ecom 2, pkt 12): raz na kartę, bez ciasteczek.
+    try {
+      if (!sessionStorage.getItem("mf_seen")) {
+        sessionStorage.setItem("mf_seen", "1")
+        logFunnel("landing_view", { placement: window.location.pathname.split("/").pop() || "landing" })
+      }
+    } catch {}
+  }, [])
+  return null
 }
 
 export const openBuy = (product: MfProductId = "paczka", placement = "button") => {
@@ -64,7 +79,7 @@ export function BuyForm({ initialProduct = "paczka", compact = false }: { initia
     }
     setBusy(true)
     try {
-      const utm = Object.fromEntries([...new URLSearchParams(window.location.search)].filter(([k]) => k.startsWith("utm_")))
+      const utm = getUtm()
       const res = await fetch("/api/mf/checkout", {
         method: "POST",
         headers: { "Content-Type": "application/json" },

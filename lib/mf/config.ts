@@ -41,7 +41,7 @@ export const MF_PRODUCTS: Record<MfProductId, MfProduct> = {
 /** Wersje dokumentów zapisywane przy każdej zgodzie. Zmiana treści = nowa wersja. */
 // -2: dodany §14 o darmowej próbie (00-PLAN 0e, szkic).
 export const MF_TERMS_VERSION = "regulamin-mf-2026-11-26-2"
-export const POLICY_VERSION = "polityka-2026-11-26"
+export const POLICY_VERSION = "polityka-2026-11-26-2"
 // 26.11: krótszy, niski baner (audyt Ecom P1.1); poprzednia treść: wersja baner-2026-11-25 w historii repo.
 export const BANNER_VERSION = "baner-2026-11-26"
 

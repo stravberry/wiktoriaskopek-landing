@@ -1,7 +1,7 @@
 import { NextResponse, type NextRequest } from "next/server"
 import { MF_BASE_PATH } from "@/lib/mf/config"
 import { checkoutParams, consentRecord, InputError, parseCheckoutInput, priceIdFor } from "@/lib/mf/core"
-import { sql } from "@/lib/mf/db"
+import { getAttribution, saveAttribution, sql } from "@/lib/mf/db"
 import { clientIp, currentBuyer, mfEnv, origin, rateLimited, stripe } from "@/lib/mf/server"
 import { logEvent } from "@/lib/mf/events"
 
@@ -31,6 +31,11 @@ export async function POST(request: NextRequest) {
   if (!priceId) return NextResponse.json({ error: "Ten wariant jest chwilowo niedostępny." }, { status: 503 })
 
   const db = sql()
+  // Źródło wejścia (audyt Ecom 2, pkt 4): UTM z tej sesji przeglądarki albo zapisany przy próbie (first-touch), plus id próby.
+  const attr = input.email ? await getAttribution(db, input.email) : null
+  if (input.email) await saveAttribution(db, input.email, input.utm)
+  const trialMeta: Record<string, string> = attr?.trial_id ? { mf_trial_id: attr.trial_id, mf_trial_at: new Date(attr.trial_at ?? Date.now()).toISOString() } : {}
+  if (attr && Object.keys(attr.utm ?? {}).length) input = { ...input, utm: { ...attr.utm } }
   const c = consentRecord(input)
   const [row] = await db`
     insert into mf_consents (product, email, terms_version, terms_accepted, digital_consent, digital_consent_text,
@@ -42,14 +47,18 @@ export async function POST(request: NextRequest) {
 
   try {
     const session = await stripe().checkout.sessions.create(
-      checkoutParams(input, { priceId, consentId, origin: origin(), basePath: MF_BASE_PATH }),
+      withMeta(checkoutParams(input, { priceId, consentId, origin: origin(), basePath: MF_BASE_PATH }), trialMeta),
       { idempotencyKey: `mf-checkout/${consentId}` },
     )
     await db`update mf_consents set checkout_session_id = ${session.id} where id = ${consentId}`
-    await logEvent("checkout_started", { offer: input.product, from_account: !!buyer }, input.email || null)
+    await logEvent("checkout_started", { offer: input.product, from_account: !!buyer, from_trial: !!attr?.trial_id, utm_source: input.utm.utm_source ?? null, utm_campaign: input.utm.utm_campaign ?? null }, input.email || null)
     return NextResponse.json({ url: session.url })
   } catch (e) {
     console.error("[mf] checkout failed:", e instanceof Error ? e.message : e)
     return NextResponse.json({ error: "Nie udało się rozpocząć płatności. Spróbuj ponownie." }, { status: 502 })
   }
+}
+
+function withMeta<T extends { metadata: Record<string, string> }>(params: T, extra: Record<string, string>): T {
+  return { ...params, metadata: { ...params.metadata, ...extra } }
 }
