@@ -3,8 +3,9 @@ import options from "./trial-options.json"
 // Darmowa próba (00-PLAN 0e). Render: Coding Builder (Edge Function mf-trial + worker). Tu: walidacja marki i stałe.
 export const TRIAL_API = process.env.NEXT_PUBLIC_MF_TRIAL_API || "https://ousslupqwtmxgxahdotd.supabase.co/functions/v1/mf-trial"
 export const TRIAL_CONSENT_VERSION = "proba-2026-11-26"
+// Brzmienie zgody dla wersji proba-2026-11-26 (Coding Builder, 09-wersja-probna.md). Zmiana treści = nowa wersja po obu stronach.
 export const TRIAL_CONSENT_TEXT =
-  "Przesyłam nagranie, na którym jestem ja lub osoby, które się na to zgodziły. Zgadzam się na jego przetworzenie w celu zmontowania próbnej rolki. Nagranie usuwamy zaraz po montażu (najpóźniej po 24 h), a rolkę po 7 dniach."
+  "Zgadzam się, aby MontageFrames przetworzyło moje nagranie i logo w celu zmontowania jednej próbnej rolki. Nagranie i logo usuwamy zaraz po montażu (najpóźniej po 24 godzinach), a gotową rolkę i plik marki po 7 dniach. Oświadczam, że mam prawo do tego nagrania i zgodę osób, które w nim widać i słychać."
 export const TRIAL_LIMITS = { videoMaxBytes: 50 * 1024 * 1024, videoMinSeconds: 5, videoMaxSeconds: 60, logoMaxBytes: 5 * 1024 * 1024 }
 export const TRIAL_STYLES = options.styles as { id: string; name: string; description: string; inspiredBy: string | null }[]
 export const TRIAL_FONTS = options.fonts as string[]

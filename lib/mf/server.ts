@@ -114,7 +114,7 @@ export async function sendLoginMail(email: string, url: string, trial = false) {
     replyTo: replyTo(),
     subject,
     react: MfLoginEmail({ url, minutes: MF_TTL.loginToken / 60, trial }),
-    text: `Twój link do konta MontageFrames (ważny ${MF_TTL.loginToken / 60} minut, działa raz):\n${url}\n\nJeśli to nie Ty, zignoruj tę wiadomość.`,
+    text: `${trial ? "Twój link do darmowej próby MontageFrames" : "Twój link do konta MontageFrames"} (ważny ${MF_TTL.loginToken / 60} minut, działa raz):\n${url}\n\nJeśli to nie Ty, zignoruj tę wiadomość.`,
   })
   if (error) throw new Error(`Resend: ${error.name}`)
 }
