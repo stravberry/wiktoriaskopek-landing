@@ -26,7 +26,8 @@ export async function POST(request: NextRequest) {
   const db = sql()
   const n = await takeResendSlot(db, sessionId)
   if (!n) return NextResponse.json({ error: "Limit: 3 wysyłki na godzinę. Spróbuj później." }, { status: 429 })
-  const [o] = await db`select product, email, github_login, github_status from mf_orders where session_id = ${sessionId}`
+  const [o] = await db`select product, email, github_login, github_status, status from mf_orders where session_id = ${sessionId}`
+  if (!o || o.status !== "delivered") return NextResponse.json({ error: "Zamówienie nie jest zrealizowane" }, { status: 409 })
 
   // Nowy jednorazowy token (stary mógł zostać zużyty).
   const token = randomToken()

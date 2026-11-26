@@ -2,16 +2,15 @@ import { NextResponse, type NextRequest } from "next/server"
 import { Resend } from "resend"
 import { SELLER } from "@/lib/mf/config"
 import { sql } from "@/lib/mf/db"
-import { clientIp, mailFrom, rateLimited } from "@/lib/mf/server"
+import { ipHash, mailFrom } from "@/lib/mf/server"
 import { resendConfigured } from "@/lib/mf/core"
 
 export const dynamic = "force-dynamic"
 
-// POST /api/mf/withdrawal: oświadczenie o odstąpieniu → zapis + potwierdzenie mailem do kupującego + kopia do sprzedawcy.
+// POST /api/mf/withdrawal: oświadczenie o odstąpieniu → zapis + pełna treść do sprzedawcy (stały odbiorca).
+// Kupujący dostaje tylko numer i datę zgłoszenia, i tylko na adres, z którego było zamówienie (przegląd 26.11, S4):
+// formularz nie może wysyłać cudzego tekstu na dowolny adres. Limity w bazie: IP 3/h, adres 3/dobę, całość 30/h.
 export async function POST(request: NextRequest) {
-  if (rateLimited(`withdrawal:${clientIp(request.headers)}`, 3, 60 * 60_000)) {
-    return NextResponse.json({ error: "Zbyt wiele zgłoszeń. Napisz mailem: " + SELLER.email }, { status: 429 })
-  }
   const b = await request.json().catch(() => ({}))
   const name = typeof b.name === "string" ? b.name.trim().slice(0, 120) : ""
   const email = typeof b.email === "string" ? b.email.trim().toLowerCase().slice(0, 200) : ""
@@ -24,20 +23,37 @@ export async function POST(request: NextRequest) {
   if (!process.env.DATABASE_URL || (!resendConfigured(process.env.RESEND_API_KEY) && !outbox)) {
     return NextResponse.json({ error: `Formularz jest chwilowo niedostępny. Wyślij oświadczenie mailem na ${SELLER.email}.` }, { status: 503 })
   }
-  const [row] = await sql()`
-    insert into mf_withdrawals (name, email, order_ref, statement) values (${name}, ${email}, ${orderRef || null}, ${statement})
+  const db = sql()
+  const ip = ipHash(request.headers)
+  const [lim] = await db`
+    select count(*) filter (where ip_hash = ${ip} and created_at > now() - interval '1 hour')::int as ip,
+           count(*) filter (where lower(email) = ${email} and created_at > now() - interval '1 day')::int as mail,
+           count(*) filter (where created_at > now() - interval '1 hour')::int as total
+    from mf_withdrawals where created_at > now() - interval '1 day'`
+  if (lim.ip >= 3 || lim.mail >= 3 || lim.total >= 30) {
+    return NextResponse.json({ error: "Zbyt wiele zgłoszeń. Napisz mailem: " + SELLER.email }, { status: 429 })
+  }
+  const [row] = await db`
+    insert into mf_withdrawals (name, email, order_ref, statement, ip_hash) values (${name}, ${email}, ${orderRef || null}, ${statement}, ${ip})
     returning id, created_at`
   const when = new Date(row.created_at).toLocaleString("pl-PL", { timeZone: "Europe/Warsaw" })
-  const text = `Otrzymaliśmy Twoje oświadczenie o odstąpieniu od umowy (${when}, nr ${row.id}).\n\nImię i nazwisko: ${name}\nZamówienie: ${orderRef || "—"}\nTreść: ${statement}\n\nOdpowiemy i rozliczymy zwrot w ciągu 14 dni.\n${SELLER.name}, ${SELLER.address}`
+  // Potwierdzenie tylko dla adresu z zamówienia, bez treści wpisanej w formularz.
+  const [order] = await db`select 1 from mf_orders where lower(email) = ${email} limit 1`
+  const buyerText = `Otrzymaliśmy oświadczenie o odstąpieniu od umowy złożone w formularzu MontageFrames (nr ${row.id}, ${when}).\n\nOdpowiemy i rozliczymy zwrot w ciągu 14 dni. Jeśli to nie Ty, odpisz na tego maila.\n${SELLER.name}, ${SELLER.address}`
+  const sellerText = `Oświadczenie o odstąpieniu nr ${row.id} (${when}).\n\nImię i nazwisko: ${name}\nE-mail: ${email}${order ? " (ma zamówienie)" : " (BRAK zamówienia na ten adres)"}\nZamówienie: ${orderRef || "—"}\nTreść:\n${statement}`
+  const mails = [
+    { key: `withdrawal/${row.id}/seller`, to: SELLER.email, replyTo: email, subject: `Odstąpienie od umowy nr ${row.id}`, text: sellerText },
+    ...(order ? [{ key: `withdrawal/${row.id}/buyer`, to: email, replyTo: SELLER.email, subject: "Potwierdzenie otrzymania oświadczenia o odstąpieniu", text: buyerText }] : []),
+  ]
   if (outbox) {
-    await sql()`insert into mf_mail_outbox (idempotency_key, to_email, subject, body_text) values
-      (${`withdrawal/${row.id}/buyer`}, ${email}, 'Potwierdzenie otrzymania oświadczenia o odstąpieniu', ${text}),
-      (${`withdrawal/${row.id}/seller`}, ${SELLER.email}, ${`Odstąpienie od umowy: ${name}`}, ${text})
-      on conflict do nothing`
+    for (const m of mails) {
+      await db`insert into mf_mail_outbox (idempotency_key, to_email, subject, body_text) values (${m.key}, ${m.to}, ${m.subject}, ${m.text}) on conflict do nothing`
+    }
     return NextResponse.json({ ok: true, id: row.id })
   }
   const resend = new Resend(process.env.RESEND_API_KEY)
-  await resend.emails.send({ from: mailFrom(), to: email, replyTo: SELLER.email, subject: "Potwierdzenie otrzymania oświadczenia o odstąpieniu", text })
-  await resend.emails.send({ from: mailFrom(), to: SELLER.email, replyTo: email, subject: `Odstąpienie od umowy: ${name}`, text })
+  for (const m of mails) {
+    await resend.emails.send({ from: mailFrom(), to: m.to, replyTo: m.replyTo, subject: m.subject, text: m.text }, { idempotencyKey: m.key })
+  }
   return NextResponse.json({ ok: true, id: row.id })
 }

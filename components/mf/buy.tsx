@@ -67,7 +67,11 @@ export function BuyForm({ initialProduct = "paczka", compact = false }: { initia
   const [marketing, setMarketing] = useState(false)
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [waitlist, setWaitlist] = useState(false)
   useEffect(() => setProduct(initialProduct), [initialProduct])
+  useEffect(() => {
+    fetch("/api/mf/checkout", { cache: "no-store" }).then((r) => r.json()).then((d) => d.waitlist && setWaitlist(true)).catch(() => {})
+  }, [])
 
   async function submit(e: React.FormEvent) {
     e.preventDefault()
@@ -86,6 +90,13 @@ export function BuyForm({ initialProduct = "paczka", compact = false }: { initia
         body: JSON.stringify({ product, terms, digital, serviceStart, marketing, utm }),
       })
       const data = await res.json().catch(() => ({}))
+      // Sklep w trybie testowym (S2): zamiast płatności zapis na listę „daj znać, gdy sprzedaż ruszy”.
+      if (data.waitlist) {
+        setWaitlist(true)
+        setBusy(false)
+        logFunnel("waitlist_shown", { product })
+        return
+      }
       if (!res.ok || !data.url) throw new Error(data.error || "Nie udało się rozpocząć płatności.")
       trackEvent("begin_checkout", { product })
       window.location.assign(data.url)
@@ -94,6 +105,8 @@ export function BuyForm({ initialProduct = "paczka", compact = false }: { initia
       setBusy(false)
     }
   }
+
+  if (waitlist) return <WaitlistForm />
 
   return (
     <form onSubmit={submit} noValidate>
@@ -146,6 +159,42 @@ export function BuyForm({ initialProduct = "paczka", compact = false }: { initia
         Płacisz na stronie Stripe: BLIK, karta, Klarna. Apple Pay i Google Pay, jeśli Twoje urządzenie je obsługuje. E-mail podajesz w Stripe.
       </p>
       <GuaranteeLine className="mt-1 text-center" />
+    </form>
+  )
+}
+
+/** Sklep w trybie testowym: zapis na listę zamiast płatności (bez wysyłki maila). */
+function WaitlistForm() {
+  const [email, setEmail] = useState("")
+  const [ok, setOk] = useState(false)
+  const [consent, setConsent] = useState(false)
+  const [busy, setBusy] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+  async function submit(e: React.FormEvent) {
+    e.preventDefault()
+    setError(null)
+    if (!consent) return setError("Zaznacz zgodę na maila o starcie sprzedaży.")
+    setBusy(true)
+    const res = await fetch("/api/mf/lista", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ email, marketing: true }) }).catch(() => null)
+    const data = res ? await res.json().catch(() => ({})) : {}
+    setBusy(false)
+    if (!res || !res.ok) return setError(data.error || "Nie udało się zapisać. Spróbuj ponownie.")
+    setOk(true)
+    logFunnel("waitlist_joined")
+  }
+  if (ok) return <p role="status" className="rounded-2xl bg-[var(--h-bg)] p-5 text-[17px] font-semibold">Zapisane. Napiszemy, gdy sprzedaż ruszy.</p>
+  return (
+    <form onSubmit={submit} noValidate>
+      <p className="text-[22px] font-bold tracking-[-0.02em]">Sklep w trybie testowym: zakup wkrótce</p>
+      <p className="mt-2 text-[16px] leading-[1.5] text-[var(--h-ink-2)]">Zostaw e-mail, a napiszemy, gdy sprzedaż ruszy. Do tego czasu możesz zrobić darmową próbę na swoim nagraniu.</p>
+      <label className="mt-4 block text-[15px] font-semibold" htmlFor="mf-lista-email">E-mail</label>
+      <input id="mf-lista-email" type="email" required autoComplete="email" value={email} onChange={(e) => setEmail(e.target.value)}
+        className="mt-1 min-h-12 w-full rounded-2xl bg-[var(--h-bg)] px-4 text-[17px] outline-none focus:outline-2 focus:outline-[var(--h-accent)]" />
+      <div className="mt-4"><Consent checked={consent} set={setConsent} required>{MF_TEXT.marketing}</Consent></div>
+      {error && <p role="alert" className="mt-4 rounded-2xl bg-[var(--h-accent)]/15 p-4 text-[15px] font-semibold">{error}</p>}
+      <button type="submit" disabled={busy} className="mt-4 flex min-h-14 w-full items-center justify-center gap-3 rounded-full bg-[var(--h-accent)] px-7 text-[17px] font-bold text-[#111111] disabled:opacity-60">
+        {busy ? <Loader2 className="size-5 animate-spin" /> : null}Dajcie znać, gdy ruszy
+      </button>
     </form>
   )
 }

@@ -1,11 +1,19 @@
 import { NextResponse, type NextRequest } from "next/server"
 import { MF_BASE_PATH } from "@/lib/mf/config"
-import { checkoutParams, consentRecord, InputError, parseCheckoutInput, priceIdFor } from "@/lib/mf/core"
+import { checkoutParams, consentRecord, InputError, parseCheckoutInput, priceIdFor, shopTestLocked, testerAllowed } from "@/lib/mf/core"
 import { getAttribution, saveAttribution, sql } from "@/lib/mf/db"
 import { clientIp, currentBuyer, mfEnv, origin, rateLimited, stripe } from "@/lib/mf/server"
 import { logEvent } from "@/lib/mf/events"
 
 export const dynamic = "force-dynamic"
+
+// GET /api/mf/checkout: czy formularz ma od razu pokazać zapis na listę (tryb testowy na produkcji, S2).
+export async function GET() {
+  const { env } = mfEnv()
+  if (!shopTestLocked(env)) return NextResponse.json({ waitlist: false })
+  const buyer = await currentBuyer()
+  return NextResponse.json({ waitlist: !(buyer && testerAllowed(buyer, env)) }, { headers: { "Cache-Control": "no-store" } })
+}
 
 // POST /api/mf/checkout: walidacja zgód → zapis zgody → sesja Stripe Checkout → URL przekierowania.
 export async function POST(request: NextRequest) {
@@ -26,6 +34,13 @@ export async function POST(request: NextRequest) {
   // Zalogowany (np. po darmowej próbie): e-mail wpisujemy za niego w Stripe (audyt Ecom, szybszy zakup).
   const buyer = await currentBuyer()
   if (!input.email && buyer) input = { ...input, email: buyer }
+  // S2: tryb testowy na produkcji. Zakup tylko dla zalogowanego testera; e-mail ustawiamy z sesji (Stripe go nie zmieni).
+  if (shopTestLocked(env)) {
+    if (!buyer || !testerAllowed(buyer, env)) {
+      return NextResponse.json({ error: "Sklep w trybie testowym: zakup wkrótce.", waitlist: true }, { status: 403 })
+    }
+    input = { ...input, email: buyer }
+  }
 
   const priceId = priceIdFor(input.product, env)
   if (!priceId) return NextResponse.json({ error: "Ten wariant jest chwilowo niedostępny." }, { status: 503 })
