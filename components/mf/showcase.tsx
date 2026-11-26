@@ -11,7 +11,7 @@ export function StyleReels() {
         const s = MF_STYLES.find((x) => x.slug === r.slug)
         const name = s?.name ?? r.slug
         return (
-          <li key={r.slug} className="w-[64vw] max-w-[300px] shrink-0 snap-start md:w-auto md:max-w-none md:flex-1">
+          <li key={r.slug} className="mf-lift w-[64vw] max-w-[300px] shrink-0 snap-start md:w-auto md:max-w-none md:flex-1">
             <LazyVideo
               className="aspect-[9/16] w-full rounded-[20px] bg-[#1d1d1f] object-cover"
               src={r.video.src}
@@ -65,7 +65,7 @@ export function PanelShots() {
   return (
     <ul className="-mx-5 flex snap-x snap-mandatory scroll-px-5 gap-4 overflow-x-auto px-5 pb-4 md:mx-0 md:grid md:grid-cols-2 md:gap-6 md:overflow-visible md:px-0" aria-label="Ekrany panelu">
       {MF_PANEL_SHOTS.map((s) => (
-        <li key={s.src} className="w-[84vw] shrink-0 snap-start md:w-auto">
+        <li key={s.src} className="mf-lift w-[84vw] shrink-0 snap-start md:w-auto">
           <figure>
             <Image src={s.src} alt={s.alt} width={1440} height={900} sizes="(min-width: 768px) 600px, 84vw" className="w-full rounded-[20px] bg-[var(--h-surface)]" />
             <figcaption className="mt-3 text-[17px] font-semibold">{s.title}</figcaption>
