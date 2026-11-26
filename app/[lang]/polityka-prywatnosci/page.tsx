@@ -2,11 +2,12 @@ import { ArrowLeft } from "lucide-react"
 import Link from "next/link"
 import type { Metadata } from "next"
 import type { Locale } from "@/lib/translations"
+import { PRIVACY_SECTIONS, PRIVACY_UPDATED } from "@/lib/privacy-policy"
 
 export const metadata: Metadata = {
   title: "Polityka Prywatności | Wiktoria Skopek",
   description: "Polityka prywatności strony wiktoriaskopek.pl",
-  robots: { index: false, follow: false },
+  robots: { index: true, follow: true },
 }
 
 export default async function PolitykaPrywatnosci({
@@ -53,92 +54,25 @@ export default async function PolitykaPrywatnosci({
             </span>
           </h1>
           <p className="font-sans text-white/40 text-sm">
-            Ostatnia aktualizacja: 30 kwietnia 2025
+            Ostatnia aktualizacja: {PRIVACY_UPDATED}
           </p>
         </div>
 
         {/* Divider */}
         <div className="h-px bg-white/5 mb-14" />
 
-        {/* Sections */}
+        {/* Sections: treść w lib/privacy-policy.ts (wersja zapisywana przy zgodach) */}
         <div className="space-y-12 font-sans">
-
-          <section>
-            <h2 className="font-display text-2xl md:text-3xl text-white tracking-wide mb-4 uppercase">
-              1. Administrator Strony
-            </h2>
-            <p className="text-white/65 text-base md:text-lg leading-relaxed">
-              Administratorem strony internetowej dostępnej pod adresem{" "}
-              <span className="text-white font-medium">wiktoriaskopek.pl</span> jest{" "}
-              <span className="text-white font-medium">Wiktoria Skopek</span> — osoba fizyczna
-              prowadząca działalność w zakresie marketingu wideo i doradztwa strategicznego.
-            </p>
-          </section>
-
-          <section>
-            <h2 className="font-display text-2xl md:text-3xl text-white tracking-wide mb-4 uppercase">
-              2. Zakres Przetwarzania Danych
-            </h2>
-            <p className="text-white/65 text-base md:text-lg leading-relaxed mb-4">
-              Niniejsza strona jest prostym landing page&apos;em informacyjnym. Nie zbieramy,
-              nie przechowujemy ani nie przetwarzamy Twoich danych osobowych w sposób
-              automatyczny — z wyjątkiem danych podanych dobrowolnie przez formularz kontaktowy.
-            </p>
-            <p className="text-white/65 text-base md:text-lg leading-relaxed">
-              Dane podane w formularzu kontaktowym (imię, adres e-mail, numer telefonu, treść
-              wiadomości) są przekazywane wyłącznie do administratora w celu udzielenia
-              odpowiedzi na zapytanie. Nie są udostępniane podmiotom trzecim ani
-              wykorzystywane w celach marketingowych.
-            </p>
-          </section>
-
-          <section>
-            <h2 className="font-display text-2xl md:text-3xl text-white tracking-wide mb-4 uppercase">
-              3. Pliki Cookie i Śledzenie
-            </h2>
-            <p className="text-white/65 text-base md:text-lg leading-relaxed">
-              Strona <span className="text-white font-medium">nie używa plików cookie</span>,
-              narzędzi analitycznych (np. Google Analytics) ani żadnych innych technologii
-              śledzących zachowanie użytkowników. Nie zbieramy danych o Twoich odwiedzinach,
-              urządzeniu ani lokalizacji.
-            </p>
-          </section>
-
-          <section>
-            <h2 className="font-display text-2xl md:text-3xl text-white tracking-wide mb-4 uppercase">
-              4. Serwisy Zewnętrzne
-            </h2>
-            <p className="text-white/65 text-base md:text-lg leading-relaxed">
-              Strona może zawierać linki do zewnętrznych serwisów (np. podcastkatowice.pl,
-              adify.pl). Administrator nie ponosi odpowiedzialności za politykę prywatności
-              tych witryn. Zalecamy zapoznanie się z polityką prywatności każdego odwiedzanego
-              serwisu.
-            </p>
-          </section>
-
-          <section>
-            <h2 className="font-display text-2xl md:text-3xl text-white tracking-wide mb-4 uppercase">
-              5. Prawa Użytkownika
-            </h2>
-            <p className="text-white/65 text-base md:text-lg leading-relaxed">
-              Na podstawie RODO przysługuje Ci prawo dostępu do swoich danych, ich
-              sprostowania, usunięcia lub ograniczenia przetwarzania. W celu realizacji
-              powyższych praw prosimy o kontakt przez formularz na stronie lub bezpośrednio
-              drogą e-mailową.
-            </p>
-          </section>
-
-          <section>
-            <h2 className="font-display text-2xl md:text-3xl text-white tracking-wide mb-4 uppercase">
-              6. Zmiany Polityki
-            </h2>
-            <p className="text-white/65 text-base md:text-lg leading-relaxed">
-              Administrator zastrzega sobie prawo do zmiany niniejszej polityki prywatności.
-              Zmiany wchodzą w życie z chwilą opublikowania ich na stronie. Data ostatniej
-              aktualizacji jest widoczna na początku dokumentu.
-            </p>
-          </section>
-
+          {PRIVACY_SECTIONS.map((sec) => (
+            <section key={sec.title}>
+              <h2 className="font-display text-2xl md:text-3xl text-white tracking-wide mb-4 uppercase">{sec.title}</h2>
+              <div className="space-y-4">
+                {sec.items.map((t) => (
+                  <p key={t} className="text-white/65 text-base md:text-lg leading-relaxed">{t}</p>
+                ))}
+              </div>
+            </section>
+          ))}
         </div>
 
         {/* Divider */}

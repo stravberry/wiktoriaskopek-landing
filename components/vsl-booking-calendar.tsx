@@ -2,9 +2,14 @@
 
 import { useEffect } from "react"
 import { motion } from "framer-motion"
+import { useConsent } from "@/components/consent/consent-provider"
+import CalPlaceholder from "@/components/consent/cal-placeholder"
 
 export default function VslBookingCalendar() {
+  const { state: consent } = useConsent()
+  const calAllowed = !!consent?.external
   useEffect(() => {
+    if (!calAllowed) return
     (function (C, A, L) {
       let p = function (a: any, ar: any) {
         a.q.push(ar)
@@ -56,7 +61,7 @@ export default function VslBookingCalendar() {
 
     // @ts-ignore
     window.Cal.ns["darmowa-konsultacja"]("ui", { "hideEventTypeDetails": false, "layout": "month_view", "theme": "dark" })
-  }, [])
+  }, [calAllowed])
 
   return (
     <section 
@@ -99,10 +104,14 @@ export default function VslBookingCalendar() {
           viewport={{ once: true }}
           transition={{ duration: 0.8, delay: 0.2 }}
         >
-           <div 
-             id="my-cal-inline-darmowa-konsultacja" 
-             className="w-full min-h-[600px] md:min-h-[700px] bg-transparent"
-           />
+           {calAllowed ? (
+             <div
+               id="my-cal-inline-darmowa-konsultacja"
+               className="w-full min-h-[600px] md:min-h-[700px] bg-transparent"
+             />
+           ) : (
+             <CalPlaceholder dark />
+           )}
         </motion.div>
 
         {/* Support Text */}

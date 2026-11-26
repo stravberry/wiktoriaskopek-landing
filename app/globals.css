@@ -267,3 +267,20 @@ html[data-home-theme="dark"]:has(.home) { background-color: #0b0b0c; }
   .home-pulse::after, .home-ring { animation: none; }
   .home-tile, .home-tile-arrow { transition: none; }
 }
+
+/* MontageFrames (/pl/montuj-bez-montazysty): jedna siatka, pięć rozmiarów pisma, ruch tylko transform/opacity */
+.page-transition:has(.mf-page) { animation: none; }
+body:has(.mf-page) { font-family: var(--font-mf), system-ui, sans-serif; }
+.mf-wrap { max-width: 1240px; margin-inline: auto; padding-inline: clamp(20px, 4vw, 40px); }
+.mf-h1 { font-size: clamp(2.4rem, 8vw, 7.25rem); font-weight: 800; line-height: 0.95; letter-spacing: -0.045em; }
+.mf-h2 { font-size: clamp(2.1rem, 4.6vw, 4rem); font-weight: 700; line-height: 1.02; letter-spacing: -0.035em; text-wrap: balance; }
+.mf-lead { font-size: 1.3125rem; line-height: 1.5; text-wrap: pretty; }
+.mf-press { transition: transform 150ms cubic-bezier(0.2, 0, 0, 1), background-color 200ms; }
+.mf-press:active { transform: scale(0.97); }
+.mf-press:focus-visible, .mf-page a:focus-visible, .mf-page button:focus-visible, .mf-page summary:focus-visible { outline: 3px solid var(--h-accent); outline-offset: 3px; }
+@keyframes mf-drift { from { transform: scale(1.02); } to { transform: scale(1.1) translateY(-1.5%); } }
+.mf-drift { animation: mf-drift 14s ease-in-out infinite alternate; }
+@media (prefers-reduced-motion: reduce) {
+  .mf-drift { animation: none; }
+  .mf-press { transition: none; }
+}

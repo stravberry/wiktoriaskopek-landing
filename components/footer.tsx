@@ -4,10 +4,14 @@ import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { Mail, Phone, Instagram, Youtube } from "lucide-react"
 import { type Locale } from "@/lib/translations"
+import { openConsentSettings } from "@/components/consent/consent-provider"
 
 export default function Footer({ lang = "pl" }: { lang?: Locale }) {
   // Nowa strona główna jest na razie samodzielna, bez stopki
-  if (usePathname() === `/${lang}`) return null
+  const pathname = usePathname()
+  if (pathname === `/${lang}`) return null
+  // Strona produktu MontageFrames ma własne zamknięcie (app/[lang]/montuj-bez-montazysty/layout.tsx)
+  if (pathname?.startsWith(`/${lang}/montuj-bez-montazysty`) || pathname?.startsWith(`/${lang}/dev/`)) return null
 
   const currentYear = new Date().getFullYear()
 
@@ -15,6 +19,7 @@ export default function Footer({ lang = "pl" }: { lang?: Locale }) {
     { name: "Strona główna", href: `/${lang}` },
     { name: "Portfolio", href: `/${lang}/portfolio` },
     { name: "Blog", href: `/${lang}/blog` },
+    { name: "MontageFrames: montuj bez montażysty", href: "/pl/montuj-bez-montazysty" },
     { name: "Studio (podcastkatowice.pl)", href: "https://podcastkatowice.pl", external: true },
     { name: "Kontakt", href: `/${lang}#contact` },
   ]
@@ -126,6 +131,15 @@ export default function Footer({ lang = "pl" }: { lang?: Locale }) {
               >
                 Regulamin
               </Link>
+              <Link href="/pl/montuj-bez-montazysty/regulamin" className="block font-sans text-[10px] uppercase tracking-widest text-white/20 hover:text-white transition-colors duration-500 font-bold">
+                Regulamin sprzedaży MontageFrames
+              </Link>
+              <Link href="/pl/odstapienie" className="block font-sans text-[10px] uppercase tracking-widest text-white/20 hover:text-white transition-colors duration-500 font-bold">
+                Odstąp od umowy
+              </Link>
+              <button type="button" onClick={openConsentSettings} className="block font-sans text-[10px] uppercase tracking-widest text-white/20 hover:text-white transition-colors duration-500 font-bold text-left">
+                Ustawienia cookies
+              </button>
             </div>
           </div>
 

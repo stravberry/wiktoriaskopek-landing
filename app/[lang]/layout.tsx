@@ -1,8 +1,9 @@
 import type React from "react"
 import type { Metadata } from "next"
 import { Bebas_Neue } from "next/font/google"
-import { Analytics } from "@vercel/analytics/next"
 import "../globals.css"
+import "../fonts-satoshi.css"
+import ConsentProvider from "@/components/consent/consent-provider"
 import Footer from "@/components/footer"
 import { locales, type Locale } from "@/lib/translations"
 import ScrollToTop from "@/components/scroll-to-top"
@@ -96,16 +97,14 @@ export default async function LangLayout({
 
   return (
     <html lang={lang} className="scroll-smooth" style={{ backgroundColor: "#050505" }} suppressHydrationWarning>
-      <head>
-        <link href="https://api.fontshare.com/v2/css?f[]=satoshi@300,400,500,700,900&display=swap" rel="stylesheet" />
-      </head>
       <body
         className={`${bebasNeue.variable} antialiased bg-background text-foreground`}
       >
-        <ScrollToTop />
-        <main className="page-transition">{children}</main>
-        <Footer lang={lang} />
-        <Analytics />
+        <ConsentProvider lang={lang}>
+          <ScrollToTop />
+          <main className="page-transition">{children}</main>
+          <Footer lang={lang} />
+        </ConsentProvider>
       </body>
     </html>
   )

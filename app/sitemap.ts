@@ -38,5 +38,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
     }
   ])
 
-  return routes
+  return [
+    ...routes,
+    { url: `${baseUrl}/pl/montuj-bez-montazysty`, lastModified: new Date(), changeFrequency: "weekly" as const, priority: 0.9 },
+    { url: `${baseUrl}/pl/montuj-bez-montazysty/regulamin`, lastModified: new Date(), changeFrequency: "yearly" as const, priority: 0.3 },
+    { url: `${baseUrl}/pl/polityka-prywatnosci`, lastModified: new Date(), changeFrequency: "yearly" as const, priority: 0.2 },
+  ]
 }

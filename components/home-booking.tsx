@@ -4,6 +4,8 @@ import { useEffect, useState, type ReactNode } from "react"
 import Image from "next/image"
 import { AnimatePresence, motion } from "framer-motion"
 import { ArrowUp, ArrowUpRight, Moon, Phone, Sun } from "lucide-react"
+import { useConsent } from "@/components/consent/consent-provider"
+import CalPlaceholder from "@/components/consent/cal-placeholder"
 
 const SERVICES: { title: string; text: string; link?: { label: string; href: string } }[] = [
   {
@@ -95,6 +97,8 @@ function mountCal(theme: Theme) {
 
 export default function HomeBooking() {
   const [showCall, setShowCall] = useState(false)
+  const { state: consent } = useConsent()
+  const calAllowed = !!consent?.external // Cal.com dopiero po zgodzie „Treści zewnętrzne” (06, pkt 2)
 
   useEffect(() => {
     const onScroll = () => setShowCall(window.scrollY > 480)
@@ -104,6 +108,7 @@ export default function HomeBooking() {
   }, [])
 
   useEffect(() => {
+    if (!calAllowed) return
     // Cal.com embed loader (oficjalny snippet)
     ;(function (C: any, A: string, L: string) {
       const p = (a: any, ar: any) => a.q.push(ar)
@@ -141,7 +146,7 @@ export default function HomeBooking() {
 
     ;(window as any).Cal("init", NS, { origin: "https://app.cal.com" })
     mountCal(currentTheme())
-  }, [])
+  }, [calAllowed])
 
   const toggleTheme = () => {
     const next: Theme = currentTheme() === "dark" ? "light" : "dark"
@@ -149,7 +154,7 @@ export default function HomeBooking() {
     try {
       localStorage.setItem(STORAGE_KEY, next)
     } catch {}
-    mountCal(next) // embed Cal.com nie przełącza motywu w locie, więc osadzamy go od nowa
+    if (calAllowed) mountCal(next) // embed Cal.com nie przełącza motywu w locie, więc osadzamy go od nowa
   }
 
   return (
@@ -202,7 +207,7 @@ export default function HomeBooking() {
         </section>
 
         <section id="rezerwacja" className="mt-12 scroll-mt-6 md:mt-16" aria-label="Kalendarz rezerwacji">
-          <div id="cal-inline" className="min-h-[520px] w-full" />
+          {calAllowed ? <div id="cal-inline" className="min-h-[520px] w-full" /> : <CalPlaceholder />}
 
           <p className="mt-8 flex items-center justify-center gap-3 text-[15px] leading-[1.5] text-[var(--h-ink-2)]">
             <span className="home-pulse relative size-2.5 shrink-0 rounded-full bg-[var(--h-accent)]" aria-hidden />
