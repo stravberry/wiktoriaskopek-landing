@@ -1,5 +1,5 @@
 import type { Metadata } from "next"
-import { CHAPTERS } from "@/lib/mf/poradnik"
+import { getChapters } from "@/lib/mf/poradnik"
 import { requireBuyer } from "@/lib/mf/guard"
 import { PoradnikSearch } from "@/components/mf/poradnik-view"
 
@@ -8,6 +8,7 @@ export const metadata: Metadata = { title: "Poradnik | MontageFrames", robots: {
 
 export default async function Poradnik() {
   const email = await requireBuyer()
+  const CHAPTERS = await getChapters()
   return (
     <main className="mx-auto max-w-[820px] px-5 pb-36 pt-12 md:px-10 md:pt-20">
       <h1 className="text-[clamp(2rem,5vw,3.5rem)] font-bold leading-[1.05] tracking-[-0.035em]">Poradnik MontageFrames</h1>

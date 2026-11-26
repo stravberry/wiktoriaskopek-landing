@@ -7,7 +7,9 @@ let client: postgres.Sql | null = null
 /** Jedno połączenie na instancję funkcji. `prepare: false` dla poolerów w trybie transakcji (Supabase 6543). */
 export function sql(url = process.env.DATABASE_URL) {
   if (!url) throw new Error("DATABASE_URL is missing")
-  if (!client) client = postgres(url, { max: 3, prepare: false, idle_timeout: 20, connect_timeout: 10 })
+  // TLS wymuszone poza lokalną bazą (przegląd 26.11, utwardzenie).
+  const ssl = /@(localhost|127\.0\.0\.1)[:/]/.test(url) ? false : ("require" as const)
+  if (!client) client = postgres(url, { max: 3, prepare: false, idle_timeout: 20, connect_timeout: 10, ssl })
   return client
 }
 

@@ -1,5 +1,5 @@
 import { NextResponse, type NextRequest } from "next/server"
-import { parseUtm, randomToken, sha256 } from "@/lib/mf/core"
+import { normalizedEmail, parseUtm, randomToken, sha256, testerAllowed } from "@/lib/mf/core"
 import { saveAttribution, sql } from "@/lib/mf/db"
 import { logEvent } from "@/lib/mf/events"
 import { clientIp, mfEnv, origin, rateLimited, sendLoginMail } from "@/lib/mf/server"
@@ -18,8 +18,18 @@ export async function POST(request: NextRequest) {
   if (isDisposable(email)) return NextResponse.json({ error: "Podaj swój stały adres e-mail, nie jednorazowy." }, { status: 400 })
 
   const db = sql()
-  const [{ n }] = await db`select count(*)::int as n from mf_login_tokens where lower(email) = ${email} and created_at > now() - interval '1 hour'`
-  if (n < 5) {
+  // S5 (przegląd 26.11): limity liczone w bazie na adresie bez +aliasu (i bez kropek w Gmailu) oraz globalnie.
+  const norm = normalizedEmail(email)
+  const [lim] = await db`
+    select count(*) filter (where (case when split_part(lower(email),'@',2) in ('gmail.com','googlemail.com') then replace(split_part(split_part(lower(email),'@',1),'+',1),'.','') || '@gmail.com' else split_part(split_part(lower(email),'@',1),'+',1) || '@' || split_part(lower(email),'@',2) end) = ${norm} and created_at > now() - interval '1 hour')::int as addr,
+           count(*) filter (where purpose like 'trial%' and created_at > now() - interval '1 hour')::int as total,
+           count(*) filter (where purpose like 'trial%' and lower(email) <> ${email} and (case when split_part(lower(email),'@',2) in ('gmail.com','googlemail.com') then replace(split_part(split_part(lower(email),'@',1),'+',1),'.','') || '@gmail.com' else split_part(split_part(lower(email),'@',1),'+',1) || '@' || split_part(lower(email),'@',2) end) = ${norm} and created_at > now() - interval '30 days')::int as alias
+    from mf_login_tokens where created_at > now() - interval '30 days'`
+  if (lim.total >= 60) return NextResponse.json({ error: "Dużo zgłoszeń do próby. Spróbuj za godzinę." }, { status: 429 })
+  if (lim.alias > 0 && !testerAllowed(email, process.env)) {
+    return NextResponse.json({ error: "Na ten adres (albo jego wersję z +) próba już była. Zaloguj się nim, żeby zobaczyć wynik." }, { status: 400 })
+  }
+  if (lim.addr < 5) {
     const token = randomToken()
     await db`
       insert into mf_login_tokens (token_hash, email, purpose, expires_at)

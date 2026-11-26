@@ -4,7 +4,7 @@ import { NextResponse } from "next/server"
 import { PDFDocument, rgb, type PDFFont, type PDFPage } from "pdf-lib"
 import fontkit from "@pdf-lib/fontkit"
 import { MF_BASE_PATH } from "@/lib/mf/config"
-import { CHAPTERS } from "@/lib/mf/poradnik"
+import { getChapters } from "@/lib/mf/poradnik"
 import { hasActiveOrder, sql } from "@/lib/mf/db"
 import { currentBuyer, mfEnv, origin, rateLimited } from "@/lib/mf/server"
 
@@ -40,6 +40,7 @@ export async function GET() {
   const email = await currentBuyer()
   if (!email || !(await hasActiveOrder(sql(), email))) return NextResponse.redirect(`${origin()}${MF_BASE_PATH}/konto`)
   if (rateLimited(`pdf:${email}`, 20, 60 * 60_000)) return new NextResponse("Limit pobrań na godzinę", { status: 429 })
+  const CHAPTERS = await getChapters()
 
   const doc = await PDFDocument.create()
   doc.registerFontkit(fontkit)

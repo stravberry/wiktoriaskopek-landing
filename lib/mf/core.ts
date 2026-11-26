@@ -39,6 +39,14 @@ export function shopTestLocked(env: Env) {
 }
 
 /** Testerzy: skrzynka Wiktorii z aliasami +… oraz adresy z MF_TEST_ALLOWLIST (po przecinku). */
+/** Adres do limitów próby: małe litery, bez +aliasu, w Gmailu bez kropek (S5). */
+export function normalizedEmail(email: string) {
+  const [local = "", domain = ""] = email.trim().toLowerCase().split("@")
+  let base = local.split("+")[0]
+  if (domain === "gmail.com" || domain === "googlemail.com") base = base.replace(/\./g, "")
+  return `${base}@${domain === "googlemail.com" ? "gmail.com" : domain}`
+}
+
 export function testerAllowed(email: string | null | undefined, env: Env) {
   if (!email) return false
   const [local, domain] = email.trim().toLowerCase().split("@")
@@ -380,7 +388,11 @@ async function revoke(obj: any, status: "refunded" | "disputed", deps: MfDeps): 
   const pi = typeof obj.payment_intent === "string" ? obj.payment_intent : obj.payment_intent?.id
   if (!pi) return "no-payment-intent"
   const order = await deps.store.revokeByPaymentIntent(pi, status)
-  if (!order) return "order-not-found"
+  if (!order) {
+    // Zwrot przed zapisem zamówienia MontageFrames: błąd → Stripe ponowi, a późniejsza realizacja nie wyda dostępu (S8).
+    if (obj.metadata?.mf_product) throw new Error(`Order for ${pi} not saved yet, retry revoke`)
+    return "order-not-found"
+  }
   if (order.githubLogin && deps.github) {
     await deps.github.remove(order.githubLogin) // rzuca → Stripe ponowi
     await deps.store.setGithubStatus(order.sessionId, "removed")
