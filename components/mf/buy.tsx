@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react"
 import Link from "next/link"
-import { nobr } from "@/lib/typo"
+import { EMAIL_WORD, nobr } from "@/lib/typo"
 import { ArrowDown, ArrowRight, Loader2, X } from "lucide-react"
 import { MF_BASE_PATH, MF_PRODUCTS, MF_TEXT, type MfProductId } from "@/lib/mf/config"
 import { trackEvent } from "@/components/consent/consent-provider"
@@ -193,7 +193,7 @@ function WaitlistForm() {
   return (
     <form onSubmit={submit} noValidate>
       <p className="text-[22px] font-bold tracking-[-0.02em]">Sklep w trybie testowym: zakup wkrótce</p>
-      <p className="mt-2 text-[16px] leading-[1.5] text-[var(--h-ink-2)]">Zostaw e-mail, a napiszemy, gdy sprzedaż ruszy. Do tego czasu możesz zrobić darmową próbę na swoim nagraniu.</p>
+      <p className="mt-2 text-[16px] leading-[1.5] text-[var(--h-ink-2)]">Zostaw {EMAIL_WORD}, a napiszemy, gdy sprzedaż ruszy. Do tego czasu możesz zrobić darmową próbę na swoim nagraniu.</p>
       <label className="mt-4 block text-[15px] font-semibold" htmlFor="mf-lista-email">E-mail</label>
       <input id="mf-lista-email" type="email" required autoComplete="email" value={email} onChange={(e) => setEmail(e.target.value)}
         className="mt-1 min-h-12 w-full rounded-2xl bg-[var(--h-bg)] px-4 text-[17px] outline-none focus:outline-2 focus:outline-[var(--h-accent)]" />

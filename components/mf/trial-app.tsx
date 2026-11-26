@@ -3,7 +3,7 @@
 import { Turnstile } from "@/components/turnstile"
 import { getUtm } from "@/lib/mf/utm-client"
 import { useCallback, useEffect, useRef, useState } from "react"
-import { nobr } from "@/lib/typo"
+import { EMAIL_WORD, nobr } from "@/lib/typo"
 import Link from "next/link"
 import { Loader2, Upload } from "lucide-react"
 import { MF_BASE_PATH, MF_PRODUCTS } from "@/lib/mf/config"
@@ -136,7 +136,7 @@ export function TrialStart() {
   async function submit(e: React.FormEvent) {
     e.preventDefault()
     setError(null)
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email.trim())) return setError("Wpisz pełny adres e-mail, np. jan@firma.pl.")
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email.trim())) return setError(nobr("Wpisz pełny adres e-mail, np. jan@firma.pl."))
     setState("busy")
     const res = await fetch("/api/mf/trial/start", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ email, marketing, utm: getUtm(), turnstileToken: tsToken }) })
     const data = await res.json().catch(() => ({}))
@@ -160,7 +160,7 @@ export function TrialStart() {
     )
   return (
     <form onSubmit={submit} className={card} noValidate>
-      <label htmlFor="trial-email" className="text-[15px] font-semibold">Twój e-mail</label>
+      <label htmlFor="trial-email" className="text-[15px] font-semibold">Twój {EMAIL_WORD}</label>
       <input id="trial-email" type="email" required value={email} onChange={(e) => setEmail(e.target.value)} autoComplete="email" inputMode="email" placeholder="jan@firma.pl" className={`${field} mt-2`} />
       <label className="mt-4 flex min-h-11 cursor-pointer items-start gap-3 text-[15px] leading-[1.5]">
         <input type="checkbox" checked={marketing} onChange={(e) => setMarketing(e.target.checked)} className="mt-0.5 size-6 shrink-0 accent-[var(--h-accent)]" />
@@ -737,7 +737,7 @@ function RenderStep({ status, start, mailWhenReady, onRetry }: { status: Status 
       <p className="mt-6 rounded-2xl bg-[var(--h-bg)] p-4 text-[15px] leading-[1.5]">
         {mailWhenReady
           ? nobr("Możesz zamknąć kartę: link do gotowej rolki wyślemy na Twój e-mail. Znajdziesz ją też na koncie.")
-          : "Możesz zamknąć kartę. Gotową rolkę znajdziesz na koncie (zaloguj się swoim adresem e-mail)."}
+          : nobr("Możesz zamknąć kartę. Gotową rolkę znajdziesz na koncie (zaloguj się swoim adresem e-mail).")}
       </p>
     </div>
   )
