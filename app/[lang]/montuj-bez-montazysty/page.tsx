@@ -9,7 +9,6 @@ import { ReelFrame, StylePicker } from "@/components/mf/reel"
 import { Reveal } from "@/components/mf/motion"
 import ClaudeTranscript from "@/components/mf/claude-transcript"
 import OrderForm from "@/components/mf/order-form"
-import TestModeBar from "@/components/mf/test-mode-bar"
 
 const URL = `https://wiktoriaskopek.pl${MF_BASE_PATH}`
 const TITLE = "MontageFrames: montuj filmy i rolki w AI, bez montażysty | Wiktoria Skopek"
@@ -38,7 +37,6 @@ export default function MontujBezMontazysty() {
   return (
     <main className="pb-8">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(ld) }} />
-      <TestModeBar />
 
       {/* Pierwszy ekran: co to jest, ile kosztuje, co zrobić. Obok kadr rolki z napisem w stylu marki. */}
       <section className="mf-wrap pt-10 md:pt-16" aria-labelledby="hero-title">

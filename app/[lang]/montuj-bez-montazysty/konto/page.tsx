@@ -5,7 +5,6 @@ import { MF_BASE_PATH, MF_PRODUCTS, SELLER } from "@/lib/mf/config"
 import { ordersForEmail, sql } from "@/lib/mf/db"
 import { currentBuyer, githubForShop, mfEnv } from "@/lib/mf/server"
 import { GithubForm, LoginForm } from "@/components/mf/account-forms"
-import TestModeBar from "@/components/mf/test-mode-bar"
 
 export const dynamic = "force-dynamic"
 export const metadata: Metadata = { title: "Moje konto | MontageFrames", robots: { index: false, follow: false } }
@@ -38,7 +37,6 @@ export default async function Konto({ searchParams }: { searchParams: Promise<{ 
 
   return (
     <main className="mx-auto max-w-[900px] px-5 pb-16 pt-12 md:px-10 md:pt-20">
-      <TestModeBar />
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
           <h1 className="text-[clamp(2rem,5vw,3.5rem)] font-bold leading-[1.05] tracking-[-0.035em]">Moje konto</h1>

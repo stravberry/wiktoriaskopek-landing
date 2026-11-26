@@ -3,7 +3,6 @@ import Link from "next/link"
 import { MF_BASE_PATH, MF_PRODUCTS } from "@/lib/mf/config"
 import { mailFrom, mfEnv, stripe } from "@/lib/mf/server"
 import { ResendButton } from "@/components/mf/account-forms"
-import TestModeBar from "@/components/mf/test-mode-bar"
 
 export const dynamic = "force-dynamic"
 export const metadata: Metadata = { title: "Dziękuję za zakup | MontageFrames", robots: { index: false, follow: false } }
@@ -11,7 +10,6 @@ export const metadata: Metadata = { title: "Dziękuję za zakup | MontageFrames"
 function Box({ children }: { children: React.ReactNode }) {
   return (
     <>
-      <TestModeBar />
       <main className="mx-auto max-w-[820px] px-5 pb-16 pt-12 md:px-10 md:pt-20">{children}</main>
     </>
   )
