@@ -2,7 +2,8 @@ import { NextResponse, type NextRequest } from "next/server"
 import { MF_BASE_PATH } from "@/lib/mf/config"
 import { checkoutParams, consentRecord, InputError, parseCheckoutInput, priceIdFor } from "@/lib/mf/core"
 import { sql } from "@/lib/mf/db"
-import { clientIp, mfEnv, origin, rateLimited, stripe } from "@/lib/mf/server"
+import { clientIp, currentBuyer, mfEnv, origin, rateLimited, stripe } from "@/lib/mf/server"
+import { logEvent } from "@/lib/mf/events"
 
 export const dynamic = "force-dynamic"
 
@@ -21,6 +22,10 @@ export async function POST(request: NextRequest) {
     const msg = e instanceof InputError ? e.message : "Nieprawidłowe dane"
     return NextResponse.json({ error: msg }, { status: 400 })
   }
+
+  // Zalogowany (np. po darmowej próbie): e-mail wpisujemy za niego w Stripe (audyt Ecom, szybszy zakup).
+  const buyer = await currentBuyer()
+  if (!input.email && buyer) input = { ...input, email: buyer }
 
   const priceId = priceIdFor(input.product, env)
   if (!priceId) return NextResponse.json({ error: "Ten wariant jest chwilowo niedostępny." }, { status: 503 })
@@ -41,6 +46,7 @@ export async function POST(request: NextRequest) {
       { idempotencyKey: `mf-checkout/${consentId}` },
     )
     await db`update mf_consents set checkout_session_id = ${session.id} where id = ${consentId}`
+    await logEvent("checkout_started", { offer: input.product, from_account: !!buyer }, input.email || null)
     return NextResponse.json({ url: session.url })
   } catch (e) {
     console.error("[mf] checkout failed:", e instanceof Error ? e.message : e)

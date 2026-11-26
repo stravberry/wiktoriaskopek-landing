@@ -1,12 +1,14 @@
 import { NextResponse, type NextRequest } from "next/server"
 import { MF_BASE_PATH } from "@/lib/mf/config"
 import { sha256 } from "@/lib/mf/core"
-import { consumeLoginToken, sql } from "@/lib/mf/db"
+import { consumeLoginTokenFull, sql, trialOpen } from "@/lib/mf/db"
+import { logEvent } from "@/lib/mf/events"
 import { mfEnv, origin, SESSION_COOKIE, sessionCookieOptions, sessionCookieValue } from "@/lib/mf/server"
 
 export const dynamic = "force-dynamic"
 
 // GET /api/mf/auth?token=…: zużywa token (raz) i ustawia ciasteczko sesji httpOnly.
+// Token próby (purpose trial / trial_m) zakłada próbę po potwierdzeniu adresu i prowadzi na stronę próby.
 export async function GET(request: NextRequest) {
   const { disabled } = mfEnv()
   const account = `${origin()}${MF_BASE_PATH}/konto`
@@ -14,10 +16,20 @@ export async function GET(request: NextRequest) {
   const token = request.nextUrl.searchParams.get("token") ?? ""
   if (token.length < 20 || token.length > 100) return NextResponse.redirect(`${account}?blad=link`)
 
-  const email = await consumeLoginToken(sql(), sha256(token))
-  if (!email) return NextResponse.redirect(`${account}?blad=link`)
+  const t = await consumeLoginTokenFull(sql(), sha256(token))
+  if (!t) return NextResponse.redirect(`${account}?blad=link`)
 
-  const res = NextResponse.redirect(account)
-  res.cookies.set(SESSION_COOKIE, sessionCookieValue(email), sessionCookieOptions)
+  let to = account
+  if (t.purpose === "trial" || t.purpose === "trial_m") {
+    to = `${origin()}${MF_BASE_PATH}/proba`
+    try {
+      await trialOpen(sql(), t.email, null, t.purpose === "trial_m")
+    } catch (e) {
+      console.error("[mf] trial open on verify failed:", e instanceof Error ? e.message : e)
+    }
+    await logEvent("trial_signup_verified", { marketing: t.purpose === "trial_m" }, t.email)
+  }
+  const res = NextResponse.redirect(to)
+  res.cookies.set(SESSION_COOKIE, sessionCookieValue(t.email), sessionCookieOptions)
   return res
 }

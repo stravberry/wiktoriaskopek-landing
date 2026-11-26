@@ -133,7 +133,7 @@ export type MfStep = { title: string; text: string; media: MfStepMedia }
 /** „Jak to działa krok po kroku” (00-PLAN 0d, pkt 10). Każdy krok: zrzut, rolka z programu albo makieta ekranu. */
 export const MF_STEPS: MfStep[] = [
   { title: "Kupujesz", text: "Płacisz 238 zł BLIK-iem albo kartą na stronie Stripe. W kilka minut dostajesz mail z kluczem licencyjnym i linkiem do konta.", media: { kind: "ui", ui: "checkout" } },
-  { title: "Dostajesz zaproszenie do paczki", text: "Podajesz login GitHub i dostajesz zaproszenie do prywatnego repozytorium z paczką. Akceptujesz je i pobierasz paczkę. Z tego samego repozytorium przychodzą aktualizacje.", media: { kind: "ui", ui: "invite" } },
+  { title: "Odbierasz paczkę", text: "Na koncie podajesz login GitHub i dostajesz zaproszenie do prywatnego repozytorium z paczką i aktualizacjami. Nie masz GitHuba? Pobierasz ZIP z konta.", media: { kind: "ui", ui: "invite" } },
   { title: "Instalujesz w Claude Code", text: "Otwierasz paczkę w Claude Code i wpisujesz /start. Claude sprawdza komputer i po Twojej zgodzie instaluje narzędzia. Bez ręcznych poleceń w Terminalu, realnie 15–30 minut.", media: { kind: "ui", ui: "install" } },
   { title: "Ustawiasz markę", text: "Komenda /marka: Claude pyta o kolory, logo, zdjęcia i preferencje montażu, a na koniec robi próbną rolkę.", media: { kind: "img", src: "/mf/poradnik/04-marka.jpg", alt: "Panel MontageFrames: ustawienia marki" } },
   { title: "Wybierasz styl", text: `Komenda /styl albo galeria w panelu: ${stylesLabel()}, od spokojnych eksperckich po dynamiczne sprzedażowe. Kolor akcentu bierzemy z Twojej marki.`, media: { kind: "img", src: "/mf/poradnik/10-galeria-stylow.jpg", alt: "Panel MontageFrames: galeria stylów" } },
@@ -158,6 +158,7 @@ const ENGINE_FAQ = MF_ENGINE_OPEN_LICENSE
 
 export const MF_FAQ: { q: string; a: string }[] = [
   ...ENGINE_FAQ,
+  { q: "Czy rolki nie będą wyglądać szablonowo?", a: `Każda rolka dostaje kolory i logo Twojej marki, a każdy z ${MF_STYLES.length} stylów ma inną animację, krój i tempo. Poprawki nanosisz zwykłym językiem, aż rolka będzie Twoja.` },
   { q: "Czy zadziała na moim komputerze?", a: "Na macOS 14 i nowszym działają wszystkie funkcje (najszybciej na procesorach Apple, na Intelu wolniej). Na Windows 10/11 i Linuksie (Ubuntu) działają instalacja, transkrypcja, kontrola jakości, render i panel; pozostałe moduły są tylko na macOS. Poza macOS nie ma automatycznego wykrywania twarzy i maski osoby, więc kadr ustawiasz ręcznie. Potrzebujesz min. 15 GB wolnego miejsca i zalecane 8–16 GB RAM." },
   { q: "Ile kosztuje Claude?", a: "Potrzebujesz płatnego planu Claude Pro albo Max z Claude Code. Klucz API nie jest potrzebny: montaż i opisy mieszczą się w subskrypcji. Opłatę za plan płacisz sam(a) firmie Anthropic, ceny są na claude.com/pricing." },
   { q: "Ile trwa instalacja?", a: "Realnie 15–30 minut razem z rozmową w /start. Samo pobieranie narzędzi i modeli to kilka minut przy szybkim łączu (w teście: ok. 6 min przy 40 MB/s). Instalację prowadzi Claude Code krok po kroku." },

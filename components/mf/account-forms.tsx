@@ -65,15 +65,18 @@ export function GithubForm({ current }: { current: string | null }) {
       onSubmit={(e) => {
         e.preventDefault()
         run(async () => {
-          await post("/api/mf/github", { login })
-          return `Wysłaliśmy zaproszenie dla @${login.replace(/^@/, "")}. Zaakceptuj je w mailu od GitHuba albo na github.com/notifications.`
+          const r = (await post("/api/mf/github", { login })) as { manual?: boolean }
+          const who = `@${login.replace(/^@/, "")}`
+          return r?.manual
+            ? `Zapisaliśmy login ${who}. Zaproszenie do repozytorium wyślemy w ciągu 24 godzin.`
+            : `Wysłaliśmy zaproszenie dla ${who}. Zaakceptuj je w mailu od GitHuba albo na github.com/notifications.`
         })
       }}
       className="flex flex-col gap-3 sm:flex-row sm:items-end"
     >
       <label className="flex flex-1 flex-col gap-2 text-[15px] font-semibold">
         Twój login GitHub
-        <input required value={login} onChange={(e) => setLogin(e.target.value)} placeholder="np. jan-kowalski" className={`${input} font-normal`} />
+        <input required value={login} onChange={(e) => setLogin(e.target.value)} placeholder="np. jan-kowalski, bez @" autoCapitalize="off" autoCorrect="off" spellCheck={false} className={`${input} font-normal`} />
       </label>
       <button type="submit" disabled={busy} className={button}>
         {busy && <Loader2 className="size-5 animate-spin" />}Wyślij zaproszenie

@@ -53,9 +53,15 @@ export function pgStore(db: postgres.Sql): MfStore {
       await db`update mf_orders set github_status = ${status}, github_error = ${error} where session_id = ${sessionId}`
     },
     async markDelivered(sessionId) {
-      await db`
+      const done = await db`
         update mf_orders set status = 'delivered', delivered_at = now(), lease_until = null
-        where session_id = ${sessionId} and status = 'sending'`
+        where session_id = ${sessionId} and status = 'sending' returning product, amount_total, email`
+      // Dziennik lejka (zakup): raz na zamówienie, bo zmiana statusu z „sending” zachodzi raz.
+      if (done.length) {
+        const o = done[0]
+        await db`insert into mf_events (event, props, email_hash)
+          values ('purchase_completed', ${db.json({ offer: o.product, amount: o.amount_total })}, encode(sha256(convert_to(lower(${o.email}), 'UTF8')), 'hex'))`.catch(() => {})
+      }
     },
     async markFailed(sessionId, error) {
       await db`
@@ -97,12 +103,28 @@ export async function hasActiveOrder(db: postgres.Sql, email: string) {
 }
 
 /** Jednorazowe zużycie tokenu: zwraca e-mail albo null (zły, wygasły, użyty). */
-export async function consumeLoginToken(db: postgres.Sql, tokenHash: string) {
+/** Jednorazowe zużycie tokenu: e-mail i cel ('login', 'trial', 'trial_m' = próba ze zgodą marketingową) albo null. */
+export async function consumeLoginTokenFull(db: postgres.Sql, tokenHash: string) {
   const [row] = await db`
     update mf_login_tokens set used_at = now()
     where token_hash = ${tokenHash} and used_at is null and expires_at > now()
-    returning email`
-  return (row?.email as string | undefined) ?? null
+    returning email, purpose`
+  return row ? { email: row.email as string, purpose: row.purpose as string } : null
+}
+
+export async function consumeLoginToken(db: postgres.Sql, tokenHash: string) {
+  return (await consumeLoginTokenFull(db, tokenHash))?.email ?? null
+}
+
+/** Darmowa próba (funkcje Coding Buildera w schemacie public): otwiera albo odświeża próbę i zwraca nowy token do Edge Function. */
+export async function trialOpen(db: postgres.Sql, email: string, brand: unknown = null, marketing: boolean | null = null) {
+  const [row] = await db`select * from mf_trial_open(${email}, ${brand === null ? null : db.json(brand as never)}, ${marketing})`
+  return row as { trial_id: string; token: string; status: string }
+}
+
+export async function trialStatus(db: postgres.Sql, email: string) {
+  const [row] = await db`select * from mf_trial_status(${email})`
+  return (row ?? null) as null | { trial_id: string; status: string; stage: string | null; progress: number; error: string | null; expires_at: string | null; purged: boolean }
 }
 
 export async function recentLoginTokens(db: postgres.Sql, email: string) {

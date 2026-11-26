@@ -10,7 +10,14 @@ const themeScript = `try{if(localStorage.getItem("home-theme")==="dark")document
 export async function generateMetadata({ params }: { params: Promise<{ lang: string }> }): Promise<Metadata> {
   const { lang } = await params
   const base = "https://www.wiktoriaskopek.pl"
-  return { alternates: { canonical: `${base}/${lang}`, languages: { "pl-PL": `${base}/pl`, "en-US": `${base}/en` } } }
+  const title = "Wiktoria Skopek: nagrania wideo, social media i konsultacje"
+  const description = "Nagrania filmowe, rolki i wywiady w studiu albo u Ciebie, prowadzenie social mediów i darmowa konsultacja. Katowice, tel. +48 537 168 645."
+  return {
+    title,
+    description,
+    openGraph: { title, description, url: `${base}/${lang}` },
+    alternates: { canonical: `${base}/${lang}`, languages: { "pl-PL": `${base}/pl`, "en-US": `${base}/en` } },
+  }
 }
 
 export default function Home() {

@@ -15,7 +15,7 @@ export default function RegulaminMf() {
       <p className="mt-3 text-[15px] text-[var(--h-ink-2)]">Wersja: {MF_TERMS_VERSION}, obowiązuje od 26 listopada 2026. Wersję zapisujemy przy każdym zamówieniu i wysyłamy w mailu po zakupie.</p>
       <div className="mt-10 flex flex-col gap-10">
         {TERMS_SECTIONS.map((s) => (
-          <section key={s.title}>
+          <section key={s.title} id={s.title.startsWith("§14") ? "proba" : undefined} className="scroll-mt-6">
             <h2 className="text-[22px] font-semibold tracking-[-0.01em]">{s.title}</h2>
             <ol className="mt-4 flex list-decimal flex-col gap-3 pl-6 text-[16px] leading-[1.65]">
               {s.items.map((t) => <li key={t}>{t}</li>)}

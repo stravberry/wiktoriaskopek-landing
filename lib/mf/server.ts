@@ -92,17 +92,28 @@ export async function notifySeller(mail: AccessMail) {
   if (error) throw new Error(`Resend: ${error.name}`)
 }
 
-export async function sendLoginMail(email: string, url: string) {
+/** Kupujący podał login GitHub na koncie, a zaproszenia automatyczne są wyłączone (brak tokenu): mail do Wiktorii. */
+export async function notifySellerGithub(email: string, login: string, sessionId: string) {
+  const to = replyTo()
+  const text = `Kupujący ${email} podał login GitHub: ${login}\nZaproś go ręcznie do DKWGroup/MontageFrames-dist (uprawnienie: Read).\nID sesji Stripe: ${sessionId}`
+  const key = `mf-seller-gh/${sessionId}/${login.toLowerCase()}`
+  if (outboxMode()) return toOutbox(key, to, `MontageFrames: login GitHub od ${email}`, text)
+  const { error } = await resend().emails.send({ from: mailFrom(), to, replyTo: email, subject: `MontageFrames: login GitHub od ${email}`, text }, { idempotencyKey: key })
+  if (error) throw new Error(`Resend: ${error.name}`)
+}
+
+export async function sendLoginMail(email: string, url: string, trial = false) {
+  const subject = trial ? "MontageFrames: link do darmowej próby" : "MontageFrames: link do logowania"
   if (outboxMode()) {
-    const html = await render(MfLoginEmail({ url, minutes: MF_TTL.loginToken / 60 }))
-    return toOutbox(`mf-login/${Date.now()}/${Math.random()}`, email, "MontageFrames: link do logowania", `Link (30 min, działa raz): ${url}`, html)
+    const html = await render(MfLoginEmail({ url, minutes: MF_TTL.loginToken / 60, trial }))
+    return toOutbox(`mf-login/${Date.now()}/${Math.random()}`, email, subject, `Link (30 min, działa raz): ${url}`, html)
   }
   const { error } = await resend().emails.send({
     from: mailFrom(),
     to: email,
     replyTo: replyTo(),
-    subject: "MontageFrames: link do logowania",
-    react: MfLoginEmail({ url, minutes: MF_TTL.loginToken / 60 }),
+    subject,
+    react: MfLoginEmail({ url, minutes: MF_TTL.loginToken / 60, trial }),
     text: `Twój link do konta MontageFrames (ważny ${MF_TTL.loginToken / 60} minut, działa raz):\n${url}\n\nJeśli to nie Ty, zignoruj tę wiadomość.`,
   })
   if (error) throw new Error(`Resend: ${error.name}`)

@@ -213,9 +213,6 @@ export default function PortfolioPage() {
                   <div className="w-16 h-16 rounded-full border-2 border-dashed border-white/30 flex items-center justify-center mb-4 group-hover:border-accent/50 transition-colors">
                     <Plus className="w-8 h-8 text-white/30 group-hover:text-accent/50 transition-colors" />
                   </div>
-                  <span className="text-white/40 font-mono text-sm mb-1">
-                    {isEnglish ? "TO BE ADDED" : "DO UZUPEŁNIENIA"}
-                  </span>
                   <span className="text-white/20 font-mono text-xs">
                     {categories.find((c) => c.id === item.category)?.label[lang]}
                   </span>
