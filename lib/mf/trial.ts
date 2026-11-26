@@ -30,6 +30,8 @@ export function parseTrialBrand(raw: unknown) {
     tone: str(b.tone, 300) || undefined,
     audience: str(b.audience, 300) || undefined,
     notes: str(b.notes, 1000) || undefined,
+    // Słownik marki (Coding Builder): do 20 haseł po 40 znaków, transkrypcja poprawia ich pisownię.
+    terms: Array.isArray(b.terms) ? (b.terms as unknown[]).map((x) => str(x, 40)).filter(Boolean).slice(0, 20) : undefined,
   }
   if (!brand.name || !TRIAL_STYLES.some((s) => s.id === brand.style) || !TRIAL_FONTS.includes(brand.font)) return null
   if (![brand.colors.accent, brand.colors.text, brand.colors.background].every((x) => HEX.test(x))) return null

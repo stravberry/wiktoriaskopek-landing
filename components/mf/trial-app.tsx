@@ -28,7 +28,7 @@ type Status = {
   brand?: { name?: string; style?: string; font?: string; colors?: { accent?: string; text?: string; background?: string } } | null
 }
 type Auth = { trialId: string; token: string }
-type Brand = { name: string; style: string; font: string; accent: string; text: string; background: string; tone: string; audience: string }
+type Brand = { name: string; style: string; font: string; accent: string; text: string; background: string; tone: string; audience: string; terms: string }
 type Limits = { videoMaxBytes: number; videoMinSeconds: number; videoMaxSeconds: number; logoMaxBytes: number }
 
 const field = "min-h-12 w-full rounded-2xl bg-[var(--h-bg)] px-4 text-[16px] outline-none focus-visible:ring-2 focus-visible:ring-[var(--h-accent)]"
@@ -57,6 +57,7 @@ const STAGES = [
 function stageIndex(s: Status | null) {
   if (!s) return 0
   if (s.status === "done") return 5
+  if (s.stageKey === "upload") return 4
   const byKey = STAGES.findIndex((x) => x.key === s.stageKey)
   if (byKey >= 0) return byKey
   if (s.status === "queued") return 0
@@ -244,7 +245,7 @@ export function TrialApp({ api, styles, fonts, fontFamilies, limits, consentText
   const [error, setError] = useState<string | null>(null)
   const [step, setStep] = useState(-1)
   const [maxStep, setMaxStep] = useState(0)
-  const [brand, setBrand] = useState<Brand>({ name: "", style: "czysty-minimal", font: fonts.includes("Montserrat") ? "Montserrat" : fonts[0], accent: "#FF6A13", text: "#FFFFFF", background: "#111111", tone: "", audience: "" })
+  const [brand, setBrand] = useState<Brand>({ name: "", style: "czysty-minimal", font: fonts.includes("Montserrat") ? "Montserrat" : fonts[0], accent: "#FF6A13", text: "#FFFFFF", background: "#111111", tone: "", audience: "", terms: "" })
   const [logo, setLogo] = useState<File | null>(null)
   const [renderStart, setRenderStart] = useState<{ at: number; eta: number } | null>(null)
   const auth = useRef<Auth | null>(null)
@@ -314,7 +315,7 @@ export function TrialApp({ api, styles, fonts, fontFamilies, limits, consentText
     const res = await fetch("/api/mf/trial/brand", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ brand: { name: brand.name, style: brand.style, font: brand.font, colors: { accent: brand.accent, text: brand.text, background: brand.background }, tone: brand.tone, audience: brand.audience } }),
+      body: JSON.stringify({ brand: { name: brand.name, style: brand.style, font: brand.font, colors: { accent: brand.accent, text: brand.text, background: brand.background }, tone: brand.tone, audience: brand.audience, terms: brand.terms.split(/[,\n]/).map((x) => x.trim()).filter(Boolean).slice(0, 20).map((x) => x.slice(0, 40)) } }),
     })
     const t = await res.json()
     if (!res.ok) throw new Error(t.error || "Nie udało się zapisać marki.")
@@ -424,7 +425,7 @@ function BrandStep({ brand, setBrand, fonts, fontFamily, styleName, logo, setLog
             <input type="file" accept="image/png,image/jpeg,image/webp" onChange={(e) => setLogo(e.target.files?.[0] ?? null)} className="min-h-12 text-[15px] font-normal file:mr-3 file:min-h-11 file:rounded-full file:border-0 file:bg-[var(--h-bg)] file:px-4 file:font-semibold" />
           </label>
           <details className="sm:col-span-2">
-            <summary className="cursor-pointer text-[15px] font-semibold underline underline-offset-4">Ton i odbiorcy (opcjonalnie)</summary>
+            <summary className="cursor-pointer text-[15px] font-semibold underline underline-offset-4">Ton, odbiorcy i słowa marki (opcjonalnie)</summary>
             <div className="mt-4 grid gap-4 sm:grid-cols-2">
               <label className="flex flex-col gap-2 text-[15px] font-semibold">
                 Ton
@@ -433,6 +434,11 @@ function BrandStep({ brand, setBrand, fonts, fontFamily, styleName, logo, setLog
               <label className="flex flex-col gap-2 text-[15px] font-semibold">
                 Dla kogo
                 <input maxLength={300} value={brand.audience} onChange={set("audience")} placeholder="np. właściciele małych firm" className={`${field} font-normal`} />
+              </label>
+              <label className="flex flex-col gap-2 text-[15px] font-semibold sm:col-span-2">
+                Słowa, które mają być zapisane dokładnie tak
+                <input maxLength={900} value={brand.terms} onChange={set("terms")} placeholder="np. GlowUp, MontageFrames, Katowice (po przecinku, do 20)" className={`${field} font-normal`} />
+                <span className="text-[13px] font-normal text-[var(--h-ink-2)]">Nazwy produktów, nazwiska i miejsca. Transkrypcja zapisze je bez literówek.</span>
               </label>
             </div>
           </details>
@@ -531,7 +537,18 @@ function VideoStep({ api, auth, limits, consentText, consentVersion, onBack, onS
     setDuration(Number.isFinite(sec) ? sec : null)
   }
 
-  const eta = estimateSeconds(duration ?? 30)
+  const [apiEta, setApiEta] = useState<number | null>(null)
+  useEffect(() => {
+    if (!duration) return
+    let live = true
+    callTrial<{ etaSeconds: number }>(api, "estimate", { ...auth, durationSeconds: Math.round(duration) })
+      .then((r) => live && typeof r.etaSeconds === "number" && setApiEta(r.etaSeconds))
+      .catch(() => {})
+    return () => {
+      live = false
+    }
+  }, [duration, api, auth])
+  const eta = apiEta ?? estimateSeconds(duration ?? 30)
 
   async function send(e: React.FormEvent) {
     e.preventDefault()
@@ -543,8 +560,8 @@ function VideoStep({ api, auth, limits, consentText, consentVersion, onBack, onS
       const u = await callTrial<{ uploadUrl: string; headers: Record<string, string> }>(api, "upload-url", { ...auth, kind: "video", contentType: file.type, bytes: file.size })
       await putFile(u.uploadUrl, file, u.headers, setProgress)
       logFunnel("trial_upload_completed")
-      await callTrial(api, "submit", { ...auth, consent: true, consentVersion })
-      onSubmitted(eta)
+      const r = await callTrial<{ etaSeconds?: number }>(api, "submit", { ...auth, consent: true, consentVersion, durationSeconds: duration ? Math.round(duration) : undefined })
+      onSubmitted(typeof r.etaSeconds === "number" ? r.etaSeconds : eta)
     } catch (err) {
       setError(err instanceof Error ? err.message : "Nie udało się wysłać nagrania. Spróbuj jeszcze raz.")
       setProgress(null)
