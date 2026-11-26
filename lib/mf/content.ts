@@ -215,6 +215,20 @@ export const MF_CASES: CaseStudy[] = [
   { name: "Kacper Bisanz", scope: TODO, situation: TODO, result: TODO, quote: TODO },
 ]
 
+/** Pas „Z MontageFrames montują już” (zlecenie Wiktorii, 26.11): loga z oficjalnych stron firm, tylko kolor i rozmiar zmienione na stronie.
+ *  Pliki w public/mf/klienci/, źródła: montageframes-produkt/sklep-landing/pokaz/runda2/loga/ZRODLA.md.
+ *  ratio = szerokość / wysokość pliku; wysokość na stronie liczymy tak, żeby loga miały podobną powierzchnię (równa waga optyczna). */
+export type MfClient = { name: string; logo?: { src: string; ratio: number }; site?: string }
+export const MF_CLIENTS: MfClient[] = [
+  { name: "GlowUp Nutrition (Paweł Węglarz)", logo: { src: "/mf/klienci/glowup-nutrition.webp", ratio: 581 / 160 }, site: "https://nutriglowup.pl" },
+  { name: "Vital Hormone, centrum medyczne", logo: { src: "/mf/klienci/vital-hormone.webp", ratio: 692 / 160 }, site: "https://vital-hormone.pl" },
+  { name: "DKW Group", logo: { src: "/mf/klienci/dkw-group.webp", ratio: 388 / 160 }, site: "https://dkwgroup.net/pl" },
+  { name: "WebDKW", logo: { src: "/mf/klienci/webdkw.svg", ratio: 159.15 / 27.3 }, site: "https://webdkw.net" },
+  { name: "PodcastKatowice.pl", logo: { src: "/mf/klienci/podcast-katowice.webp", ratio: 933 / 160 }, site: "https://podcastkatowice.pl" },
+  // Bez strony z logo: znak tekstowy w tym samym stylu.
+  { name: "Kacper Bisanz" },
+]
+
 /** FAQ zależne od wydania paczki na HyperFrames (patrz MF_ENGINE_OPEN_LICENSE). */
 const ENGINE_FAQ = MF_ENGINE_OPEN_LICENSE
   ? [{ q: "Czy muszę kupić licencję na silnik montażu?", a: "Nie. Silnik montażu jest na otwartej licencji, nie płacisz dodatkowo za licencję. Silnik renderowania HyperFrames ma licencję Apache-2.0: z programu możesz korzystać komercyjnie, także w firmie dowolnej wielkości." }]

@@ -311,3 +311,8 @@ html:has(.mf-page), body:has(.mf-page) { overflow-x: clip; }
 .mf-lead { font-size: clamp(1.15rem, 1.6vw, 1.5rem); line-height: 1.45; color: var(--h-ink-2); }
 .mf-num { font-size: clamp(3.4rem, 6.4vw, 5.75rem); font-weight: 800; line-height: 0.9; letter-spacing: -0.05em; font-variant-numeric: tabular-nums; }
 .mf-tone-dark { background: var(--mf-dark); color: var(--mf-dark-ink); --h-ink: var(--mf-dark-ink); --h-ink-2: var(--mf-dark-ink-2); --h-surface: var(--mf-dark-surface); --h-surface-hover: #2c2c2e; --h-bg: var(--mf-dark); }
+/* Pas klientów: monochromatycznie, kolor po najechaniu / fokusie. */
+.mf-client > * { opacity: 0.72; transition: opacity 0.3s ease, filter 0.3s ease; }
+.mf-client > img { filter: brightness(0) invert(1); }
+.mf-client:hover > * { opacity: 1; filter: none; }
+@media (prefers-reduced-motion: reduce) { .mf-client > * { transition: none; } }
