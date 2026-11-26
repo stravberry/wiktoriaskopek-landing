@@ -35,11 +35,6 @@ export function priceIdFor(product: MfProductId, env: Env): string | null {
   return id && id.startsWith("price_") ? id : null
 }
 
-export function productForPrice(priceId: string, env: Env): MfProductId | null {
-  for (const p of Object.values(MF_PRODUCTS)) if (env[p.priceEnv] === priceId) return p.id
-  return null
-}
-
 // ── Walidacja formularza zamówienia ──
 
 export const GITHUB_LOGIN_RE = /^(?!-)(?!.*--)[A-Za-z0-9-]{1,39}(?<!-)$/

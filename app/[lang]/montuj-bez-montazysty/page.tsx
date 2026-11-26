@@ -2,7 +2,8 @@ import type { Metadata } from "next"
 import Image from "next/image"
 import Link from "next/link"
 import { MF_BASE_PATH, MF_PRODUCTS, MF_REQUIREMENTS, SELLER } from "@/lib/mf/config"
-import { MF_CASES, MF_FAQ, MF_FEATURES, MF_QUALITY_CHECKS, MF_STEPS, MF_STYLES, TODO } from "@/lib/mf/content"
+import { MF_CASES, MF_FAQ, MF_FEATURES, MF_QUALITY_CHECKS, MF_SHOWCASE, MF_STEPS, MF_STYLES, TODO, stylesLabel } from "@/lib/mf/content"
+import { PanelShots, ShowcaseBlock, StyleReels } from "@/components/mf/showcase"
 import { Section, WithTodo } from "@/components/mf/ui"
 import { BuyButton } from "@/components/mf/client-bits"
 import { ReelFrame, StylePicker } from "@/components/mf/reel"
@@ -10,28 +11,48 @@ import { Reveal } from "@/components/mf/motion"
 import ClaudeTranscript from "@/components/mf/claude-transcript"
 import OrderForm from "@/components/mf/order-form"
 
-const URL = `https://wiktoriaskopek.pl${MF_BASE_PATH}`
-const TITLE = "Montuj swoje filmy i rolki w AI! Bez montażysty | MontageFrames, Wiktoria Skopek"
-const DESC = `Montuj swoje filmy i rolki w AI! Bez montażysty. Nakładka na Claude Code do montażu filmów i rolek: 33 style, kreator marki, krytyk jakości, panel w przeglądarce i poradnik online. ${MF_PRODUCTS.paczka.priceLabel} jednorazowo.`
+const URL = `https://www.wiktoriaskopek.pl${MF_BASE_PATH}`
+const TITLE = "Montuj swoje filmy i rolki w AI! Bez montażysty | MontageFrames"
+const DESC = `Montuj rolki i filmy w AI bez montażysty: MontageFrames dla Claude Code, ${stylesLabel()}, kreator marki, krytyk jakości i panel. ${MF_PRODUCTS.paczka.priceLabel} jednorazowo.`
+const OG_IMAGE = { url: "/mf/montageframes-promo-16x9.jpg", width: 1920, height: 1080, alt: "MontageFrames: montaż rolek w Claude Code" }
 
 export const metadata: Metadata = {
   title: TITLE,
   description: DESC,
   alternates: { canonical: URL },
-  openGraph: { title: TITLE, description: DESC, url: URL, type: "website", locale: "pl_PL", images: ["/images/img-2684.jpg"] },
+  openGraph: { title: TITLE, description: DESC, url: URL, type: "website", locale: "pl_PL", images: [OG_IMAGE] },
+  twitter: { card: "summary_large_image", title: TITLE, description: DESC, images: [OG_IMAGE.url] },
 }
 
 const p = MF_PRODUCTS.paczka
 const k = MF_PRODUCTS.konsultacja
 
 export default function MontujBezMontazysty() {
+  const seller = { "@type": "Person", name: SELLER.name, email: SELLER.email }
   const ld = {
     "@context": "https://schema.org",
-    "@type": "Product",
-    name: "MontageFrames",
-    description: DESC,
-    brand: { "@type": "Person", name: SELLER.name },
-    offers: [p, k].map((x) => ({ "@type": "Offer", name: x.name, price: (x.amountGrosze / 100).toFixed(2), priceCurrency: "PLN", availability: "https://schema.org/InStock", url: URL })),
+    "@graph": [
+      {
+        "@type": "Product",
+        name: "MontageFrames",
+        description: DESC,
+        image: `https://www.wiktoriaskopek.pl${OG_IMAGE.url}`,
+        brand: { "@type": "Brand", name: "MontageFrames" },
+        offers: [p, k].map((x) => ({
+          "@type": "Offer",
+          name: x.name,
+          price: (x.amountGrosze / 100).toFixed(2),
+          priceCurrency: "PLN",
+          availability: "https://schema.org/InStock",
+          url: `${URL}#zamowienie`,
+          seller,
+        })),
+      },
+      {
+        "@type": "FAQPage",
+        mainEntity: MF_FAQ.map((f) => ({ "@type": "Question", name: f.q, acceptedAnswer: { "@type": "Answer", text: f.a } })),
+      },
+    ],
   }
 
   return (
@@ -40,7 +61,7 @@ export default function MontujBezMontazysty() {
 
       {/* Pierwszy ekran: co to jest, ile kosztuje, co zrobić. Obok kadr rolki z napisem w stylu marki. */}
       <section className="mf-wrap pt-10 md:pt-16" aria-labelledby="hero-title">
-        <h1 id="hero-title" className="mf-h1 mf-h1-slogan max-w-[14ch] lg:max-w-[16ch]">Montuj swoje filmy i rolki w AI! Bez montażysty</h1>
+        <h1 id="hero-title" className="mf-h1 mf-h1-slogan max-w-[14ch] md:max-w-[22ch]">Montuj swoje filmy i rolki w AI! Bez montażysty</h1>
         <div className="mt-10 grid items-start gap-10 lg:mt-14 lg:grid-cols-[minmax(0,1fr)_400px] lg:gap-16">
         <div>
           <p className="mf-lead max-w-[46ch]">
@@ -49,7 +70,7 @@ export default function MontujBezMontazysty() {
           </p>
           <div className="mt-10 flex flex-wrap items-center gap-x-6 gap-y-4">
             <BuyButton>Kupuję za {p.priceLabel}</BuyButton>
-            <a href="#style" className="text-[17px] font-semibold underline decoration-[var(--h-accent)] decoration-2 underline-offset-4">Zobacz 33 style</a>
+            <a href="#style" className="text-[17px] font-semibold underline decoration-[var(--h-accent)] decoration-2 underline-offset-4">Zobacz {stylesLabel()}</a>
           </div>
           <p className="mt-8 max-w-[52ch] text-[15px] leading-[1.6] text-[var(--h-ink-2)]">
             Jednorazowo, bez limitu komputerów, z gwarancją działania. Potrzebujesz płatnego planu Claude Pro lub Max i min. 15 GB miejsca; instalacja
@@ -115,8 +136,8 @@ export default function MontujBezMontazysty() {
 
       {/* Rozmowa albo panel */}
       <Section id="panel" title="Poprawiasz tak, jak Ci wygodniej" lead="Obie drogi pracują na tym samym projekcie: zacznij w rozmowie, dokończ w panelu albo odwrotnie. Efekt jest ten sam.">
-        <div className="grid items-center gap-12 lg:grid-cols-[1fr_1.25fr]">
-          <div className="flex flex-col gap-10">
+        <div className="grid gap-12">
+          <div className="grid gap-10 md:grid-cols-2">
             <Reveal>
               <h3 className="text-[24px] font-semibold">W rozmowie z Claude Code</h3>
               <p className="mt-3 max-w-[46ch] leading-[1.6]">Piszesz: „przesuń napis niżej”, „podświetl słowo promocja”, „wytnij pauzę w 0:20”. Claude nanosi poprawkę i renderuje rolkę.</p>
@@ -126,31 +147,28 @@ export default function MontujBezMontazysty() {
               <p className="mt-3 max-w-[46ch] leading-[1.6]">Lokalny panel otwierasz komendą /panel. Edytujesz i poprawiasz napisy, zmieniasz styl i stamtąd renderujesz rolkę, bez pisania.</p>
             </Reveal>
           </div>
-          <Reveal delay={0.12}>
-            <figure>
-              <Image src="/mf/panel-edytor-napisow.jpg" alt="Panel MontageFrames: edytor napisów z podglądem rolki i osią czasu" width={1440} height={900} sizes="(min-width: 1024px) 680px, 92vw" className="w-full rounded-[24px]" />
-              <figcaption className="mt-3 text-[15px] text-[var(--h-ink-2)]">Panel: klikasz słowo, poprawiasz tekst albo ustawiasz słowo-klucz. Zmiany zapisują się od razu.</figcaption>
-            </figure>
-          </Reveal>
+          <PanelShots />
         </div>
       </Section>
 
       {/* Style: żywy element */}
-      <Section id="style" title={`${MF_STYLES.length} stylów w paczce`} lead="Kliknij styl, a kadr obok pokaże napis w tym stylu. Kolor akcentu bierzemy z Twojej marki. „Inspirowane stylem” opisuje kierunek, nie współpracę z tą osobą.">
-        <ul className="mb-16 grid grid-cols-3 gap-3 md:gap-6" aria-label="Prawdziwe rolki z programu">
-          {[
-            ["demo-1-slowo-po-slowie", "Słowo po słowie, wersaliki"],
-            ["demo-2-elegancki-premium", "Elegancki premium"],
-            ["demo-3-neon-noc", "Neon noc"],
-          ].map(([f, n]) => (
-            <li key={f}>
-              <video className="aspect-[9/16] w-full rounded-[20px] bg-[#1d1d1f] object-cover" src={`/mf/${f}.mp4`} poster={`/mf/${f}.jpg`} autoPlay muted loop playsInline preload="metadata" aria-label={`Rolka demo w stylu ${n}`} />
-              <p className="mt-3 text-[15px] font-semibold md:text-[17px]">{n}</p>
-            </li>
-          ))}
-        </ul>
-        <StylePicker styles={MF_STYLES} />
+      <Section id="style" title={`${stylesLabel()} w paczce`} lead="Style różnią się animacją tekstu, krojem i tempem, nie tylko kolorem. Kolor akcentu bierzemy z Twojej marki. „Inspirowane stylem” opisuje kierunek, nie współpracę z tą osobą.">
+        <StyleReels />
+        <h3 className="mt-20 text-[24px] font-semibold">Wszystkie style</h3>
+        <p className="mt-2 max-w-[56ch] text-[17px] text-[var(--h-ink-2)]">Kliknij nazwę, a kadr pokaże przybliżony podgląd napisu.</p>
+        <div className="mt-8">
+          <StylePicker styles={MF_STYLES} />
+        </div>
       </Section>
+
+      {/* Funkcje: każda z własnym filmem */}
+      <section id="funkcje" aria-labelledby="funkcje-title" className="mt-28 scroll-mt-6 md:mt-44">
+        <div className="mf-wrap">
+          <h2 id="funkcje-title" className="mf-h2 max-w-[18ch]">Funkcje w akcji</h2>
+          <p className="mf-lead mt-6 max-w-[56ch]">Każdy film poniżej to prawdziwy wynik z programu, bez poprawek w zewnętrznym montażu.</p>
+        </div>
+        {MF_SHOWCASE.filter((f) => f.video || f.image).map((f, i) => <ShowcaseBlock key={f.id} f={f} flip={i % 2 === 1} />)}
+      </section>
 
       {/* Kontrola jakości */}
       <Section id="jakosc" title="Krytyk jakości pilnuje rolki" tone="ink" lead="Zanim rolka się wyrenderuje, program sprawdza ją pod kątem błędów, które widać od razu na telefonie.">

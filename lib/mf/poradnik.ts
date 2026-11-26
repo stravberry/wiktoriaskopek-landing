@@ -1,5 +1,6 @@
 // Poradnik MontageFrames (strony za logowaniem). Komendy wg Coding Buildera (25.11.2026), mogą się jeszcze zmienić.
 // Zrzuty panelu: Coding Builder, czysta paczka bez klientów (26.11). Brakujące zrzuty i nagrania: lista w DOWOD-PRODUKCJA.md.
+import { stylesLabel } from "./content.ts"
 
 export type Block = { p: string } | { code: string } | { list: string[] } | { img: string; alt: string } | { todo: string }
 export type Chapter = { slug: string; title: string; lead: string; blocks: Block[] }
@@ -43,7 +44,7 @@ export const CHAPTERS: Chapter[] = [
   {
     slug: "style",
     title: "4. Style montażu",
-    lead: "33 style z opisami: od spokojnych eksperckich po dynamiczne sprzedażowe.",
+    lead: `${stylesLabel()} z opisami: od spokojnych eksperckich po dynamiczne sprzedażowe.`,
     blocks: [
       { p: "Wpisz /styl, żeby zobaczyć katalog i wybrać styl. Ten sam wybór zrobisz w panelu. Kolor akcentu stylu bierzemy z Twojej marki." },
       { p: "Podgląd wszystkich stylów jest też w pliku catalog/gallery.html w paczce." },

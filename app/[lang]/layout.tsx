@@ -22,7 +22,7 @@ export async function generateStaticParams() {
 export async function generateMetadata({ params }: { params: Promise<{ lang: Locale }> }): Promise<Metadata> {
   const { lang } = await params
   const isEnglish = lang === "en"
-  const baseUrl = "https://wiktoriaskopek.pl"
+  const baseUrl = "https://www.wiktoriaskopek.pl"
   const title = isEnglish ? "Wiktoria Skopek | Video Marketing & Scaling Experts" : "Wiktoria Skopek | Video Marketing & Skalowanie Marek Osobistych"
   const description = isEnglish
     ? "Scale your business with high-ticket video marketing, AI ADS, and professional VSL strategies. Partner for experts and premium brands."
@@ -32,13 +32,7 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: Loc
     title,
     description,
     metadataBase: new URL(baseUrl),
-    alternates: {
-      canonical: `${baseUrl}/${lang}`,
-      languages: {
-        "pl-PL": `${baseUrl}/pl`,
-        "en-US": `${baseUrl}/en`,
-      },
-    },
+    // Kanoniczny adres i wersje językowe ustawia strona główna; tu dziedziczyłyby je wszystkie podstrony (każda wskazywałaby na /pl).
     openGraph: {
       title,
       description,

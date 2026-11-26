@@ -6,7 +6,7 @@ import { PRIVACY_SECTIONS, PRIVACY_UPDATED } from "@/lib/privacy-policy"
 
 export const metadata: Metadata = {
   title: "Polityka Prywatności | Wiktoria Skopek",
-  description: "Polityka prywatności strony wiktoriaskopek.pl",
+  description: "Polityka prywatności i plików cookies wiktoriaskopek.pl: kto przetwarza Twoje dane, w jakim celu, jak długo i jakie masz prawa.",
   robots: { index: true, follow: true },
 }
 

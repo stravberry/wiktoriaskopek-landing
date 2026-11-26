@@ -43,6 +43,65 @@ export const MF_STYLES: MfStyle[] = [
   { slug: "beauty-zloto-rozowe", name: "Beauty różowe złoto", text: "Szeryfowa kursywa, różowe złoto, łagodny ruch. Do kosmetyki i salonów.", tags: ["elegancki", "lifestyle"] },
 ]
 
+/** Plik wideo w public/mf (skompresowany, bez dźwięku) + poster. Na stronę trafiają tylko pliki, które są w repo. */
+export type MfVideo = { src: string; poster: string; aspect: "9/16" | "16/9" }
+const vid = (name: string, aspect: MfVideo["aspect"] = "9/16"): MfVideo => ({ src: `/mf/${name}.mp4`, poster: `/mf/${name}.jpg`, aspect })
+
+/** Pokaz stylów: prawdziwe rolki z programu (render HyperFrames). Opis i dopisek „inspirowane stylem” z MF_STYLES. */
+export const MF_STYLE_REELS: { slug: string; motion: string; video: MfVideo }[] = [
+  { slug: "slowo-po-slowie", motion: "słowa wskakują pojedynczo", video: vid("demo-1-slowo-po-slowie") },
+  { slug: "elegancki-premium", motion: "łagodne wejście, szeryfowa kursywa", video: vid("demo-2-elegancki-premium") },
+  { slug: "neon-noc", motion: "neonowa poświata na słowie-kluczu", video: vid("demo-3-neon-noc") },
+]
+
+/** Funkcje z własnym filmem lub zrzutem. Sekcja bez filmu i zrzutu nie trafia na stronę. */
+export type MfShowcase = {
+  id: string
+  title: string
+  lead: string
+  points: string[]
+  video?: MfVideo
+  image?: { src: string; alt: string; w: number; h: number }
+}
+
+export const MF_SHOWCASE: MfShowcase[] = [
+  {
+    id: "kreator-marki",
+    title: "Kreator marki",
+    lead: "Raz ustawiasz markę, a każda kolejna rolka się jej trzyma.",
+    points: [
+      "Komenda /marka: Claude pyta o kolory, logo, zdjęcia i preferencje montażu, a potem robi próbną rolkę.",
+      "Kolor akcentu stylu bierzemy z Twojej marki: napisy, podkreślenia i grafiki w rolce mają Twoje kolory.",
+      "Ustawienia zostają w folderze marka/. Aktualizacje programu ich nie nadpisują.",
+    ],
+    video: vid("funkcja-marka"),
+    image: { src: "/mf/poradnik/04-marka.jpg", alt: "Panel MontageFrames: ustawienia marki z kolorami, logo i zdjęciami", w: 1440, h: 900 },
+  },
+  {
+    id: "quickcontent",
+    title: "QuickContent",
+    lead: "Szybka rolka z gotowego nagrania, bez ustawiania wszystkiego od zera.",
+    points: [
+      "Komenda /quickcontent albo ekran QuickContent w panelu.",
+      "Wskazujesz nagranie, a program robi transkrypcję i układa napisy w stylu Twojej marki.",
+    ],
+    video: vid("funkcja-quickcontent"),
+    image: { src: "/mf/poradnik/05-quickcontent.jpg", alt: "Panel MontageFrames: ekran QuickContent", w: 1440, h: 900 },
+  },
+]
+
+/** Zrzuty panelu (lokalny panel w przeglądarce, komenda /panel). */
+export const MF_PANEL_SHOTS = [
+  { src: "/mf/panel-edytor-napisow.jpg", title: "Edytor napisów", alt: "Panel: edytor napisów z podglądem rolki i osią czasu" },
+  { src: "/mf/poradnik/01-lista-rolek.jpg", title: "Lista rolek", alt: "Panel: lista rolek" },
+  { src: "/mf/poradnik/10-galeria-stylow.jpg", title: "Galeria stylów", alt: "Panel: galeria stylów montażu" },
+  { src: "/mf/poradnik/04-marka.jpg", title: "Marka", alt: "Panel: ustawienia marki" },
+]
+
+/** „33 style”, „25 stylów”: liczba stylów z poprawną odmianą. */
+export const stylesLabel = (n = MF_STYLES.length) =>
+  `${n} ${n === 1 ? "styl" : n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14) ? "style" : "stylów"}`
+
 export const MF_FEATURES = [
   { title: "Nowa rolka", text: "Wrzucasz nagranie z telefonu, wybierasz styl i dostajesz gotową rolkę z napisami." },
   { title: "QuickContent", text: "Szybkie rolki z gotowych fragmentów, bez ustawiania wszystkiego od zera." },
@@ -67,7 +126,7 @@ export const MF_QUALITY_CHECKS = [
 
 export const MF_STEPS = [
   { title: "Otwierasz paczkę w Claude Code i wpisujesz /start", text: "Claude sprawdza komputer i po Twojej zgodzie instaluje potrzebne narzędzia. Bez ręcznych poleceń w Terminalu." },
-  { title: "Ustawiasz markę i styl", text: "Komendą /marka podajesz kolory, logo i zdjęcia. Komendą /styl wybierasz jeden z 33 stylów." },
+  { title: "Ustawiasz markę i styl", text: `Komendą /marka podajesz kolory, logo i zdjęcia. Komendą /styl wybierasz jeden z ${MF_STYLES.length} stylów.` },
   { title: "Wrzucasz nagranie i piszesz poprawki zwykłym językiem", text: "Komenda /rolka montuje film. Poprawki piszesz w rozmowie albo nanosisz w panelu." },
 ]
 

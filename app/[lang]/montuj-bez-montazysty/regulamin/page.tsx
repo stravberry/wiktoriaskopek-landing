@@ -2,7 +2,11 @@ import type { Metadata } from "next"
 import { MF_TERMS_VERSION } from "@/lib/mf/config"
 import { TERMS_SECTIONS } from "@/lib/mf/legal"
 
-export const metadata: Metadata = { title: "Regulamin sprzedaży MontageFrames | Wiktoria Skopek" }
+export const metadata: Metadata = {
+  title: "Regulamin sprzedaży MontageFrames | Wiktoria Skopek",
+  description: "Regulamin sprzedaży programu MontageFrames i konsultacji 1:1: zamówienie, płatność, dostawa, odstąpienie od umowy, reklamacje i gwarancja działania.",
+  alternates: { canonical: "https://www.wiktoriaskopek.pl/pl/montuj-bez-montazysty/regulamin" },
+}
 
 export default function RegulaminMf() {
   return (
