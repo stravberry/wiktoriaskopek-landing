@@ -1,5 +1,5 @@
 {
-  "version": 1,
+  "version": 2,
   "styles": [
     {
       "id": "czysty-minimal",
@@ -13,7 +13,12 @@
         "zoom": "powolny najazd w każdym ujęciu",
         "tempo": "średnie",
         "grafiki": "jasne karty"
-      }
+      },
+      "mood": "spokojny",
+      "use": [
+        "edukacja"
+      ],
+      "forWhom": "Do porad, edukacji i marek eksperckich."
     },
     {
       "id": "dynamiczny-zakreslacz",
@@ -27,7 +32,13 @@
         "zoom": "zoom co drugie ujęcie",
         "tempo": "szybkie (tnie każdą pauzę)",
         "grafiki": "karty w kolorze akcentu"
-      }
+      },
+      "mood": "dynamiczny",
+      "use": [
+        "sprzedaż",
+        "rozrywka"
+      ],
+      "forWhom": "Do energicznych rolek sprzedażowych."
     },
     {
       "id": "elegancki-premium",
@@ -41,7 +52,13 @@
         "zoom": "powolny najazd w każdym ujęciu",
         "tempo": "spokojne (tnie tylko długie pauzy)",
         "grafiki": "szklane karty"
-      }
+      },
+      "mood": "spokojny",
+      "use": [
+        "premium",
+        "lifestyle"
+      ],
+      "forWhom": "Do marek premium, beauty i usług doradczych."
     },
     {
       "id": "edukacyjny-wysoka-energia",
@@ -55,7 +72,13 @@
         "zoom": "mocny zoom co drugie ujęcie",
         "tempo": "szybkie (tnie każdą pauzę)",
         "grafiki": "karty w kolorze akcentu"
-      }
+      },
+      "mood": "dynamiczny",
+      "use": [
+        "edukacja",
+        "rozrywka"
+      ],
+      "forWhom": "Do rolek edukacyjnych z liczbami i listami."
     },
     {
       "id": "podcast-spokojny",
@@ -69,7 +92,12 @@
         "zoom": "bez zoomów",
         "tempo": "spokojne (tnie tylko długie pauzy)",
         "grafiki": "ciemne karty"
-      }
+      },
+      "mood": "spokojny",
+      "use": [
+        "rozmowa"
+      ],
+      "forWhom": "Do wywiadów i podcastów."
     },
     {
       "id": "mocny-kontrast",
@@ -83,7 +111,12 @@
         "zoom": "zoom co drugie ujęcie",
         "tempo": "szybkie (tnie każdą pauzę)",
         "grafiki": "ciemne karty"
-      }
+      },
+      "mood": "dynamiczny",
+      "use": [
+        "rozrywka"
+      ],
+      "forWhom": "Do mocnych tez i kontrowersyjnych hooków."
     },
     {
       "id": "neon-noc",
@@ -97,7 +130,12 @@
         "zoom": "zoom co drugie ujęcie",
         "tempo": "średnie",
         "grafiki": "karty z obrysem"
-      }
+      },
+      "mood": "spokojny",
+      "use": [
+        "lifestyle"
+      ],
+      "forWhom": "Do lifestyle, eventów i treści nocnych."
     },
     {
       "id": "biznes-granat",
@@ -111,7 +149,12 @@
         "zoom": "powolny najazd w każdym ujęciu",
         "tempo": "średnie",
         "grafiki": "jasne karty"
-      }
+      },
+      "mood": "spokojny",
+      "use": [
+        "sprzedaż"
+      ],
+      "forWhom": "Do B2B, finansów i usług profesjonalnych."
     },
     {
       "id": "cieply-lifestyle",
@@ -125,7 +168,12 @@
         "zoom": "zoom co drugie ujęcie",
         "tempo": "średnie",
         "grafiki": "szklane karty"
-      }
+      },
+      "mood": "spokojny",
+      "use": [
+        "lifestyle"
+      ],
+      "forWhom": "Do gastronomii, rodziny i marek osobistych."
     },
     {
       "id": "news-czerwony",
@@ -139,7 +187,13 @@
         "zoom": "bez zoomów",
         "tempo": "szybkie (tnie każdą pauzę)",
         "grafiki": "ciemne karty"
-      }
+      },
+      "mood": "dynamiczny",
+      "use": [
+        "rozmowa",
+        "rozrywka"
+      ],
+      "forWhom": "Do newsów, komentarzy i aktualności."
     },
     {
       "id": "slowo-po-slowie",
@@ -153,7 +207,13 @@
         "zoom": "mocny zoom co drugie ujęcie",
         "tempo": "szybkie (tnie każdą pauzę)",
         "grafiki": "karty w kolorze akcentu"
-      }
+      },
+      "mood": "dynamiczny",
+      "use": [
+        "sprzedaż",
+        "edukacja"
+      ],
+      "forWhom": "Do krótkich, szybkich porad i tez biznesowych."
     },
     {
       "id": "luksusowy-dokument",
@@ -167,7 +227,13 @@
         "zoom": "bez zoomów",
         "tempo": "średnie",
         "grafiki": "ciemne karty"
-      }
+      },
+      "mood": "spokojny",
+      "use": [
+        "edukacja",
+        "premium"
+      ],
+      "forWhom": "Do edukacji premium i marek osobistych z wysoką ceną."
     },
     {
       "id": "monochrom-akcent",
@@ -181,7 +247,13 @@
         "zoom": "zoom co drugie ujęcie",
         "tempo": "średnie",
         "grafiki": "jasne karty"
-      }
+      },
+      "mood": "spokojny",
+      "use": [
+        "sprzedaż",
+        "edukacja"
+      ],
+      "forWhom": "Do produktywności, książek i spokojnej edukacji."
     },
     {
       "id": "napisy-na-dole",
@@ -195,7 +267,12 @@
         "zoom": "bez zoomów",
         "tempo": "szybkie (tnie każdą pauzę)",
         "grafiki": "karty z obrysem"
-      }
+      },
+      "mood": "dynamiczny",
+      "use": [
+        "rozmowa"
+      ],
+      "forWhom": "Do szybkich opinii i komentarzy."
     },
     {
       "id": "vlog-narracyjny",
@@ -209,7 +286,12 @@
         "zoom": "mocny zoom co drugie ujęcie",
         "tempo": "szybkie (tnie każdą pauzę)",
         "grafiki": "jasne karty"
-      }
+      },
+      "mood": "dynamiczny",
+      "use": [
+        "lifestyle"
+      ],
+      "forWhom": "Do vlogów, wyzwań i opowieści w pierwszej osobie."
     },
     {
       "id": "hiper-retencja",
@@ -223,7 +305,12 @@
         "zoom": "mocny zoom co drugie ujęcie",
         "tempo": "szybkie (tnie każdą pauzę)",
         "grafiki": "karty w kolorze akcentu"
-      }
+      },
+      "mood": "dynamiczny",
+      "use": [
+        "rozrywka"
+      ],
+      "forWhom": "Do wyzwań i rozrywki, gdzie liczy się każda sekunda uwagi."
     },
     {
       "id": "dokument-reporterski",
@@ -237,7 +324,12 @@
         "zoom": "powolny najazd w każdym ujęciu",
         "tempo": "spokojne (tnie tylko długie pauzy)",
         "grafiki": "karty z obrysem"
-      }
+      },
+      "mood": "spokojny",
+      "use": [
+        "premium"
+      ],
+      "forWhom": "Do opowieści dokumentalnych, historii i reportażu."
     },
     {
       "id": "explainer-papierowy",
@@ -251,7 +343,13 @@
         "zoom": "bez zoomów",
         "tempo": "średnie",
         "grafiki": "karty w kolorze akcentu"
-      }
+      },
+      "mood": "spokojny",
+      "use": [
+        "edukacja",
+        "rozrywka"
+      ],
+      "forWhom": "Do wyjaśniania zjawisk, danych i newsów."
     },
     {
       "id": "karaoke",
@@ -265,7 +363,12 @@
         "zoom": "bez zoomów",
         "tempo": "średnie",
         "grafiki": "jasne karty"
-      }
+      },
+      "mood": "spokojny",
+      "use": [
+        "edukacja"
+      ],
+      "forWhom": "Do rolek z dużą ilością mowy i nauki języka."
     },
     {
       "id": "mem-gen-z",
@@ -279,7 +382,12 @@
         "zoom": "mocny zoom co drugie ujęcie",
         "tempo": "szybkie (tnie każdą pauzę)",
         "grafiki": "karty w kolorze akcentu"
-      }
+      },
+      "mood": "dynamiczny",
+      "use": [
+        "rozrywka"
+      ],
+      "forWhom": "Do humoru, trendów i luźnych marek."
     },
     {
       "id": "typografia-kinetyczna",
@@ -293,7 +401,12 @@
         "zoom": "zoom co drugie ujęcie",
         "tempo": "średnie",
         "grafiki": "karty z obrysem"
-      }
+      },
+      "mood": "spokojny",
+      "use": [
+        "lifestyle"
+      ],
+      "forWhom": "Do cytatów, motywacji i krótkich manifestów."
     },
     {
       "id": "kino-szerokie",
@@ -307,7 +420,12 @@
         "zoom": "bez zoomów",
         "tempo": "spokojne (tnie tylko długie pauzy)",
         "grafiki": "ciemne karty"
-      }
+      },
+      "mood": "spokojny",
+      "use": [
+        "premium"
+      ],
+      "forWhom": "Do filmów klimatycznych i opowieści."
     },
     {
       "id": "podcast-dynamiczny",
@@ -321,7 +439,12 @@
         "zoom": "zoom co drugie ujęcie",
         "tempo": "szybkie (tnie każdą pauzę)",
         "grafiki": "szklane karty"
-      }
+      },
+      "mood": "dynamiczny",
+      "use": [
+        "rozmowa"
+      ],
+      "forWhom": "Do fragmentów podcastów i rozmów."
     },
     {
       "id": "luksus-czarno-bialy",
@@ -335,7 +458,12 @@
         "zoom": "powolny najazd w każdym ujęciu",
         "tempo": "spokojne (tnie tylko długie pauzy)",
         "grafiki": "karty z obrysem"
-      }
+      },
+      "mood": "spokojny",
+      "use": [
+        "premium"
+      ],
+      "forWhom": "Do mody, biżuterii i architektury."
     },
     {
       "id": "nieruchomosci-premium",
@@ -349,7 +477,13 @@
         "zoom": "powolny najazd w każdym ujęciu",
         "tempo": "spokojne (tnie tylko długie pauzy)",
         "grafiki": "jasne karty"
-      }
+      },
+      "mood": "spokojny",
+      "use": [
+        "sprzedaż",
+        "premium"
+      ],
+      "forWhom": "Do ofert nieruchomości, hoteli i inwestycji."
     },
     {
       "id": "produkt-premium",
@@ -363,7 +497,13 @@
         "zoom": "powolny najazd w każdym ujęciu",
         "tempo": "średnie",
         "grafiki": "jasne karty"
-      }
+      },
+      "mood": "spokojny",
+      "use": [
+        "sprzedaż",
+        "premium"
+      ],
+      "forWhom": "Do prezentacji produktów i sklepów."
     },
     {
       "id": "sport-akcja",
@@ -377,7 +517,12 @@
         "zoom": "mocny zoom co drugie ujęcie",
         "tempo": "szybkie (tnie każdą pauzę)",
         "grafiki": "ciemne karty"
-      }
+      },
+      "mood": "dynamiczny",
+      "use": [
+        "rozrywka"
+      ],
+      "forWhom": "Do sportu, treningów i dynamicznych relacji."
     },
     {
       "id": "pastelowy-lifestyle",
@@ -391,7 +536,12 @@
         "zoom": "powolny najazd w każdym ujęciu",
         "tempo": "średnie",
         "grafiki": "jasne karty"
-      }
+      },
+      "mood": "spokojny",
+      "use": [
+        "lifestyle"
+      ],
+      "forWhom": "Do beauty, mody, rodziny i codziennych vlogów."
     },
     {
       "id": "medyczny-spokojny",
@@ -405,7 +555,13 @@
         "zoom": "bez zoomów",
         "tempo": "spokojne (tnie tylko długie pauzy)",
         "grafiki": "jasne karty"
-      }
+      },
+      "mood": "spokojny",
+      "use": [
+        "edukacja",
+        "rozmowa"
+      ],
+      "forWhom": "Do zdrowia, medycyny i usług zaufania publicznego."
     },
     {
       "id": "finanse-liczby",
@@ -419,7 +575,12 @@
         "zoom": "zoom co drugie ujęcie",
         "tempo": "średnie",
         "grafiki": "ciemne karty"
-      }
+      },
+      "mood": "spokojny",
+      "use": [
+        "sprzedaż"
+      ],
+      "forWhom": "Do finansów, inwestycji i rolek z danymi."
     },
     {
       "id": "kurs-online",
@@ -433,7 +594,12 @@
         "zoom": "zoom co drugie ujęcie",
         "tempo": "średnie",
         "grafiki": "jasne karty"
-      }
+      },
+      "mood": "spokojny",
+      "use": [
+        "edukacja"
+      ],
+      "forWhom": "Do lekcji, kursów i treści edukacyjnych krok po kroku."
     },
     {
       "id": "technologia",
@@ -447,7 +613,12 @@
         "zoom": "zoom co drugie ujęcie",
         "tempo": "szybkie (tnie każdą pauzę)",
         "grafiki": "karty z obrysem"
-      }
+      },
+      "mood": "dynamiczny",
+      "use": [
+        "edukacja"
+      ],
+      "forWhom": "Do technologii, AI i aplikacji."
     },
     {
       "id": "beauty-zloto-rozowe",
@@ -461,21 +632,33 @@
         "zoom": "powolny najazd w każdym ujęciu",
         "tempo": "spokojne (tnie tylko długie pauzy)",
         "grafiki": "szklane karty"
-      }
+      },
+      "mood": "spokojny",
+      "use": [
+        "premium",
+        "lifestyle"
+      ],
+      "forWhom": "Do kosmetyki, salonów i marek osobistych kobiet."
     },
     {
       "id": "papierowy-kolaz",
-      "name": "Papierowy kolaż",
-      "description": "Słowa na wycinankach z papieru, lekko przechylone, wchodzą poklatkowo jak w animacji z nożyczek; hak na pasku papieru, karty jak kartki z taśmą. Do edukacji, opowieści i marek rzemieślniczych.",
+      "name": "Paper: kolaż",
+      "description": "Słowa na darto wyrwanych skrawkach kremowego papieru z białym rdzeniem krawędzi, wklejane poklatkowo (12 kl./s) z lekkim drżeniem; słowo-klucz na musztardowej kartce z taśmą. Przejście: rozdarcie kartki. Do edukacji, opowieści i marek rzemieślniczych.",
       "inspiredBy": null,
       "summary": {
-        "animacja": "poklatkowe (stop-motion)",
+        "animacja": "wklejanie skrawków poklatkowo (12 kl./s) z lekkim drżeniem",
         "hak": "pasek papieru",
-        "przejście": "poklatkowe drgnięcie",
+        "przejście": "rozdarcie kartki",
         "zoom": "bez zoomów",
         "tempo": "średnie",
         "grafiki": "papierowe kartki"
-      }
+      },
+      "mood": "kreatywny",
+      "use": [
+        "edukacja",
+        "lifestyle"
+      ],
+      "forWhom": "Do edukacji, opowieści i marek rzemieślniczych."
     },
     {
       "id": "pytania-i-odpowiedzi",
@@ -489,7 +672,14 @@
         "zoom": "bez zoomów",
         "tempo": "średnie",
         "grafiki": "ciemne karty"
-      }
+      },
+      "mood": "spokojny",
+      "use": [
+        "sprzedaż",
+        "edukacja",
+        "rozmowa"
+      ],
+      "forWhom": "Do biznesu w formie Q&A i odpowiedzi na komentarze."
     },
     {
       "id": "adnotacje-odreczne",
@@ -503,7 +693,14 @@
         "zoom": "powolny najazd w każdym ujęciu",
         "tempo": "spokojne (tnie tylko długie pauzy)",
         "grafiki": "jasne karty"
-      }
+      },
+      "mood": "spokojny",
+      "use": [
+        "sprzedaż",
+        "edukacja",
+        "rozrywka"
+      ],
+      "forWhom": "Do poradników i produktywności."
     },
     {
       "id": "mocna-typografia",
@@ -517,7 +714,153 @@
         "zoom": "powolny najazd w każdym ujęciu",
         "tempo": "szybkie (tnie każdą pauzę)",
         "grafiki": "ciemne karty"
-      }
+      },
+      "mood": "dynamiczny",
+      "use": [
+        "sprzedaż"
+      ],
+      "forWhom": "Do krótkich, mocnych tez biznesowych."
+    },
+    {
+      "id": "proste-1-slowo",
+      "name": "Proste: 1 słowo",
+      "description": "Jedno słowo naraz, duże i wyraźne, z krótkim pop-outem. Bez podkreśleń i ozdobników. Animację zmienisz w „Edytuj styl” (brak, pop, fade, wjazd w górę, maszyna do pisania).",
+      "inspiredBy": null,
+      "summary": {
+        "animacja": "po 1 słowie, krótki pop-out (do zmiany: brak, fade, wjazd w górę, maszyna do pisania)",
+        "hak": "zwykły tekst",
+        "przejście": "twarde cięcie",
+        "zoom": "bez zoomów",
+        "tempo": "szybkie",
+        "grafiki": "ciemne karty"
+      },
+      "mood": "dynamiczny",
+      "use": [
+        "edukacja",
+        "sprzedaż",
+        "lifestyle"
+      ],
+      "forWhom": "Do szybkich, dynamicznych rolek, w których liczy się każde słowo."
+    },
+    {
+      "id": "proste-2-slowa",
+      "name": "Proste: 2 słowa",
+      "description": "Po dwa słowa naraz, bez animacji: słowo pojawia się w chwili, gdy pada. Spokojnie i czytelnie, bez ozdobników. Animację zmienisz w „Edytuj styl”.",
+      "inspiredBy": null,
+      "summary": {
+        "animacja": "po 2 słowa, bez animacji (słowo pojawia się, gdy pada)",
+        "hak": "zwykły tekst",
+        "przejście": "twarde cięcie",
+        "zoom": "bez zoomów",
+        "tempo": "średnie",
+        "grafiki": "jasne karty"
+      },
+      "mood": "spokojny",
+      "use": [
+        "edukacja",
+        "biznes",
+        "podcast"
+      ],
+      "forWhom": "Do spokojnych rolek, gdy napisy mają być czytelne i nie odciągać uwagi."
+    },
+    {
+      "id": "proste-3-slowa",
+      "name": "Proste: 3 słowa",
+      "description": "Po trzy słowa naraz z prostym wjazdem w górę. Mocny, miękki cień pod literami, czytelny na jasnym i ciemnym nagraniu. Animację zmienisz w „Edytuj styl”.",
+      "inspiredBy": null,
+      "summary": {
+        "animacja": "po 3 słowa, prosty wjazd w górę",
+        "hak": "tekst na ciemnym pasku",
+        "przejście": "twarde cięcie",
+        "zoom": "bez zoomów",
+        "tempo": "średnie",
+        "grafiki": "szklane karty"
+      },
+      "mood": "spokojny",
+      "use": [
+        "edukacja",
+        "biznes"
+      ],
+      "forWhom": "Do porad i rozmów, gdy widz ma czytać całe frazy."
+    },
+    {
+      "id": "paper-zeszyt",
+      "name": "Paper: zeszyt",
+      "description": "Słowa jak zapisane w zeszycie w linie z czerwonym marginesem: tekst odsłania się jak pisany ręcznie, słowo-klucz na żółtym zakreślaczu z taśmą washi. Przejście: przewrócenie kartki. Do porad, nauki i notatek.",
+      "inspiredBy": null,
+      "summary": {
+        "animacja": "tekst odsłania się jak pisany w zeszycie",
+        "hak": "pasek papieru",
+        "przejście": "przewrócenie kartki",
+        "zoom": "bez zoomów",
+        "tempo": "średnie",
+        "grafiki": "papierowe kartki"
+      },
+      "mood": "spokojny",
+      "use": [
+        "edukacja"
+      ],
+      "forWhom": "Do porad, nauki i notatek."
+    },
+    {
+      "id": "paper-wycinanki",
+      "name": "Paper: wycinanki",
+      "description": "Nasycone kolory i gładko cięte kształty jak w ludowych wycinankach: słowa spadają z góry z dosiadem, słowo-klucz na czerwonym wycinku. Bez taśmy. Przejście: przesunięcie warstw papieru. Do energicznych, radosnych rolek.",
+      "inspiredBy": null,
+      "summary": {
+        "animacja": "słowa spadają z góry z dosiadem (12 kl./s)",
+        "hak": "tekst na pudełku",
+        "przejście": "przesunięcie warstw papieru",
+        "zoom": "bez zoomów",
+        "tempo": "szybkie",
+        "grafiki": "karty w kolorze akcentu"
+      },
+      "mood": "dynamiczny",
+      "use": [
+        "lifestyle",
+        "edukacja"
+      ],
+      "forWhom": "Do energicznych, radosnych rolek."
+    },
+    {
+      "id": "paper-gazeta",
+      "name": "Paper: gazeta",
+      "description": "List z wycinków gazety: każde słowo w innym kroju i na innym skrawku (nigdy dwa takie same obok siebie), słowo-klucz białe na czerwonym. Słowa wskakują twardo, bez płynności. Przejście: zmięta kartka. Do newsów, kontrowersji i ciekawostek.",
+      "inspiredBy": null,
+      "summary": {
+        "animacja": "list z wycinków gazety, słowa wskakują twardo",
+        "hak": "pieczątka",
+        "przejście": "zmięta kartka",
+        "zoom": "bez zoomów",
+        "tempo": "szybkie",
+        "grafiki": "obrysowane karty"
+      },
+      "mood": "dynamiczny",
+      "use": [
+        "news",
+        "edukacja"
+      ],
+      "forWhom": "Do newsów, kontrowersji i ciekawostek."
+    },
+    {
+      "id": "paper-karton",
+      "name": "Paper: karton",
+      "description": "Etykiety na tekturze falistej: tekst wybijany jak na maszynie do pisania, słowo-klucz odbite czerwonym stemplem, brązowa taśma pakowa. Przejście: klapa kartonu. Do e-commerce, wysyłek, rzemiosła i „unboxingu”.",
+      "inspiredBy": null,
+      "summary": {
+        "animacja": "maszyna do pisania i stempel na etykietach z kartonu",
+        "hak": "pieczątka",
+        "przejście": "klapa kartonu",
+        "zoom": "bez zoomów",
+        "tempo": "średnie",
+        "grafiki": "papierowe kartki"
+      },
+      "mood": "kreatywny",
+      "use": [
+        "sprzedaż",
+        "lifestyle"
+      ],
+      "forWhom": "Do e-commerce, wysyłek, rzemiosła i „unboxingu”."
     }
   ],
   "fonts": [
@@ -534,7 +877,16 @@
     "Roboto",
     "Nunito Sans",
     "Nunito",
-    "Fustat"
+    "Fustat",
+    "Patrick Hand",
+    "DM Serif Display",
+    "Titan One",
+    "Baloo 2",
+    "Playfair Display",
+    "Special Elite",
+    "Courier Prime",
+    "Oswald",
+    "Rubik Dirt"
   ],
   "colors": [
     "accent",

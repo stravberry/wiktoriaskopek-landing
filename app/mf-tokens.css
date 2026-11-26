@@ -1,0 +1,164 @@
+/*
+  MontageFrames design system: tokeny (wspólne dla landingu, próby i panelu).
+  ŹRÓDŁO PRAWDY (kopia dla panelu: /Users/admin/OpenBot/Shared/montageframes-produkt/design-system/tokens.css).
+  Motyw: jasny domyślnie; ciemny przez [data-theme="dark"] na <html> albo kontenerze (albo klasę .mf-dark).
+  Na landingu Fustat ładuje next/font (zmienna --font-mf); w panelu fonts/fonts.css.
+*/
+:root,
+[data-theme="light"] {
+  /* Kolor: tło i tekst */
+  --mf-bg: #ffffff;
+  --mf-ink: #1d1d1f;            /* tekst główny, 16.8:1 na --mf-bg */
+  --mf-ink-2: #5c5c62;          /* tekst drugorzędny, 6.6:1 na --mf-bg */
+  --mf-surface: #f5f5f7;        /* karty, pola na tle bg, kafelki */
+  --mf-surface-hover: #e8e8ed;  /* hover kart i przycisków drugorzędnych, obrys nieaktywnych elementów */
+  --mf-line: #d2d2d7;           /* cienkie linie i obramowania (rzadko: oddzielamy tłem, nie linią) */
+
+  /* Kolor: akcent (pomarańcz marki Wiktorii) */
+  --mf-accent: #ff6a13;         /* tło przycisku głównego, pasek postępu, zaznaczenia */
+  --mf-accent-ink: #c2410c;     /* akcent jako TEKST na jasnym tle (5.2:1) */
+  --mf-on-accent: #111111;      /* tekst na --mf-accent (zawsze ciemny, 6.6:1) */
+  --mf-accent-soft: rgb(255 106 19 / 0.15); /* tło komunikatów (alert, info) */
+
+  /* Kolor: stany (panel; landing używa ich tylko w formularzach) */
+  --mf-danger: #d70015;         /* 5.4:1 na bg */
+  --mf-danger-soft: rgb(215 0 21 / 0.10);
+  --mf-success: #187a42;        /* 5.3:1 na bg */
+  --mf-success-soft: rgb(24 122 66 / 0.12);
+
+  /* Ciemne bloki na jasnej stronie (sekcje „dark”, stopka, ramka urządzenia) */
+  --mf-dark: #0b0b0c;
+  --mf-dark-ink: #f5f5f7;
+  --mf-dark-ink-2: #a1a1a6;
+  --mf-dark-surface: #1c1c1e;
+  --mf-device: #1d1d1f;
+  --mf-footer-ink-2: #c7c7cc;
+
+  color-scheme: light;
+}
+
+[data-theme="dark"],
+:root[data-home-theme="dark"],
+.mf-dark {
+  --mf-bg: #0b0b0c;
+  --mf-ink: #f5f5f7;
+  --mf-ink-2: #a1a1a6;
+  --mf-surface: #1c1c1e;
+  --mf-surface-hover: #2c2c2e;
+  --mf-line: #3a3a3c;
+  --mf-accent: #ff7a2e;
+  --mf-accent-ink: #ff8a4a;
+  --mf-on-accent: #111111;
+  --mf-accent-soft: rgb(255 122 46 / 0.18);
+  --mf-danger: #ff453a;
+  --mf-danger-soft: rgb(255 69 58 / 0.16);
+  --mf-success: #30d158;
+  --mf-success-soft: rgb(48 209 88 / 0.14);
+  color-scheme: dark;
+}
+
+:root {
+  /* Typografia: jedna rodzina, waga robi hierarchię */
+  --mf-font: var(--font-mf, "Fustat"), "Fustat", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mf-font-mono: ui-monospace, "SF Mono", "JetBrains Mono", Menlo, monospace;
+
+  /* Skala płynna (landing, strony marketingowe) */
+  --mf-text-display: clamp(3.25rem, 7.2vw, 6rem);   /* waga 800, lh 0.94, tracking -0.045em */
+  --mf-text-h1: clamp(2.4rem, 8vw, 7.25rem);        /* 800, lh 0.95, -0.045em */
+  --mf-text-h2: clamp(2.4rem, 5.4vw, 4.75rem);      /* 700, lh 0.98, -0.04em */
+  --mf-text-lead: clamp(1.15rem, 1.6vw, 1.5rem);    /* 400, lh 1.45, kolor ink-2 */
+  --mf-text-num: clamp(3.4rem, 6.4vw, 5.75rem);     /* 800, lh 0.9, -0.05em, tabular-nums */
+
+  /* Skala stała (panel, formularze, próba) */
+  --mf-text-xs: 13px;    /* przypisy, metadane */
+  --mf-text-sm: 15px;    /* opisy pod polami, etykiety pomocnicze */
+  --mf-text-md: 17px;    /* tekst podstawowy i przyciski */
+  --mf-text-lg: 19px;
+  --mf-text-xl: 22px;    /* tytuł karty */
+  --mf-text-2xl: 28px;   /* tytuł ekranu w panelu */
+  --mf-text-3xl: 36px;
+  --mf-text-field: 16px; /* pola formularza: min. 16 px, żeby iOS nie powiększał */
+
+  --mf-weight-regular: 400;
+  --mf-weight-medium: 500;
+  --mf-weight-semibold: 600;
+  --mf-weight-bold: 700;
+  --mf-weight-heavy: 800;
+
+  --mf-leading-tight: 1.05;
+  --mf-leading-snug: 1.3;
+  --mf-leading-body: 1.5;
+  --mf-tracking-display: -0.045em;
+  --mf-tracking-heading: -0.035em;
+  --mf-tracking-title: -0.02em;
+
+  /* Odstępy (siatka 4 px) */
+  --mf-space-1: 4px;
+  --mf-space-2: 8px;
+  --mf-space-3: 12px;
+  --mf-space-4: 16px;
+  --mf-space-5: 20px;
+  --mf-space-6: 24px;
+  --mf-space-8: 32px;
+  --mf-space-10: 40px;
+  --mf-space-12: 48px;
+  --mf-space-16: 64px;
+  --mf-space-24: 96px;
+  --mf-space-section: 176px;       /* odstęp między sekcjami landingu na desktopie (112 px na telefonie) */
+  --mf-wrap: 1240px;               /* maks. szerokość treści */
+  --mf-gutter: clamp(20px, 4vw, 40px);
+
+  /* Wysokości elementów dotykowych */
+  --mf-control-sm: 44px;
+  --mf-control: 48px;              /* pola, przełączniki segmentów */
+  --mf-control-lg: 56px;           /* przycisk główny */
+
+  /* Zaokrąglenia */
+  --mf-radius-sm: 12px;            /* małe elementy, miniatury */
+  --mf-radius-md: 16px;            /* pola, komunikaty */
+  --mf-radius-lg: 20px;            /* kafelki wyboru */
+  --mf-radius-xl: 28px;            /* karty i panele */
+  --mf-radius-device: 36px;        /* ramka telefonu w mockupach */
+  --mf-radius-full: 999px;         /* przyciski, chipy, paski */
+
+  /* Cienie: używane oszczędnie (głównie mockupy i warstwy nad treścią) */
+  --mf-shadow-sm: 0 8px 30px -12px rgb(0 0 0 / 0.35);
+  --mf-shadow-lg: 0 40px 80px -40px rgb(0 0 0 / 0.6);
+  --mf-shadow-overlay: 0 24px 60px -20px rgb(0 0 0 / 0.45);
+  --mf-ring: 0 0 0 3px var(--mf-accent);
+  --mf-focus-outline: 3px solid var(--mf-accent);
+  --mf-focus-offset: 3px;
+
+  /* Ruch */
+  --mf-ease-out: cubic-bezier(0.16, 1, 0.3, 1);    /* wejścia, odsłanianie, uniesienie */
+  --mf-ease-press: cubic-bezier(0.2, 0, 0, 1);     /* wciśnięcie, krótkie reakcje */
+  --mf-ease-standard: ease;                       /* kolor, przezroczystość */
+  --mf-dur-press: 150ms;                          /* scale(0.97) przy wciśnięciu */
+  --mf-dur-color: 200ms;
+  --mf-dur-lift: 300ms;
+  --mf-dur-reveal: 550ms;
+  --mf-dur-heading: 700ms;
+  --mf-reveal-distance: 24px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --mf-dur-press: 0ms;
+    --mf-dur-color: 0ms;
+    --mf-dur-lift: 0ms;
+    --mf-dur-reveal: 0ms;
+    --mf-dur-heading: 0ms;
+    --mf-reveal-distance: 0px;
+  }
+}
+
+/* Landing i próba: dotychczasowe zmienne --h-* i --mf-dark-* czytają z tokenów (jedno źródło wartości). */
+html .mf-page.mf-page.home {
+  --h-bg: var(--mf-bg);
+  --h-ink: var(--mf-ink);
+  --h-ink-2: var(--mf-ink-2);
+  --h-surface: var(--mf-surface);
+  --h-surface-hover: var(--mf-surface-hover);
+  --h-accent: var(--mf-accent);
+  --h-accent-ink: var(--mf-accent-ink);
+}
