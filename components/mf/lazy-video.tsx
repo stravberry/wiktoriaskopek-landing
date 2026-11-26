@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react"
 import { useReducedMotion } from "framer-motion"
 
 /**
- * Film na landingu bez kosztu na starcie: przed wejściem w widok tylko poster (preload none),
+ * Film na landingu bez kosztu na starcie: nic nie pobiera, dopóki nie jest blisko widoku (wtedy poster i źródło, preload none),
  * odtwarza się wyciszony, gdy jest widoczny, i pauzuje poza widokiem. Przy reduced motion: poster i przycisk play.
  */
 export function LazyVideo({ src, poster, label, className = "", controls = false }: { src: string; poster: string; label: string; className?: string; controls?: boolean }) {
@@ -45,7 +45,7 @@ export function LazyVideo({ src, poster, label, className = "", controls = false
       ref={ref}
       className={className}
       src={near ? src : undefined}
-      poster={poster}
+      poster={near ? poster : undefined}
       muted
       loop
       playsInline

@@ -63,7 +63,13 @@ export type MfShowcase = {
   points: string[]
   video?: MfVideo
   image?: { src: string; alt: string; w: number; h: number }
+  /** Nagranie obsługi panelu (0f, Coding Builder): zastępuje zrzut. */
+  clip?: MfClip
 }
+
+/** Klip z panelu w dwóch kadrach: 16:9 (komputer) i 4:5 (telefon), public/mf/apple/. */
+export type MfClip = { name: string; label: string }
+export const clip = (name: string, label: string): MfClip => ({ name, label })
 
 // Teksty: „co naprawdę robi” z landing-assets/LISTA.md (Coding Builder, wydanie z 26.11.2026). Filmy: render z programu, bez twarzy i klientów.
 const fn = (name: string, aspect: MfVideo["aspect"] = "9/16"): MfVideo =>
@@ -80,7 +86,7 @@ export const MF_SHOWCASE: MfShowcase[] = [
       "Ustawienia zostają w folderze marka/. Aktualizacje programu ich nie nadpisują.",
     ],
     video: fn("kreator-marki"),
-    image: shot("04b-marka-studio-demo", "Panel MontageFrames: Twoja marka z wybranym stylem i zakładkami Marka, Kolory, Fonty, Napisy"),
+    image: { src: "/mf/apple/zrzut-3-twoja-marka.jpg", alt: "Panel MontageFrames: Twoja marka z wybranym stylem, zakładkami i podglądem", w: 1440, h: 900 },
   },
   {
     id: "style-animacje",
@@ -101,7 +107,7 @@ export const MF_SHOWCASE: MfShowcase[] = [
       "Gdy powiesz „jest git”, styl zostaje zapamiętany dla marki na stałe i wraca w kolejnych montażach.",
     ],
     video: fn("panel-poprawki"),
-    image: shot("03-render-jest-git", "Panel MontageFrames: zakładka Render z przyciskiem „Jest git: zatwierdź styl”"),
+    clip: clip("jest-git", "Panel MontageFrames: kliknięcie „Jest git: zatwierdź styl” i zapis stylu dla marki"),
   },
   {
     id: "youtube",
@@ -112,7 +118,7 @@ export const MF_SHOWCASE: MfShowcase[] = [
       "Na filmie: style Mocna typografia i Papierowy kolaż.",
     ],
     video: fn("youtube-16x9", "16/9"),
-    image: shot("06-film-poziomy", "Panel MontageFrames: film poziomy 16:9"),
+    clip: clip("youtube-16x9", "Render 16:9 w stylu Mocna typografia: hak, napisy nisko, karta licznika z boku"),
   },
   {
     id: "quickcontent",
@@ -123,7 +129,7 @@ export const MF_SHOWCASE: MfShowcase[] = [
       "Montuje tylko te, które zaznaczysz.",
     ],
     video: fn("quickcontent"),
-    image: shot("05b-quickcontent-projekt", "Panel MontageFrames: QuickContent z propozycjami fragmentów"),
+    clip: clip("quickcontent", "Panel MontageFrames: QuickContent, propozycje fragmentów i zaznaczenie dwóch do montażu"),
   },
   {
     id: "motion-studio",
@@ -156,10 +162,10 @@ export const MF_SHOWCASE: MfShowcase[] = [
 
 /** Zrzuty panelu (lokalny panel w przeglądarce, komenda /panel). */
 export const MF_PANEL_SHOTS = [
-  { src: "/mf/panel/02-edytor-napisow.jpg", title: "Edytor napisów", alt: "Panel: edytor rolki z podglądem, listą słów do kliknięcia i osią czasu" },
-  { src: "/mf/panel/01-lista-rolek.jpg", title: "Lista rolek", alt: "Panel: lista rolek z miniaturami, podzielona na markę i „Bez marki”" },
-  { src: "/mf/panel/05-quickcontent.jpg", title: "QuickContent", alt: "Panel: start projektu QuickContent z pliku albo z YouTube" },
-  { src: "/mf/panel/09-ustawienia.jpg", title: "Ustawienia", alt: "Panel: ustawienia programu i aktualizacji" },
+  { src: "/mf/apple/zrzut-1-edytor-lista-slow.jpg", title: "Edytor napisów", alt: "Panel: edytor rolki z podglądem i listą słów do kliknięcia" },
+  { src: "/mf/apple/zrzut-2-galeria-stylow.jpg", title: "Galeria stylów", alt: "Panel: galeria stylów z filtrami" },
+  { src: "/mf/apple/zrzut-4-render-jest-git.jpg", title: "Render i „Jest git”", alt: "Panel: zakładka Render z gotowym filmem i przyciskiem „Jest git”" },
+  { src: "/mf/apple/zrzut-5-quickcontent-propozycje.jpg", title: "QuickContent", alt: "Panel: QuickContent z propozycjami fragmentów z długiego nagrania" },
 ]
 
 /** „33 style”, „37 stylów”: liczba stylów z poprawną odmianą. */
@@ -190,6 +196,7 @@ export const MF_QUALITY_CHECKS = [
 
 export type MfStepMedia =
   | { kind: "ui"; ui: "checkout" | "invite" | "install" }
+  | { kind: "clip"; clip: MfClip }
   | { kind: "img"; src: string; alt: string }
   | { kind: "video"; src: string; poster: string; label: string }
 export type MfStep = { title: string; text: string; media: MfStepMedia }
@@ -199,11 +206,11 @@ export const MF_STEPS: MfStep[] = [
   { title: "Kupujesz", text: "Płacisz 238 zł BLIK-iem albo kartą na stronie Stripe. W kilka minut dostajesz mail z kluczem licencyjnym i linkiem do konta.", media: { kind: "ui", ui: "checkout" } },
   { title: "Odbierasz paczkę", text: "Na koncie podajesz login GitHub i dostajesz zaproszenie do prywatnego repozytorium z paczką i aktualizacjami. Nie masz GitHuba? Pobierasz ZIP z konta.", media: { kind: "ui", ui: "invite" } },
   { title: "Instalujesz w Claude Code", text: "Otwierasz paczkę w Claude Code i wpisujesz /start. Claude sprawdza komputer i po Twojej zgodzie instaluje narzędzia. Bez ręcznych poleceń w Terminalu, realnie 15–30 minut.", media: { kind: "ui", ui: "install" } },
-  { title: "Ustawiasz markę", text: "Komenda /marka: Claude pyta o kolory, logo, zdjęcia i preferencje montażu, a na koniec robi próbną rolkę.", media: { kind: "img", src: "/mf/panel/04b-marka-studio-demo.jpg", alt: "Panel MontageFrames: Twoja marka z wybranym stylem" } },
-  { title: "Wybierasz styl", text: `Komenda /styl albo galeria w panelu: ${stylesLabel()}, od spokojnych eksperckich po dynamiczne sprzedażowe. Kolor akcentu bierzemy z Twojej marki.`, media: { kind: "video", src: "/mf/funkcje/przeglad-stylow.mp4", poster: "/mf/funkcje/przeglad-stylow.jpg", label: "Sześć stylów MontageFrames na tym samym nagraniu" } },
+  { title: "Ustawiasz markę", text: "Komenda /marka: Claude pyta o kolory, logo, zdjęcia i preferencje montażu, a na koniec robi próbną rolkę.", media: { kind: "clip", clip: clip("kreator-marki", "Panel MontageFrames: zmiana koloru akcentu marki i podgląd stylu w ruchu") } },
+  { title: "Wybierasz styl", text: `Komenda /styl albo galeria w panelu: ${stylesLabel()}, od spokojnych eksperckich po dynamiczne sprzedażowe. Kolor akcentu bierzemy z Twojej marki.`, media: { kind: "clip", clip: clip("wybor-stylu", "Panel MontageFrames: przełączanie stylów montażu, opis animacji zmienia się od razu") } },
   { title: "Montujesz", text: "Komenda /rolka i plik z nagraniem. Program robi transkrypcję, układa napisy w wybranym stylu, a krytyk jakości sprawdza rolkę przed renderem.", media: { kind: "video", src: "/mf/style/dynamiczny-zakreslacz.mp4", poster: "/mf/style/dynamiczny-zakreslacz.jpg", label: "Rolka zmontowana w MontageFrames, styl Dynamiczny zakreślacz" } },
-  { title: "Poprawiasz w panelu albo w rozmowie", text: "Piszesz zwykłym językiem: „przesuń napis niżej”, „podświetl słowo promocja”. Albo klikasz słowo w panelu i poprawiasz. Obie drogi zapisują ten sam projekt.", media: { kind: "img", src: "/mf/panel/02-edytor-napisow.jpg", alt: "Panel MontageFrames: edytor napisów z podglądem i osią czasu" } },
-  { title: "Renderujesz i publikujesz", text: "Gotowa rolka to plik MP4 do publikacji. Komenda /opis podpowiada opis pod rolkę.", media: { kind: "video", src: "/mf/style/neon-noc.mp4", poster: "/mf/style/neon-noc.jpg", label: "Gotowa rolka w stylu Neon noc" } },
+  { title: "Poprawiasz w panelu albo w rozmowie", text: "Piszesz zwykłym językiem: „przesuń napis niżej”, „podświetl słowo promocja”. Albo klikasz słowo w panelu i poprawiasz. Obie drogi zapisują ten sam projekt.", media: { kind: "clip", clip: clip("edycja-napisu", "Panel MontageFrames: poprawka literówki w napisie i podgląd poprawionej rolki") } },
+  { title: "Renderujesz i publikujesz", text: "Gotowa rolka to plik MP4 do publikacji. Komenda /opis podpowiada opis pod rolkę.", media: { kind: "clip", clip: clip("render", "Panel MontageFrames: render rolki i gotowy plik w wersjach (środek przyspieszony)") } },
 ]
 
 export type CaseStudy = { name: string; scope: string; situation: string; result: string; quote: string }

@@ -9,6 +9,7 @@ import { LazyVideo } from "@/components/mf/lazy-video"
 // Makiety (zakup, zaproszenie, instalacja) to ilustracje przebiegu, nie zrzuty ekranu.
 
 import type { MfStep as Step, MfStepMedia as Media } from "@/lib/mf/content"
+import { PanelClip } from "@/components/mf/apple"
 
 const EASE = [0.16, 1, 0.3, 1] as const
 
@@ -115,6 +116,7 @@ function Mock({ ui }: { ui: "checkout" | "invite" | "install" }) {
 function StepMedia({ m, sticky = false }: { m: Media; sticky?: boolean }) {
   const frame = "relative aspect-[4/5] sm:aspect-[4/3] w-full overflow-hidden rounded-[24px] bg-[#1d1d1f]"
   if (m.kind === "ui") return <div className={frame}><Mock ui={m.ui} /></div>
+  if (m.kind === "clip") return <PanelClip clip={m.clip} className={frame} />
   if (m.kind === "img")
     return (
       <div className={`${frame} bg-[var(--h-surface)]`}>
