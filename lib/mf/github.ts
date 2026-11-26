@@ -31,8 +31,10 @@ async function gh(token: string, method: string, path: string, body?: unknown, r
 
 export function githubAccess(cfg: { token: string; repo: string }) {
   return {
-    /** 201 = zaproszenie wysłane, 204 = już ma dostęp. Idempotentne. */
+    /** 201 = zaproszenie wysłane, 204 = już ma dostęp. Idempotentne. Najpierw sprawdza, czy konto istnieje. */
     async invite(login: string) {
+      const user = await gh(cfg.token, "GET", `/users/${encodeURIComponent(login)}`)
+      if (user.status === 404) throw new Error(`GitHub: nie ma użytkownika ${login}`)
       const res = await gh(cfg.token, "PUT", `/repos/${cfg.repo}/collaborators/${encodeURIComponent(login)}`, { permission: "pull" })
       if (res.status === 201 || res.status === 204) return
       if (res.status === 404) throw new Error(`GitHub: nie ma użytkownika ${login}`)

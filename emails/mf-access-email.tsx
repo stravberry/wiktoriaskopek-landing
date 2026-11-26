@@ -28,7 +28,7 @@ export function accessEmailText(p: MfAccessEmailProps) {
     `Poradnik online (po zalogowaniu): ${p.origin}/pl/montuj-bez-montazysty/poradnik`,
     "",
     p.githubInvited
-      ? `Dostęp do paczki: wysłaliśmy zaproszenie GitHub dla @${p.githubLogin}. Zaakceptuj je w mailu od GitHuba albo na github.com/notifications.`
+      ? `Dostęp do paczki: wysłaliśmy zaproszenie GitHub dla @${p.githubLogin}. Zaakceptuj je: https://github.com/DKWGroup/MontageFrames-dist/invitations\nPotem w Terminalu: git clone https://github.com/DKWGroup/MontageFrames-dist.git, cd MontageFrames-dist, claude, a w Claude Code wpisz /start.`
       : !p.githubConfigured
         ? "Dostęp do paczki (zaproszenie do repozytorium GitHub albo plik ZIP) wyślemy osobnym mailem w ciągu 24 godzin. Jeśli masz konto GitHub, odpisz na tego maila i podaj login."
         : "Dostęp do paczki: podaj swój login GitHub na koncie albo pobierz ZIP z konta.",
@@ -82,7 +82,7 @@ export default function MfAccessEmail(p: MfAccessEmailProps) {
             <Text style={{ fontSize: 16, fontWeight: 700 }}>Dostęp do paczki</Text>
             <Text style={{ fontSize: 15, lineHeight: "1.5" }}>
               {p.githubInvited
-                ? `Wysłaliśmy zaproszenie GitHub dla @${p.githubLogin}. Zaakceptuj je w mailu od GitHuba albo na github.com/notifications.`
+                ? `Wysłaliśmy zaproszenie GitHub dla @${p.githubLogin}. Zaakceptuj je: https://github.com/DKWGroup/MontageFrames-dist/invitations. Potem w Terminalu: git clone https://github.com/DKWGroup/MontageFrames-dist.git, cd MontageFrames-dist, claude, a w Claude Code wpisz /start.`
                 : !p.githubConfigured
                   ? "Dostęp do paczki (zaproszenie do repozytorium GitHub albo plik ZIP) wyślemy osobnym mailem w ciągu 24 godzin. Jeśli masz konto GitHub, odpisz na tego maila i podaj login."
                   : "Podaj swój login GitHub na koncie, a dostaniesz zaproszenie do repozytorium z aktualizacjami. Możesz też pobrać ZIP z konta."}
