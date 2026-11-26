@@ -293,7 +293,7 @@ export function TrialApp({ api, styles, fonts, fontFamilies, limits, consentText
     })()
   }, [api])
 
-  // Montaż: status co 4 s.
+  // Montaż: status co 12 s (Edge Function ma limit 60 zapytań na 10 min na próbę; częściej = odrzucone odpowiedzi i opóźnienie).
   useEffect(() => {
     if (step !== 3) return
     const id = setInterval(async () => {
@@ -307,7 +307,7 @@ export function TrialApp({ api, styles, fonts, fontFamilies, limits, consentText
       } catch {
         /* chwilowy błąd sieci: kolejna próba za 4 s */
       }
-    }, 4000)
+    }, 12000)
     return () => clearInterval(id)
   }, [step, refresh])
 
