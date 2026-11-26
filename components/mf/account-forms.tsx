@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from "react"
+import { Turnstile } from "@/components/turnstile"
 import { Loader2 } from "lucide-react"
 
 const input = "min-h-12 w-full rounded-2xl bg-[var(--h-bg)] px-4 text-[16px] outline-none focus:ring-2 focus:ring-[var(--h-accent)]"
@@ -105,6 +106,8 @@ export function ResendButton({ sessionId }: { sessionId: string }) {
 
 export function WithdrawalForm() {
   const [f, setF] = useState({ name: "", email: "", orderRef: "", statement: "Niniejszym odstępuję od umowy " })
+  const [tsToken, setTsToken] = useState<string | null>(null)
+  const [tsReset, setTsReset] = useState(0)
   const { busy, msg, run } = useAction()
   const set = (k: keyof typeof f) => (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => setF({ ...f, [k]: e.target.value })
   return (
@@ -112,7 +115,7 @@ export function WithdrawalForm() {
       onSubmit={(e) => {
         e.preventDefault()
         run(async () => {
-          const d = await post("/api/mf/withdrawal", f)
+          const d = await post("/api/mf/withdrawal", { ...f, turnstileToken: tsToken }).catch((e) => { setTsReset((n) => n + 1); throw e })
           return `Przyjęliśmy oświadczenie (nr ${d.id}). Jeśli to adres z zamówienia, wyślemy na niego potwierdzenie z numerem zgłoszenia.`
         })
       }}
@@ -132,6 +135,7 @@ export function WithdrawalForm() {
         Oświadczenie
         <textarea value={f.statement} onChange={set("statement")} required rows={5} className={`${input} py-3 font-normal`} />
       </label>
+      <Turnstile action="withdrawal" onToken={setTsToken} resetKey={tsReset} />
       <button type="submit" disabled={busy} className={`${button} self-start`}>
         {busy && <Loader2 className="size-5 animate-spin" />}Odstępuję od umowy
       </button>
