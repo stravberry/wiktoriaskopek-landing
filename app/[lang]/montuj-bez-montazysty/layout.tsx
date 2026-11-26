@@ -4,6 +4,7 @@ import { notFound } from "next/navigation"
 import { Fustat } from "next/font/google"
 import "../../mf-tokens.css"
 import { MF_BASE_PATH, SELLER } from "@/lib/mf/config"
+import { nobr } from "@/lib/typo"
 import CookieSettingsLink from "@/components/mf/cookie-settings-link"
 import TestModeBar from "@/components/mf/test-mode-bar"
 import { ScrollProgress } from "@/components/mf/motion"
@@ -21,13 +22,13 @@ export default async function MfLayout({ children, params }: { children: React.R
       <TestModeBar />
       <UtmCapture />
       <header className="mf-wrap flex items-center justify-between gap-4 pt-5 md:pt-8">
-        <Link href={MF_BASE_PATH} className="whitespace-nowrap text-[17px] font-bold tracking-[-0.01em]">
+        <Link href={MF_BASE_PATH} className="inline-flex min-h-11 items-center whitespace-nowrap text-[17px] font-bold tracking-[-0.01em]">
           MontageFrames <span className="hidden font-normal text-[var(--h-ink-2)] sm:inline">od Wiktorii Skopek</span>
         </Link>
         <nav className="flex items-center gap-2 text-[15px] font-semibold">
-          <a href={`${MF_BASE_PATH}#style`} className="hidden rounded-full px-4 py-2.5 hover:bg-[var(--h-surface)] md:inline-block">Style</a>
-          <a href={`${MF_BASE_PATH}#faq`} className="hidden rounded-full px-4 py-2.5 hover:bg-[var(--h-surface)] md:inline-block">Pytania</a>
-          <Link href={`${MF_BASE_PATH}/konto`} className="mf-press rounded-full bg-[var(--h-surface)] px-5 py-2.5 hover:bg-[var(--h-surface-hover)]">
+          <a href={`${MF_BASE_PATH}#style`} className="hidden min-h-11 items-center rounded-full px-4 hover:bg-[var(--h-surface)] md:inline-flex">Style</a>
+          <a href={`${MF_BASE_PATH}#faq`} className="hidden min-h-11 items-center rounded-full px-4 hover:bg-[var(--h-surface)] md:inline-flex">Pytania</a>
+          <Link href={`${MF_BASE_PATH}/konto`} className="mf-press inline-flex min-h-11 items-center rounded-full bg-[var(--h-surface)] px-5 hover:bg-[var(--h-surface-hover)]">
             <span className="sm:hidden">Konto</span>
             <span className="hidden sm:inline">Moje konto</span>
           </Link>
@@ -39,17 +40,17 @@ export default async function MfLayout({ children, params }: { children: React.R
           <p className="text-[clamp(2.4rem,8vw,7.25rem)] font-extrabold leading-[0.95] tracking-[-0.045em]">MontageFrames</p>
           <div className="mt-12 grid gap-10 text-[15px] leading-[1.6] text-[#c7c7cc] md:grid-cols-3">
             <p>
-              Sprzedawca: {SELLER.name}, {SELLER.address}. Działalność nierejestrowana.
+              Sprzedawca: {SELLER.name}, {nobr(SELLER.address)}. Działalność nierejestrowana.
               <br />
               <a className="underline" href={`mailto:${SELLER.email}`}>{SELLER.email}</a> · <a className="underline" href={SELLER.phoneHref}>{SELLER.phone}</a>
             </p>
-            <ul className="flex flex-col gap-2">
+            <ul className="flex flex-col [&_a]:inline-flex [&_a]:min-h-11 [&_a]:items-center [&_button]:min-h-11">
               <li><Link className="underline" href={`${MF_BASE_PATH}/regulamin`}>Regulamin sprzedaży</Link></li>
               <li><Link className="underline" href="/pl/polityka-prywatnosci">Polityka prywatności</Link></li>
               <li><Link className="underline" href="/pl/odstapienie">Odstąp od umowy</Link></li>
               <li><CookieSettingsLink /></li>
             </ul>
-            <ul className="flex flex-col gap-2">
+            <ul className="flex flex-col [&_a]:inline-flex [&_a]:min-h-11 [&_a]:items-center">
               <li><Link className="underline" href="/pl">wiktoriaskopek.pl</Link></li>
               <li><a className="underline" href="https://www.instagram.com/wiktoriaskopek/" target="_blank" rel="noopener noreferrer">Instagram</a></li>
               <li><a className="underline" href="https://podcastkatowice.pl" target="_blank" rel="noopener noreferrer">Studio podcastkatowice.pl</a></li>

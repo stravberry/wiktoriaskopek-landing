@@ -1,6 +1,7 @@
 import type { Metadata } from "next"
 import { MF_TERMS_VERSION } from "@/lib/mf/config"
 import { TERMS_SECTIONS } from "@/lib/mf/legal"
+import { nobr } from "@/lib/typo"
 
 export const metadata: Metadata = {
   title: "Regulamin sprzedaży MontageFrames | Wiktoria Skopek",
@@ -18,7 +19,7 @@ export default function RegulaminMf() {
           <section key={s.title} id={s.title.startsWith("§14") ? "proba" : undefined} className="scroll-mt-6">
             <h2 className="text-[22px] font-semibold tracking-[-0.01em]">{s.title}</h2>
             <ol className="mt-4 flex list-decimal flex-col gap-3 pl-6 text-[16px] leading-[1.65]">
-              {s.items.map((t) => <li key={t}>{t}</li>)}
+              {s.items.map((t) => <li key={t}>{nobr(t)}</li>)}
             </ol>
           </section>
         ))}

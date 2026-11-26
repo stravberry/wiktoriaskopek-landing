@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react"
 import Link from "next/link"
+import { nobr } from "@/lib/typo"
 import { ArrowDown, ArrowRight, Loader2, X } from "lucide-react"
 import { MF_BASE_PATH, MF_PRODUCTS, MF_TEXT, type MfProductId } from "@/lib/mf/config"
 import { trackEvent } from "@/components/consent/consent-provider"
@@ -14,6 +15,7 @@ const BUY_EVENT = "mf:buy"
 
 /** Zdarzenie do własnego dziennika (serwer, bez ciasteczek) i do Vercel Analytics (tylko po zgodzie). */
 export function logFunnel(event: string, props: Record<string, string> = {}) {
+  if (document.documentElement.dataset.mfPreview) return // strona podglądu układu (dev): bez zdarzeń
   const body = JSON.stringify({ event, props: { ...utmForEvents(), ...props, device: window.matchMedia("(max-width: 767px)").matches ? "mobile" : "desktop" } })
   if (!navigator.sendBeacon?.("/api/mf/event", new Blob([body], { type: "application/json" }))) {
     fetch("/api/mf/event", { method: "POST", headers: { "Content-Type": "application/json" }, body, keepalive: true }).catch(() => {})
@@ -127,7 +129,7 @@ export function BuyForm({ initialProduct = "paczka", compact = false }: { initia
           >
             <span className="block text-[14px] font-semibold md:text-[15px]">{p.id === "paczka" ? "Program" : "Program + konsultacja 1:1"}</span>
             <span className="mt-1 block text-[24px] font-bold tracking-[-0.03em]">{p.priceLabel}</span>
-            {!compact && <span className="mt-1 block text-[15px] leading-[1.4] text-[var(--h-ink-2)]">{VALUE[p.id]}</span>}
+            {!compact && <span className="mt-1 block text-[15px] leading-[1.4] text-[var(--h-ink-2)]">{nobr(VALUE[p.id])}</span>}
           </button>
         ))}
       </div>
@@ -266,45 +268,84 @@ export function BuyButton({ product = "paczka", source = "button", children, var
 }
 
 /** Przyklejony pasek zakupu na telefonie: pojawia się po minięciu pierwszego ekranu, znika przy formularzu zamówienia. */
+/**
+ * Przyklejone CTA po przewinięciu za hero (zlecenie Wiktorii 26.11): na telefonie pasek na dole, na komputerze pigułka.
+ * Widać je, gdy przyciski hero zniknęły z widoku; chowa się przy sekcji zakupu, w stopce, przy banerze zgód
+ * i przy otwartym okienku zakupu. Ukryte jest `inert` (poza zasięgiem klawiatury i czytnika).
+ */
 export function StickyBuyBar({ trialHref }: { trialHref?: string }) {
   const [show, setShow] = useState(false)
   useEffect(() => {
+    const hero = document.getElementById("hero-cta")
     const order = document.getElementById("zamowienie")
+    const footer = document.querySelector("footer")
     let pastHero = false
     let atOrder = false
-    const update = () => setShow(pastHero && !atOrder)
-    const onScroll = () => {
-      pastHero = window.scrollY > window.innerHeight * 0.8
-      update()
-    }
-    const io = new IntersectionObserver(([e]) => {
-      atOrder = e.isIntersecting
+    let atFooter = false
+    const blocked = () => Boolean(document.querySelector('[aria-labelledby="consent-title"], [aria-labelledby="consent-settings-title"], dialog[open]'))
+    const update = () => setShow(pastHero && !atOrder && !atFooter && !blocked())
+    const io = new IntersectionObserver((entries) => {
+      for (const e of entries) {
+        if (e.target === hero) pastHero = !e.isIntersecting && e.boundingClientRect.bottom < 0
+        if (e.target === order) atOrder = e.isIntersecting
+        if (e.target === footer) atFooter = e.isIntersecting
+      }
       update()
     })
-    if (order) io.observe(order)
+    for (const el of [hero, order, footer]) if (el) io.observe(el)
+    // Bez hero (inna strona): pokaż po przewinięciu o 80% ekranu.
+    const onScroll = () => {
+      if (!hero) pastHero = window.scrollY > window.innerHeight * 0.8
+      update()
+    }
+    const mo = new MutationObserver(update) // baner zgód i okienko zakupu pojawiają się w DOM
+    mo.observe(document.body, { childList: true, subtree: true, attributes: true, attributeFilter: ["open"] })
     window.addEventListener("scroll", onScroll, { passive: true })
     onScroll()
     return () => {
       window.removeEventListener("scroll", onScroll)
       io.disconnect()
+      mo.disconnect()
     }
   }, [])
+  const motion = "transition-[transform,opacity] duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] motion-reduce:transition-none"
   return (
-    <div
-      aria-hidden={!show}
-      className={`fixed inset-x-0 bottom-0 z-[70] border-t border-black/10 bg-[var(--h-bg)]/95 px-4 pb-[max(12px,env(safe-area-inset-bottom))] pt-3 backdrop-blur transition-transform duration-300 md:hidden ${show ? "translate-y-0" : "translate-y-full"}`}
-    >
-      <div className="flex items-center gap-3">
-        <button type="button" tabIndex={show ? 0 : -1} onClick={() => openBuy("paczka", "sticky")} className="mf-press min-h-12 flex-1 rounded-full bg-[var(--h-accent)] px-5 text-[17px] font-bold text-[#111111]">
-          {trialHref ? `Kupuję · ${MF_PRODUCTS.paczka.priceLabel}` : `MontageFrames · ${MF_PRODUCTS.paczka.priceLabel} · Kupuję`}
-        </button>
-        {trialHref && (
-          <Link href={trialHref} tabIndex={show ? 0 : -1} onClick={() => logFunnel("trial_click", { placement: "sticky" })} className="mf-press grid min-h-12 place-items-center rounded-full bg-[var(--h-surface)] px-5 text-[15px] font-semibold">
-            Wypróbuj
-          </Link>
-        )}
+    <>
+      {/* Telefon: pasek na całą szerokość */}
+      <div
+        inert={!show}
+        className={`fixed inset-x-0 bottom-0 z-[70] border-t border-black/10 bg-[var(--h-bg)]/95 px-4 pb-[max(12px,env(safe-area-inset-bottom))] pt-3 backdrop-blur md:hidden ${motion} ${show ? "translate-y-0" : "translate-y-full"}`}
+      >
+        <div className="flex items-center gap-3">
+          <button type="button" onClick={() => openBuy("paczka", "sticky")} className="mf-press min-h-12 flex-1 rounded-full bg-[var(--h-accent)] px-5 text-[17px] font-bold text-[#111111]">
+            {trialHref ? `Kupuję · ${MF_PRODUCTS.paczka.priceLabel}` : `MontageFrames · ${MF_PRODUCTS.paczka.priceLabel} · Kupuję`}
+          </button>
+          {trialHref && (
+            <Link href={trialHref} onClick={() => logFunnel("trial_click", { placement: "sticky" })} className="mf-press grid min-h-12 place-items-center rounded-full bg-[var(--h-surface)] px-5 text-[15px] font-semibold">
+              Wypróbuj
+            </Link>
+          )}
+        </div>
       </div>
-    </div>
+      {/* Komputer: pigułka na środku, nad treścią, z odstępem od dołu */}
+      <div
+        inert={!show}
+        aria-label="Kup albo przetestuj MontageFrames"
+        role="region"
+        className={`fixed bottom-6 left-1/2 z-[70] hidden -translate-x-1/2 md:block ${motion} ${show ? "translate-y-0 opacity-100" : "pointer-events-none translate-y-6 opacity-0"}`}
+      >
+        <div className="flex items-center gap-2 rounded-full bg-[var(--h-bg)]/85 p-2 shadow-[0_18px_50px_-18px_rgba(0,0,0,0.45),0_0_0_1px_rgba(0,0,0,0.06)] backdrop-blur-xl">
+          <button type="button" onClick={() => openBuy("paczka", "sticky_desktop")} className="mf-press inline-flex min-h-12 items-center whitespace-nowrap rounded-full bg-[var(--h-accent)] px-6 text-[16px] font-bold text-[#111111] hover:brightness-95">
+            Kup teraz · {MF_PRODUCTS.paczka.priceLabel}
+          </button>
+          {trialHref && (
+            <Link href={trialHref} onClick={() => logFunnel("trial_click", { placement: "sticky_desktop" })} className="mf-press inline-flex min-h-12 items-center whitespace-nowrap rounded-full bg-[var(--h-surface)] px-6 text-[16px] font-semibold hover:bg-[var(--h-surface-hover)]">
+              Przetestuj za darmo
+            </Link>
+          )}
+        </div>
+      </div>
+    </>
   )
 }
 
@@ -324,7 +365,7 @@ export function BuyRow({ source, trialHref }: { source: string; trialHref?: stri
       <div className="flex flex-wrap items-center gap-x-6 gap-y-4">
         <BuyButton source={source}>Kupuję za {MF_PRODUCTS.paczka.priceLabel}</BuyButton>
         {trialHref && (
-          <Link href={trialHref} onClick={() => logFunnel("trial_click", { placement: source })} className="text-[17px] font-semibold underline decoration-[var(--h-accent)] decoration-2 underline-offset-4">
+          <Link href={trialHref} onClick={() => logFunnel("trial_click", { placement: source })} className="inline-flex min-h-11 items-center text-[17px] font-semibold underline decoration-[var(--h-accent)] decoration-2 underline-offset-4">
             Wypróbuj za darmo na 1 rolce
           </Link>
         )}

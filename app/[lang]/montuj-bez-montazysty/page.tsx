@@ -1,6 +1,7 @@
 import type { Metadata } from "next"
 import Image from "next/image"
 import Link from "next/link"
+import { nobr } from "@/lib/typo"
 import { MF_BASE_PATH, MF_PRODUCTS, MF_REQUIREMENTS, SELLER } from "@/lib/mf/config"
 import { MF_FAQ, MF_FEATURES, MF_QUALITY_CHECKS, MF_SHOWCASE, MF_STEPS, MF_STYLES, TODO, stylesLabel } from "@/lib/mf/content"
 import { PanelShots, ShowcaseBlock } from "@/components/mf/showcase"
@@ -74,12 +75,12 @@ export default function MontujBezMontazysty() {
         <p className="mf-lead mx-auto mt-7 max-w-[40ch]">
           Wrzucasz nagranie z telefonu, wybierasz styl i dostajesz gotową rolkę w kolorach swojej firmy. W Claude Code, na Twoim komputerze.
         </p>
-        <div className="mt-9 flex flex-wrap items-center justify-center gap-x-7 gap-y-4">
+        <div id="hero-cta" className="mt-9 flex flex-wrap items-center justify-center gap-x-7 gap-y-4">
           <BuyButton source="hero">Kupuję za {p.priceLabel}</BuyButton>
           {TRIAL ? (
-            <Link href={TRIAL} className="text-[17px] font-semibold underline decoration-[var(--h-accent)] decoration-2 underline-offset-4">Wypróbuj za darmo na 1 rolce</Link>
+            <Link href={TRIAL} className="inline-flex min-h-11 items-center text-[17px] font-semibold underline decoration-[var(--h-accent)] decoration-2 underline-offset-4">Wypróbuj za darmo na 1 rolce</Link>
           ) : (
-            <a href="#style" className="text-[17px] font-semibold underline decoration-[var(--h-accent)] decoration-2 underline-offset-4">Zobacz {stylesLabel()}</a>
+            <a href="#style" className="inline-flex min-h-11 items-center text-[17px] font-semibold underline decoration-[var(--h-accent)] decoration-2 underline-offset-4">Zobacz {stylesLabel()}</a>
           )}
         </div>
         <GuaranteeLine className="mt-5" />
@@ -116,7 +117,7 @@ export default function MontujBezMontazysty() {
           ].map(([n, u, t], i) => (
             <Reveal key={u} delay={i * 0.06}>
               <dt className="mf-num whitespace-nowrap">{n}<span className="ml-2 text-[0.38em] tracking-[-0.02em]">{u}</span></dt>
-              <dd className="mt-4 max-w-[26ch] text-[17px] leading-[1.5] text-[var(--h-ink-2)]">{t}</dd>
+              <dd className="mt-4 max-w-[26ch] text-[17px] leading-[1.5] text-[var(--h-ink-2)]">{nobr(t)}</dd>
             </Reveal>
           ))}
         </dl>
@@ -260,7 +261,7 @@ export default function MontujBezMontazysty() {
                 ].map(([k2, v]) => (
                   <tr key={k2} className="border-b border-black/10 align-top">
                     <th scope="row" className="w-[28%] py-4 pr-6 font-semibold">{k2}</th>
-                    <td className="py-4">{v}</td>
+                    <td className="py-4">{nobr(v)}</td>
                   </tr>
                 ))}
               </tbody>
@@ -327,12 +328,12 @@ export default function MontujBezMontazysty() {
       <Section id="faq" title="Pytania przed zakupem">
         <div className="grid gap-x-12 lg:grid-cols-2">
           {[...MF_FAQ, ...(TRIAL ? [{ q: "Czy mogę najpierw zobaczyć efekt na swoim nagraniu?", a: "Tak. W darmowej próbie ustawiasz markę, wgrywasz nagranie do 60 sekund i dostajesz jedną rolkę ze znakiem wodnym, bez karty." }] : [])].map((f) => (
-            <details key={f.q} className="group mb-3 bg-[var(--h-surface)] px-6 py-5">
-              <summary className="mf-press flex cursor-pointer list-none items-start justify-between gap-4 text-[21px] font-semibold marker:hidden">
+            <details key={f.q} className="group mb-3 bg-[var(--h-surface)] px-6">
+              <summary className="mf-press flex min-h-11 cursor-pointer list-none items-start justify-between gap-4 py-5 text-[21px] font-semibold marker:hidden">
                 {f.q}
                 <svg viewBox="0 0 20 20" aria-hidden className="mt-1.5 size-5 shrink-0 transition-transform duration-300 group-open:rotate-45"><path d="M10 3v14M3 10h14" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" /></svg>
               </summary>
-              <p className="mt-3 max-w-[60ch] leading-[1.6] text-[var(--h-ink-2)]"><WithTodo text={f.a} /></p>
+              <p className="-mt-2 max-w-[60ch] pb-5 leading-[1.6] text-[var(--h-ink-2)]"><WithTodo text={nobr(f.a)} /></p>
             </details>
           ))}
         </div>
@@ -346,7 +347,7 @@ export default function MontujBezMontazysty() {
           <BuyForm />
         </div>
         <p className="mt-6 max-w-[90ch] text-[15px] leading-[1.6] text-[var(--h-ink-2)]">
-          Sprzedawca: {SELLER.name}, {SELLER.address}, {SELLER.form}, e-mail {SELLER.email}, tel. {SELLER.phone}. Ceny końcowe, sprzedawca nie jest czynnym podatnikiem
+          Sprzedawca: {SELLER.name}, {nobr(SELLER.address)}, {SELLER.form}, e-mail {SELLER.email}, tel. {SELLER.phone}. Ceny końcowe, sprzedawca nie jest czynnym podatnikiem
           VAT. <Link className="underline" href={`${MF_BASE_PATH}/regulamin`}>Regulamin sprzedaży</Link> · <Link className="underline" href="/pl/polityka-prywatnosci">Polityka prywatności</Link>
         </p>
       </Section>
