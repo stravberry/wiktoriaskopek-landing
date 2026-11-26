@@ -52,6 +52,12 @@ export default function ConsentProvider({ children, lang = "pl" }: { children: R
   const [state, setState] = useState<ConsentState | null>(null)
   const [ready, setReady] = useState(false)
   const [bannerOpen, setBannerOpen] = useState(false)
+  // Baner niewidoczny do załadowania jego fontów (renderuje się ukryty, więc przeglądarka je pobiera):
+  // inaczej zmiana kroju przesuwa jego górną krawędź (CLS na telefonie).
+  const [fontsReady, setFontsReady] = useState(false)
+  useEffect(() => {
+    if (bannerOpen) document.fonts.ready.then(() => setFontsReady(true))
+  }, [bannerOpen])
   const [settingsOpen, setSettingsOpen] = useState(false)
   const [draft, setDraft] = useState({ analytics: false, marketing: false, external: false })
   const pathname = usePathname()
@@ -60,8 +66,7 @@ export default function ConsentProvider({ children, lang = "pl" }: { children: R
   useEffect(() => {
     const s = read()
     setState(s)
-    // Baner po załadowaniu fontów: inaczej zmiana kroju przesuwa jego górną krawędź (CLS na telefonie).
-    if (!s) document.fonts.ready.then(() => setBannerOpen(true))
+    setBannerOpen(!s)
     setReady(true)
     const onOpen = () => {
       const cur = read()
@@ -120,7 +125,7 @@ export default function ConsentProvider({ children, lang = "pl" }: { children: R
       )}
 
       {bannerOpen && !settingsOpen && (
-        <div role="dialog" aria-modal="false" aria-labelledby="consent-title" className="fixed inset-x-3 bottom-3 z-[100] mx-auto max-w-[720px] rounded-[24px] bg-white p-5 text-[#1d1d1f] shadow-[0_20px_60px_-15px_rgba(0,0,0,0.45)] md:p-6">
+        <div role="dialog" aria-modal="false" aria-labelledby="consent-title" style={fontsReady ? undefined : { visibility: "hidden" }} className="fixed inset-x-3 bottom-3 z-[100] mx-auto max-w-[720px] rounded-[24px] bg-white p-5 text-[#1d1d1f] shadow-[0_20px_60px_-15px_rgba(0,0,0,0.45)] md:p-6">
           <h2 id="consent-title" className="text-[17px] font-bold">Pliki cookies i podobne technologie</h2>
           <p className="mt-2 text-[15px] leading-[1.5] text-[#3a3a3f]">
             Wiktoria Skopek używa niezbędnych plików, żeby strona i zakupy działały. Za Twoją zgodą włączymy też statystyki odwiedzin (Vercel Analytics)
