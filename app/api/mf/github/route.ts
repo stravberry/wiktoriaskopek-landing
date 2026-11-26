@@ -19,33 +19,45 @@ export async function POST(request: NextRequest) {
   if (!GITHUB_LOGIN_RE.test(login)) return NextResponse.json({ error: "Nieprawidłowy login GitHub" }, { status: 400 })
 
   const db = sql()
-  const [order] = await db`
-    select session_id, github_login, github_status from mf_orders
-    where lower(email) = ${email} and status = 'delivered' order by created_at desc limit 1`
-  if (!order) return NextResponse.json({ error: "Brak aktywnego zakupu" }, { status: 403 })
+  // S7 (przegląd 26.11): blokada wiersza zamówienia, żeby równoległe zmiany nie zaprosiły kilku kont.
+  type Out = { status: number; body: Record<string, unknown> }
+  const out: Out = await db.begin(async (tx) => {
+    const [order] = await tx`
+      select session_id, github_login, github_status from mf_orders
+      where lower(email) = ${email} and status = 'delivered' order by created_at desc limit 1 for update`
+    if (!order) return { status: 403, body: { error: "Brak aktywnego zakupu" } }
 
-  const gh = githubForShop()
-  if (!gh) {
-    // Bez tokenu GitHub: zapisujemy login i prosimy Wiktorię o ręczne zaproszenie (do 24 h).
-    await db`update mf_orders set github_login = ${login}, github_status = 'none', github_error = null where session_id = ${order.session_id}`
-    try {
-      await notifySellerGithub(email, login, order.session_id)
-    } catch (e) {
-      console.error("[mf] github notify failed:", e instanceof Error ? e.message : e)
+    const gh = githubForShop()
+    if (!gh) {
+      // Bez tokenu GitHub: zapisujemy login i prosimy Wiktorię o ręczne zaproszenie (do 24 h).
+      await tx`update mf_orders set github_login = ${login}, github_status = 'none', github_error = null where session_id = ${order.session_id}`
+      try {
+        await notifySellerGithub(email, login, order.session_id)
+      } catch (e) {
+        console.error("[mf] github notify failed:", e instanceof Error ? e.message : e)
+      }
+      return { status: 200, body: { ok: true, manual: true } }
     }
-    return NextResponse.json({ ok: true, manual: true })
-  }
 
-  try {
     if (order.github_login && order.github_login.toLowerCase() !== login.toLowerCase() && order.github_status === "invited") {
-      await gh.remove(order.github_login) // jedno konto GitHub na zakup
+      try {
+        await gh.remove(order.github_login) // jedno konto GitHub na zakup
+      } catch (e) {
+        // Stary login zostaje zapisany: przy zwrocie dostęp nadal da się odebrać.
+        const msg = e instanceof Error ? e.message : String(e)
+        await tx`update mf_orders set github_error = ${"remove: " + msg} where session_id = ${order.session_id}`
+        return { status: 502, body: { error: "Nie udało się zmienić konta GitHub. Spróbuj później." } }
+      }
     }
-    await gh.invite(login)
-    await db`update mf_orders set github_login = ${login}, github_status = 'invited', github_error = null where session_id = ${order.session_id}`
-    return NextResponse.json({ ok: true })
-  } catch (e) {
-    const msg = e instanceof Error ? e.message : String(e)
-    await db`update mf_orders set github_login = ${login}, github_status = 'failed', github_error = ${msg} where session_id = ${order.session_id}`
-    return NextResponse.json({ error: msg.startsWith("GitHub: nie ma") ? msg : "Nie udało się wysłać zaproszenia." }, { status: 502 })
-  }
+    try {
+      await gh.invite(login)
+      await tx`update mf_orders set github_login = ${login}, github_status = 'invited', github_error = null where session_id = ${order.session_id}`
+      return { status: 200, body: { ok: true } }
+    } catch (e) {
+      const msg = e instanceof Error ? e.message : String(e)
+      await tx`update mf_orders set github_login = ${login}, github_status = 'failed', github_error = ${msg} where session_id = ${order.session_id}`
+      return { status: 502, body: { error: msg.startsWith("GitHub: nie ma") ? msg : "Nie udało się wysłać zaproszenia." } }
+    }
+  })
+  return NextResponse.json(out.body, { status: out.status })
 }

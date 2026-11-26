@@ -2,7 +2,7 @@ import type { Metadata } from "next"
 import Link from "next/link"
 import { notFound } from "next/navigation"
 import { MF_BASE_PATH } from "@/lib/mf/config"
-import { CHAPTERS } from "@/lib/mf/poradnik"
+import { getChapters } from "@/lib/mf/poradnik"
 import { requireBuyer } from "@/lib/mf/guard"
 import { Blocks } from "@/components/mf/poradnik-view"
 
@@ -12,6 +12,7 @@ export const metadata: Metadata = { title: "Poradnik | MontageFrames", robots: {
 export default async function Rozdzial({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params
   const email = await requireBuyer()
+  const CHAPTERS = await getChapters()
   const i = CHAPTERS.findIndex((c) => c.slug === slug)
   if (i < 0) notFound()
   const c = CHAPTERS[i]
