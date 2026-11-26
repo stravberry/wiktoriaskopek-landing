@@ -103,6 +103,16 @@ export const TERMS_SECTIONS: LegalSection[] = [
     items: ["Zasady przetwarzania danych opisuje Polityka prywatności na wiktoriaskopek.pl/pl/polityka-prywatnosci."],
   },
   {
+    title: "§14. Darmowa wersja próbna",
+    items: [
+      "Darmowa próba to bezpłatna usługa elektroniczna: po potwierdzeniu adresu e-mail ustawiasz markę w przeglądarce, wgrywasz jedno nagranie (od 5 do 60 sekund, do 50 MB) i dostajesz jedną próbną rolkę ze znakiem wodnym.",
+      "Limit: jedna próbna rolka na adres e-mail. Rolkę możesz pobrać przez 7 dni; potem ją usuwamy. Nagranie usuwamy zaraz po montażu, najpóźniej po 24 godzinach.",
+      "Wgrywasz tylko nagranie, na którym jesteś Ty albo osoby, które się na to zgodziły, i które nie narusza praw innych osób. Nagranie przetwarzamy wyłącznie po to, żeby zmontować próbną rolkę.",
+      "Próba nie jest zakupem programu i nie daje licencji na program. Rolki próbnej możesz używać do własnych celów, ze znakiem wodnym. Montaż odbywa się w kolejce, więc czas oczekiwania może się zmieniać.",
+      "Z próby możesz zrezygnować w każdej chwili, pisząc na adres sprzedawcy; usuniemy wtedy jej dane.",
+    ],
+  },
+  {
     title: "§13. Postanowienia końcowe",
     items: [
       "Regulamin obowiązuje od dnia publikacji. Zmiana Regulaminu nie dotyczy umów zawartych wcześniej.",

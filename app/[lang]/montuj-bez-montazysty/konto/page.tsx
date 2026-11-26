@@ -2,7 +2,7 @@ import type { Metadata } from "next"
 import Link from "next/link"
 import { Download } from "lucide-react"
 import { MF_BASE_PATH, MF_PRODUCTS, SELLER } from "@/lib/mf/config"
-import { ordersForEmail, sql } from "@/lib/mf/db"
+import { ordersForEmail, sql, trialStatus } from "@/lib/mf/db"
 import { currentBuyer, githubForShop, mfEnv } from "@/lib/mf/server"
 import { GithubForm, LoginForm } from "@/components/mf/account-forms"
 
@@ -31,6 +31,15 @@ export default async function Konto({ searchParams }: { searchParams: Promise<{ 
   }
 
   const orders = await ordersForEmail(sql(), email)
+  // Stan darmowej próby (00-PLAN 0e): widoczny na koncie także bez zakupu.
+  const trial = process.env.MF_TRIAL_ENABLED === "1" ? await trialStatus(sql(), email).catch(() => null) : null
+  const TRIAL_LABEL: Record<string, string> = {
+    awaiting_upload: "Rozpoczęta: dokończ markę i wgraj nagranie.",
+    queued: "Rolka czeka w kolejce do montażu.",
+    processing: "Rolka jest montowana.",
+    done: "Zużyta: rolka gotowa.",
+    failed: "Montaż się nie udał. Możesz spróbować ponownie.",
+  }
   const active = orders.find((o) => o.status === "delivered")
   const gh = githubForShop()
   const version = gh ? await gh.latestVersion().catch(() => null) : null
@@ -47,7 +56,27 @@ export default async function Konto({ searchParams }: { searchParams: Promise<{ 
         </form>
       </div>
 
-      {!active ? (
+      {trial && (
+        <section className="mt-10 rounded-[28px] bg-[var(--h-surface)] p-7">
+          <h2 className="text-[22px] font-semibold">Darmowa próba</h2>
+          <p className="mt-2 text-[16px]">
+            {trial.purged ? "Zużyta. Rolka z próby została już usunięta po 7 dniach." : TRIAL_LABEL[trial.status] ?? trial.status}
+            {trial.status === "done" && trial.expires_at && !trial.purged && ` Do pobrania do ${new Date(trial.expires_at).toLocaleDateString("pl-PL")}.`}
+          </p>
+          {!trial.purged && (
+            <Link href={`${MF_BASE_PATH}/proba`} className="mt-4 inline-flex min-h-12 items-center rounded-full bg-[var(--h-bg)] px-6 text-[16px] font-semibold">
+              {trial.status === "done" ? "Zobacz rolkę z próby" : "Przejdź do próby"}
+            </Link>
+          )}
+        </section>
+      )}
+
+      {!active && trial ? (
+        <div className="mt-3 rounded-[28px] bg-[var(--h-surface)] p-7 text-[17px]">
+          Pełna wersja: bez znaku wodnego i bez limitu rolek.{" "}
+          <Link className="font-semibold underline" href={`${MF_BASE_PATH}#zamowienie`}>Kup pełną wersję za {MF_PRODUCTS.paczka.priceLabel}</Link>
+        </div>
+      ) : !active ? (
         <div className="mt-10 rounded-[28px] bg-[var(--h-surface)] p-7 text-[17px]">
           {orders.length ? "Dostęp do tego zakupu wygasł (zwrot lub spór o płatność)." : "Na ten adres nie ma aktywnego zakupu."} Pytania:{" "}
           <a className="underline" href={`mailto:${SELLER.email}`}>{SELLER.email}</a>
@@ -84,10 +113,14 @@ export default async function Konto({ searchParams }: { searchParams: Promise<{ 
                 </div>
               </>
             ) : (
-              <p className="mt-4 rounded-2xl bg-[var(--h-bg)] p-5 text-[16px] leading-[1.6]">
-                Dostęp do paczki (zaproszenie do repozytorium GitHub albo plik ZIP) wyślemy osobnym mailem w ciągu 24 godzin od zakupu. Jeśli masz konto GitHub,
-                napisz login na <a className="underline" href={`mailto:${SELLER.email}`}>{SELLER.email}</a>.
-              </p>
+              <>
+                {active.github_login && active.github_status === "none" ? (
+                  <p className="mt-3 text-[15px] font-semibold">Mamy Twój login @{active.github_login}. Zaproszenie do repozytorium wyślemy w ciągu 24 godzin.</p>
+                ) : (
+                  <p className="mt-3 text-[16px] leading-[1.6]">Podaj login GitHub, a zaproszenie do repozytorium wyślemy w ciągu 24 godzin. Nie masz GitHuba? Napisz na <a className="underline" href={`mailto:${SELLER.email}`}>{SELLER.email}</a>, wyślemy ZIP.</p>
+                )}
+                <div className="mt-5"><GithubForm current={active.github_login} /></div>
+              </>
             )}
           </section>
 

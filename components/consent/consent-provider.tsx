@@ -108,7 +108,7 @@ export default function ConsentProvider({ children, lang = "pl" }: { children: R
 
   const all = { analytics: true, marketing: true, external: true }
   const none = { analytics: false, marketing: false, external: false }
-  const btn = "min-h-12 flex-1 rounded-full px-5 text-[15px] font-semibold border-2 border-[#1d1d1f] transition-colors"
+  const btn = "min-h-11 rounded-full px-3 text-[14px] font-semibold border-2 border-[#1d1d1f] transition-colors md:text-[15px]"
 
   return (
     <ConsentCtx.Provider value={{ state, ready, open: () => window.dispatchEvent(new Event("consent:open")), grant }}>
@@ -124,18 +124,19 @@ export default function ConsentProvider({ children, lang = "pl" }: { children: R
         </button>
       )}
 
+      {/* Niski baner (audyt Ecom P1.1): na telefonie ok. 200 px, nie zasłania formularza zamówienia. Wersja banera: BANNER_VERSION. */}
       {bannerOpen && !settingsOpen && (
-        <div role="dialog" aria-modal="false" aria-labelledby="consent-title" style={fontsReady ? undefined : { visibility: "hidden" }} className="fixed inset-x-3 bottom-3 z-[100] mx-auto max-w-[720px] rounded-[24px] bg-white p-5 text-[#1d1d1f] shadow-[0_20px_60px_-15px_rgba(0,0,0,0.45)] md:p-6">
-          <h2 id="consent-title" className="text-[17px] font-bold">Pliki cookies i podobne technologie</h2>
-          <p className="mt-2 text-[15px] leading-[1.5] text-[#3a3a3f]">
-            Wiktoria Skopek używa niezbędnych plików, żeby strona i zakupy działały. Za Twoją zgodą włączymy też statystyki odwiedzin (Vercel Analytics)
-            i kalendarz rezerwacji (Cal.com). Zgodę możesz w każdej chwili zmienić lub cofnąć linkiem „Ustawienia cookies” w stopce, a zapisywanie plików
-            ograniczyć też w przeglądarce. Strona i zakup działają także po odrzuceniu. Szczegóły: <Link href="/pl/polityka-prywatnosci" className="underline">Polityka prywatności</Link>.
+        <div role="dialog" aria-modal="false" aria-labelledby="consent-title" style={fontsReady ? undefined : { visibility: "hidden" }} className="fixed inset-x-2 bottom-2 z-[100] mx-auto max-w-[760px] rounded-[20px] bg-white p-4 text-[#1d1d1f] shadow-[0_12px_40px_-12px_rgba(0,0,0,0.45)] md:p-5">
+          <p className="text-[14px] leading-[1.45] text-[#3a3a3f] md:text-[15px]">
+            <strong id="consent-title" className="text-[#1d1d1f]">Wiktoria Skopek: pliki cookies.</strong> Niezbędne pliki zapewniają działanie strony i zakupów. Za zgodą
+            włączymy statystyki (Vercel Analytics) i kalendarz rezerwacji (Cal.com). Zgodę zmienisz lub cofniesz w „Ustawieniach cookies” w stopce, a zapisywanie
+            plików ograniczysz też w przeglądarce. Strona działa także po odrzuceniu.{" "}
+            <Link href="/pl/polityka-prywatnosci" className="underline">Polityka prywatności</Link> ·{" "}
+            <button type="button" className="font-semibold underline" onClick={() => { setDraft(none); setSettingsOpen(true) }}>Ustawienia</button>
           </p>
-          <div className="mt-4 flex flex-col gap-2 sm:flex-row">
+          <div className="mt-3 grid grid-cols-2 gap-2">
             <button type="button" className={`${btn} bg-[#1d1d1f] text-white`} onClick={() => save(all, "accept_all", "banner")}>Akceptuję wszystkie</button>
             <button type="button" className={`${btn} bg-[#1d1d1f] text-white`} onClick={() => save(none, "reject_all", "banner")}>Odrzucam wszystkie</button>
-            <button type="button" className={`${btn} bg-white`} onClick={() => { setDraft(none); setSettingsOpen(true) }}>Ustawienia</button>
           </div>
         </div>
       )}

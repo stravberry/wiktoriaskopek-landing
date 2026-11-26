@@ -6,11 +6,10 @@ import { MF_CASES, MF_FAQ, MF_FEATURES, MF_QUALITY_CHECKS, MF_SHOWCASE, MF_STEPS
 import { PanelShots, ShowcaseBlock, StyleReels } from "@/components/mf/showcase"
 import { LazyVideo } from "@/components/mf/lazy-video"
 import { Section, WithTodo } from "@/components/mf/ui"
-import { BuyButton } from "@/components/mf/client-bits"
+import { BuyButton, BuyDialog, BuyForm, BuyRow, GuaranteeLine, KonsultacjaLink, StickyBuyBar } from "@/components/mf/buy"
 import { ReelFrame, StylePicker } from "@/components/mf/reel"
 import { Reveal, ScrollScale } from "@/components/mf/motion"
 import { StepByStep } from "@/components/mf/steps"
-import OrderForm from "@/components/mf/order-form"
 
 const URL = `https://www.wiktoriaskopek.pl${MF_BASE_PATH}`
 const TITLE = "Montuj swoje filmy i rolki w AI! Bez montażysty | MontageFrames"
@@ -26,6 +25,9 @@ export const metadata: Metadata = {
 }
 
 const p = MF_PRODUCTS.paczka
+// Darmowa próba (00-PLAN 0e): MF_TRIAL_ENABLED=1 włącza stronę i API próby, MF_TRIAL_PUBLIC=1 pokazuje linki na landingu
+// (najpierw test na produkcji pod adresem /proba, potem linki).
+const TRIAL = process.env.MF_TRIAL_ENABLED === "1" && process.env.MF_TRIAL_PUBLIC === "1" ? `${MF_BASE_PATH}/proba` : undefined
 const k = MF_PRODUCTS.konsultacja
 
 export default function MontujBezMontazysty() {
@@ -66,16 +68,21 @@ export default function MontujBezMontazysty() {
         <div className="mt-10 grid items-start gap-10 lg:mt-14 lg:grid-cols-[minmax(0,1fr)_400px] lg:gap-16">
         <div>
           <p className="mf-lead max-w-[46ch]">
-            MontageFrames to nakładka na Claude Code: wrzucasz nagranie z telefonu, wybierasz styl i dostajesz gotową rolkę w kolorach swojej firmy.
-            Poprawki piszesz zwykłym językiem albo nanosisz w panelu.
+            Dla ekspertów i małych firm, które regularnie publikują rolki. Wrzucasz nagranie z telefonu, wybierasz styl i dostajesz gotową rolkę w kolorach
+            swojej firmy. Poprawki piszesz zwykłym językiem albo nanosisz w panelu. Działa w Claude Code na Twoim komputerze.
           </p>
           <div className="mt-10 flex flex-wrap items-center gap-x-6 gap-y-4">
-            <BuyButton>Kupuję za {p.priceLabel}</BuyButton>
-            <a href="#style" className="text-[17px] font-semibold underline decoration-[var(--h-accent)] decoration-2 underline-offset-4">Zobacz {stylesLabel()}</a>
+            <BuyButton source="hero">Kupuję za {p.priceLabel}</BuyButton>
+            {TRIAL ? (
+              <Link href={TRIAL} className="text-[17px] font-semibold underline decoration-[var(--h-accent)] decoration-2 underline-offset-4">Wypróbuj za darmo na 1 rolce</Link>
+            ) : (
+              <a href="#style" className="text-[17px] font-semibold underline decoration-[var(--h-accent)] decoration-2 underline-offset-4">Zobacz {stylesLabel()}</a>
+            )}
           </div>
-          <p className="mt-8 max-w-[52ch] text-[15px] leading-[1.6] text-[var(--h-ink-2)]">
-            Jednorazowo, bez limitu komputerów, z gwarancją działania. Potrzebujesz płatnego planu Claude Pro lub Max i min. 15 GB miejsca; instalacja
-            z Claude Code trwa ok. 15–30 minut.
+          <GuaranteeLine className="mt-5" />
+          <p className="mt-6 max-w-[52ch] text-[15px] leading-[1.6] text-[var(--h-ink-2)]">
+            Wolisz zainstalować razem z Wiktorią? <KonsultacjaLink>Wersja z konsultacją 1:1 i instalacją: {k.priceLabel}</KonsultacjaLink>.
+            Jednorazowo, bez limitu komputerów. Potrzebujesz płatnego planu Claude Pro lub Max i min. 15 GB miejsca.
           </p>
         </div>
         <ReelFrame slug="dynamiczny-zakreslacz" priority className="mx-auto max-w-[360px] lg:max-w-none" />
@@ -108,7 +115,7 @@ export default function MontujBezMontazysty() {
           <Reveal delay={0.08}>
             <p className="text-[21px] font-semibold">Z MontageFrames</p>
             <p className="mt-3 max-w-[44ch] leading-[1.6]">
-              Jednorazowo {p.priceLabel}. Rolkę dostajesz w rozmowie, poprawki od razu, styl zawsze ten sam. Przy dużych produkcjach reklamowych montażysta
+              Jednorazowo {p.priceLabel}. Rolkę dostajesz w rozmowie, a poprawki nanosisz sam(a), bez czekania na montażystę. Styl zawsze ten sam. Przy dużych produkcjach reklamowych montażysta
               dalej ma sens: proste rolki zrobisz sam(a).
             </p>
           </Reveal>
@@ -119,6 +126,8 @@ export default function MontujBezMontazysty() {
       <Section id="jak-to-dziala" title="Jak to działa krok po kroku" lead="Od zakupu do gotowej rolki. Przewiń, a obok zobaczysz każdy krok.">
         <StepByStep steps={MF_STEPS} />
       </Section>
+
+      <BuyRow source="after_steps" trialHref={TRIAL} />
 
       {/* Rozmowa albo panel */}
       <Section id="panel" title="Poprawiasz tak, jak Ci wygodniej" lead="Obie drogi pracują na tym samym projekcie: zacznij w rozmowie, dokończ w panelu albo odwrotnie. Efekt jest ten sam.">
@@ -147,11 +156,13 @@ export default function MontujBezMontazysty() {
         </div>
       </Section>
 
+      <BuyRow source="after_styles" trialHref={TRIAL} />
+
       {/* Funkcje: każda z własnym filmem */}
       <section id="funkcje" aria-labelledby="funkcje-title" className="mt-28 scroll-mt-6 md:mt-44">
         <div className="mf-wrap">
           <h2 id="funkcje-title" className="mf-h2 max-w-[18ch]">Funkcje w akcji</h2>
-          <p className="mf-lead mt-6 max-w-[56ch]">Każdy film poniżej to prawdziwy wynik z programu, bez poprawek w zewnętrznym montażu.</p>
+          <p className="mf-lead mt-6 max-w-[56ch]">Filmy poniżej to rolki wyrenderowane programem MontageFrames.</p>
         </div>
         {MF_SHOWCASE.filter((f) => f.video || f.image).map((f, i) => <ShowcaseBlock key={f.id} f={f} flip={i % 2 === 1} />)}
       </section>
@@ -168,26 +179,20 @@ export default function MontujBezMontazysty() {
             <figure className="relative aspect-[4/3] overflow-hidden rounded-[24px]">
               <Image src="/home-podcast-setup-equipment.jpg" alt="Biurko z laptopem, mikrofonem i kamerą: tyle wystarczy do montażu w Claude Code" fill sizes="(min-width: 1024px) 560px, 90vw" className="object-cover" />
             </figure>
-            <p className="mt-3 text-[15px] text-[#a1a1a6]">Tyle wystarczy: komputer, nagranie i Claude Code.</p>
+            <p className="mt-3 text-[15px] text-[#a1a1a6]">Potrzebujesz komputera, nagrania i płatnego planu Claude Pro lub Max.</p>
           </Reveal>
         </div>
       </Section>
 
-      {/* Case study */}
-      <Section id="case-study" title="Firmy, które montują już na AI" lead="Te firmy montują rolki z MontageFrames. Szczegóły ich wyników opiszemy wkrótce.">
-        <ul className="flex flex-col gap-3">
-          {MF_CASES.map((c, i) => (
-            <Reveal as="li" key={c.name} delay={i * 0.06} className="grid gap-3 bg-[var(--h-surface)] p-6 md:grid-cols-[1.1fr_1fr_1fr] md:items-baseline md:gap-8 md:p-8">
-              <div>
-                <p className="text-[24px] font-semibold leading-[1.2]">{c.name}</p>
-                {c.scope !== TODO && <p className="mt-1 text-[15px] text-[var(--h-ink-2)]">{c.scope}</p>}
-              </div>
-              <p className="leading-[1.6] md:col-span-2">{c.result !== TODO ? c.result : "Szczegóły wkrótce."}</p>
-              {c.quote !== TODO && <p className="leading-[1.6] italic md:col-start-2 md:col-span-2">„{c.quote}”</p>}
-            </Reveal>
-          ))}
+      <BuyRow source="after_quality" trialHref={TRIAL} />
+
+      {/* Case study: nazwy firm (decyzja Wiktorii, 0c); liczby i cytaty po dostarczeniu. Bez „Szczegóły wkrótce” (audyt Kierownika i Ecom). */}
+      <section id="case-study" aria-label="Firmy, które montują z MontageFrames" className="mf-wrap mt-20 md:mt-28">
+        <p className="text-[15px] font-semibold text-[var(--h-ink-2)]">Z MontageFrames montują już:</p>
+        <ul className="mt-3 flex flex-wrap gap-x-8 gap-y-2 text-[21px] font-semibold tracking-[-0.01em]">
+          {MF_CASES.map((c) => <li key={c.name}>{c.name}</li>)}
         </ul>
-      </Section>
+      </section>
 
       {/* Co dostajesz */}
       <Section id="co-dostajesz" title="Wszystkie funkcje od pierwszego dnia">
@@ -245,7 +250,9 @@ export default function MontujBezMontazysty() {
             <ul className="mt-5 flex list-disc flex-col gap-3 pl-5 leading-[1.6]">
               <li>nie chcesz płacić za plan Claude Pro lub Max,</li>
               <li>robisz duże produkcje reklamowe z budżetem na montażystę,</li>
-              <li>oczekujesz, że AI nagra film za Ciebie.</li>
+              <li>oczekujesz, że AI nagra film za Ciebie,</li>
+              <li>nie masz komputera z min. 15 GB wolnego miejsca,</li>
+              <li>chcesz, żeby ktoś montował za Ciebie. Wtedy <Link className="underline" href="/pl#rezerwacja">napisz do Wiktorii o montaż w usłudze</Link>.</li>
             </ul>
             <h3 className="mt-10 text-[24px] font-semibold">Dla Ciebie, jeśli</h3>
             <ul className="mt-5 flex list-disc flex-col gap-3 pl-5 leading-[1.6]">
@@ -289,10 +296,12 @@ export default function MontujBezMontazysty() {
         </Reveal>
       </Section>
 
+      <BuyRow source="after_guarantee" trialHref={TRIAL} />
+
       {/* FAQ */}
       <Section id="faq" title="Pytania przed zakupem">
         <div className="grid gap-x-12 lg:grid-cols-2">
-          {MF_FAQ.map((f) => (
+          {[...MF_FAQ, ...(TRIAL ? [{ q: "Czy mogę najpierw zobaczyć efekt na swoim nagraniu?", a: "Tak. W darmowej próbie ustawiasz markę, wgrywasz nagranie do 60 sekund i dostajesz jedną rolkę ze znakiem wodnym, bez karty." }] : [])].map((f) => (
             <details key={f.q} className="group mb-3 bg-[var(--h-surface)] px-6 py-5">
               <summary className="mf-press flex cursor-pointer list-none items-start justify-between gap-4 text-[21px] font-semibold marker:hidden">
                 {f.q}
@@ -304,14 +313,20 @@ export default function MontujBezMontazysty() {
         </div>
       </Section>
 
+      <BuyRow source="after_faq" trialHref={TRIAL} />
+
       {/* Zamówienie (z konsultacją jako drugim wariantem) */}
       <Section id="zamowienie" title={`MontageFrames za ${p.priceLabel}`} lead={`Albo z konsultacją 1:1 i instalacją razem ze mną za ${k.priceLabel}: termin ustalamy mailem po zakupie.`}>
-        <OrderForm />
+        <div className="max-w-[760px] rounded-[28px] bg-[var(--h-surface)] p-6 md:p-9">
+          <BuyForm />
+        </div>
         <p className="mt-6 max-w-[90ch] text-[15px] leading-[1.6] text-[var(--h-ink-2)]">
           Sprzedawca: {SELLER.name}, {SELLER.address}, {SELLER.form}, e-mail {SELLER.email}, tel. {SELLER.phone}. Ceny końcowe, sprzedawca nie jest czynnym podatnikiem
           VAT. <Link className="underline" href={`${MF_BASE_PATH}/regulamin`}>Regulamin sprzedaży</Link> · <Link className="underline" href="/pl/polityka-prywatnosci">Polityka prywatności</Link>
         </p>
       </Section>
+      <BuyDialog />
+      <StickyBuyBar trialHref={TRIAL} />
     </main>
   )
 }

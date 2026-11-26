@@ -175,3 +175,19 @@ test("bez Resend: tylko tryb outbox i nigdy na produkcji", () => {
   assert.equal(mfDisabledReason({ ...env, MF_MAIL_MODE: "outbox", VERCEL_ENV: "preview" }), null)
   assert.match(mfDisabledReason({ ...env, MF_MAIL_MODE: "outbox", VERCEL_ENV: "production" }), /production/)
 })
+
+// Runda 2: odmiana liczby stylów i czyszczenie właściwości zdarzeń z przeglądarki.
+import { stylesLabel } from "../lib/mf/content.ts"
+import { cleanProps } from "../lib/mf/events.ts"
+
+test("stylesLabel: poprawna odmiana", () => {
+  assert.deepEqual([1, 2, 5, 12, 22, 33, 35].map((n) => stylesLabel(n)), ["1 styl", "2 style", "5 stylów", "12 stylów", "22 style", "33 style", "35 stylów"])
+})
+
+test("cleanProps: tylko znane klucze, krótkie teksty bez znaków specjalnych", () => {
+  const p = cleanProps({ placement: "hero<script>", email: "a@b.pl", utm_source: "x".repeat(100), device: 5 })
+  assert.equal(p.placement, "heroscript")
+  assert.equal(p.email, undefined)
+  assert.equal(p.utm_source.length, 60)
+  assert.equal(p.device, undefined)
+})

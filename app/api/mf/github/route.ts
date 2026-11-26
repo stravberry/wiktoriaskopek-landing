@@ -1,7 +1,7 @@
 import { NextResponse, type NextRequest } from "next/server"
 import { GITHUB_LOGIN_RE } from "@/lib/mf/core"
 import { sql } from "@/lib/mf/db"
-import { currentBuyer, githubForShop, mfEnv, rateLimited } from "@/lib/mf/server"
+import { currentBuyer, githubForShop, mfEnv, notifySellerGithub, rateLimited } from "@/lib/mf/server"
 
 export const dynamic = "force-dynamic"
 
@@ -18,14 +18,23 @@ export async function POST(request: NextRequest) {
   const login = typeof body.login === "string" ? body.login.trim().replace(/^@/, "") : ""
   if (!GITHUB_LOGIN_RE.test(login)) return NextResponse.json({ error: "Nieprawidłowy login GitHub" }, { status: 400 })
 
-  const gh = githubForShop()
-  if (!gh) return NextResponse.json({ error: "Zaproszenia GitHub są chwilowo wyłączone. Napisz na wskopek.all@gmail.com, wyślemy dostęp ręcznie." }, { status: 503 })
-
   const db = sql()
   const [order] = await db`
     select session_id, github_login, github_status from mf_orders
     where lower(email) = ${email} and status = 'delivered' order by created_at desc limit 1`
   if (!order) return NextResponse.json({ error: "Brak aktywnego zakupu" }, { status: 403 })
+
+  const gh = githubForShop()
+  if (!gh) {
+    // Bez tokenu GitHub: zapisujemy login i prosimy Wiktorię o ręczne zaproszenie (do 24 h).
+    await db`update mf_orders set github_login = ${login}, github_status = 'none', github_error = null where session_id = ${order.session_id}`
+    try {
+      await notifySellerGithub(email, login, order.session_id)
+    } catch (e) {
+      console.error("[mf] github notify failed:", e instanceof Error ? e.message : e)
+    }
+    return NextResponse.json({ ok: true, manual: true })
+  }
 
   try {
     if (order.github_login && order.github_login.toLowerCase() !== login.toLowerCase() && order.github_status === "invited") {

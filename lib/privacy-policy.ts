@@ -2,7 +2,7 @@
 // Wersja: POLICY_VERSION w lib/mf/config.ts (zapisywana w dzienniku zgód). Nie jest poradą prawną.
 import { SELLER } from "./mf/config.ts"
 
-export const PRIVACY_UPDATED = "25 listopada 2026 (wersja polityka-2026-11-25)"
+export const PRIVACY_UPDATED = "26 listopada 2026 (wersja polityka-2026-11-26: darmowa próba MontageFrames, dziennik zdarzeń sprzedaży)"
 
 export const PRIVACY_SECTIONS: { title: string; items: string[] }[] = [
   {
@@ -19,7 +19,9 @@ export const PRIVACY_SECTIONS: { title: string; items: string[] }[] = [
       "Konto MontageFrames: e-mail i jednorazowe tokeny logowania (przechowujemy tylko ich skrót) — żeby udostępnić poradnik, pobieranie i dostęp do repozytorium (lit. b).",
       "Formularz „Odstąp od umowy”: imię i nazwisko, e-mail, numer zamówienia i treść oświadczenia (lit. c).",
       "Zgody na cookies: losowy identyfikator zgody, data, wybór kategorii, wersja banera i polityki, język i adres podstrony. Bez adresu IP i bez odcisku przeglądarki (lit. c w zw. z art. 7 ust. 1 RODO).",
-      "Statystyki odwiedzin (Vercel Analytics) i zdarzenia lejka zakupu — tylko po Twojej zgodzie (lit. a). Marketing e-mail — tylko po osobnej zgodzie przy zamówieniu (lit. a).",
+      "Darmowa próba MontageFrames: e-mail, ustawienia marki (nazwa, kolory, font, styl, opcjonalnie logo, ton i odbiorcy), nagranie, które wgrywasz, i gotowa rolka próbna ze znakiem wodnym, a także treść i czas zgody na przetworzenie nagrania — żeby zmontować próbną rolkę (lit. b, a dla nagrania z Twoim wizerunkiem i głosem także Twoja zgoda, lit. a). Wgrywasz nagranie tylko z sobą albo z osobami, które się na to zgodziły.",
+      "Dziennik zdarzeń sprzedaży po stronie serwera (np. kliknięcie „Kup”, rozpoczęcie płatności, zakup, etapy próby): bez plików cookies i bez identyfikatora urządzenia, a dla zalogowanych ze skrótem (hash) adresu e-mail — żeby mierzyć działanie sklepu i próby (lit. f).",
+      "Statystyki odwiedzin (Vercel Analytics) — tylko po Twojej zgodzie (lit. a). Marketing e-mail — tylko po osobnej zgodzie przy zamówieniu albo przy zapisie na próbę (lit. a).",
     ],
   },
   {
@@ -36,7 +38,7 @@ export const PRIVACY_SECTIONS: { title: string; items: string[] }[] = [
   {
     title: "4. Odbiorcy danych",
     items: [
-      "Vercel Inc. (hosting strony, statystyki po zgodzie), Stripe Payments Europe Ltd. (płatności), Resend / Plus Five Five, Inc. (wysyłka maili), Supabase, Inc. (baza zamówień, serwery w UE — Frankfurt), GitHub, Inc. (dostęp do repozytorium programu, jeśli podasz login GitHub), Cal.com, Inc. (kalendarz, po zgodzie).",
+      "Vercel Inc. (hosting strony, statystyki po zgodzie), Stripe Payments Europe Ltd. (płatności), Resend / Plus Five Five, Inc. (wysyłka maili), Supabase, Inc. (baza zamówień oraz pliki darmowej próby, serwery w UE — Frankfurt), GitHub, Inc. (dostęp do repozytorium programu, jeśli podasz login GitHub), Cal.com, Inc. (kalendarz, po zgodzie).",
       "Część dostawców ma siedzibę w USA. Dane trafiają tam na podstawie decyzji Komisji Europejskiej o odpowiednim stopniu ochrony (EU-US Data Privacy Framework) albo standardowych klauzul umownych.",
       "Dane możemy przekazać organom państwa, gdy wymaga tego prawo.",
     ],
@@ -48,6 +50,8 @@ export const PRIVACY_SECTIONS: { title: string; items: string[] }[] = [
       "Dziennik zgód cookies: 5 lat od wygaśnięcia lub cofnięcia zgody.",
       "Tokeny logowania: do wygaśnięcia (30 minut lub 72 godziny), potem usuwamy je przy okresowym czyszczeniu bazy.",
       "Formularz kontaktowy: do czasu obsługi zapytania, a potem do 12 miesięcy.",
+      "Darmowa próba: nagranie i logo usuwamy zaraz po zmontowaniu rolki, najpóźniej po 24 godzinach; rolkę próbną i plik marki po 7 dniach. Zapis próby (e-mail, ustawienia marki, stan, zgoda) przechowujemy, dopóki prowadzimy próby, żeby pilnować limitu jednej próby na adres — możesz zażądać jego usunięcia.",
+      "Dziennik zdarzeń sprzedaży: 14 miesięcy.",
       "Oświadczenia o odstąpieniu: 6 lat od końca roku, w którym je złożono.",
     ],
   },

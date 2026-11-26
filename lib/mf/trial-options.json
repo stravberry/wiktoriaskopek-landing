@@ -1,0 +1,559 @@
+{
+  "version": 1,
+  "styles": [
+    {
+      "id": "czysty-minimal",
+      "name": "Czysty minimal",
+      "description": "Słowa odsłaniają się maską od lewej, hak z rysowanym podkreśleniem, powolny najazd kamery. Do porad, edukacji i marek eksperckich.",
+      "inspiredBy": null,
+      "summary": {
+        "animacja": "odsłanianie maską (mask reveal), wejście spod maski",
+        "hak": "rysowane podkreślenie",
+        "przejście": "twarde cięcie",
+        "zoom": "powolny najazd w każdym ujęciu",
+        "tempo": "średnie",
+        "grafiki": "jasne karty"
+      }
+    },
+    {
+      "id": "dynamiczny-zakreslacz",
+      "name": "Dynamiczny zakreślacz",
+      "description": "Wjazdy z boku i pop, „punch” na każdym cięciu, karty w kolorze akcentu. Do energicznych rolek sprzedażowych.",
+      "inspiredBy": null,
+      "summary": {
+        "animacja": "wjazd z boku (slide-in), pop-out",
+        "hak": "zakreślacz",
+        "przejście": "punch (krótki zoom)",
+        "zoom": "zoom co drugie ujęcie",
+        "tempo": "szybkie (tnie każdą pauzę)",
+        "grafiki": "karty w kolorze akcentu"
+      }
+    },
+    {
+      "id": "elegancki-premium",
+      "name": "Elegancki premium",
+      "description": "Słowa wyostrzają się z rozmycia, miękkie przyciemnienie na cięciach, szklane karty. Do marek premium, beauty i usług doradczych.",
+      "inspiredBy": null,
+      "summary": {
+        "animacja": "wyostrzenie z rozmycia (blur-in), wejście spod maski",
+        "hak": "duży napis",
+        "przejście": "miękkie przyciemnienie",
+        "zoom": "powolny najazd w każdym ujęciu",
+        "tempo": "spokojne (tnie tylko długie pauzy)",
+        "grafiki": "szklane karty"
+      }
+    },
+    {
+      "id": "edukacyjny-wysoka-energia",
+      "name": "Edukacyjny, wysoka energia",
+      "description": "Słowa „rozciągają się” przy wejściu, hak w dwóch liniach, mocne zoomy co drugie ujęcie. Do rolek edukacyjnych z liczbami i listami.",
+      "inspiredBy": null,
+      "summary": {
+        "animacja": "kinetic (rozciągnięcie), pop-out, odbicie (bounce)",
+        "hak": "dwie linie, ostatnie słowo duże",
+        "przejście": "punch (krótki zoom)",
+        "zoom": "mocny zoom co drugie ujęcie",
+        "tempo": "szybkie (tnie każdą pauzę)",
+        "grafiki": "karty w kolorze akcentu"
+      }
+    },
+    {
+      "id": "podcast-spokojny",
+      "name": "Podcast spokojny",
+      "description": "Spokojne wejście z dołu, hak na ciemnym pasku, bez zoomów i z dłuższym oddechem między zdaniami. Do wywiadów i podcastów.",
+      "inspiredBy": null,
+      "summary": {
+        "animacja": "wejście spod maski",
+        "hak": "napis na pasku",
+        "przejście": "twarde cięcie",
+        "zoom": "bez zoomów",
+        "tempo": "spokojne (tnie tylko długie pauzy)",
+        "grafiki": "ciemne karty"
+      }
+    },
+    {
+      "id": "mocny-kontrast",
+      "name": "Mocny kontrast",
+      "description": "Słowa spadają z góry, hak jak pieczątka, ciemne karty. Do mocnych tez i kontrowersyjnych hooków.",
+      "inspiredBy": null,
+      "summary": {
+        "animacja": "spadanie z góry, pop-out",
+        "hak": "pieczątka",
+        "przejście": "punch (krótki zoom)",
+        "zoom": "zoom co drugie ujęcie",
+        "tempo": "szybkie (tnie każdą pauzę)",
+        "grafiki": "ciemne karty"
+      }
+    },
+    {
+      "id": "neon-noc",
+      "name": "Neon noc",
+      "description": "Litery zalewają się neonem z krótkim glitchem, hak konturem, przejścia „whip” z rozmyciem. Do lifestyle, eventów i treści nocnych.",
+      "inspiredBy": null,
+      "summary": {
+        "animacja": "zalewanie kolorem, glitch",
+        "hak": "kontur",
+        "przejście": "whip (przesunięcie z rozmyciem)",
+        "zoom": "zoom co drugie ujęcie",
+        "tempo": "średnie",
+        "grafiki": "karty z obrysem"
+      }
+    },
+    {
+      "id": "biznes-granat",
+      "name": "Biznes granat",
+      "description": "Rzeczowe wjazdy i maska, hak na pasku, przejścia przesunięciem w pionie. Do B2B, finansów i usług profesjonalnych.",
+      "inspiredBy": null,
+      "summary": {
+        "animacja": "wjazd z boku (slide-in), odsłanianie maską (mask reveal)",
+        "hak": "napis na pasku",
+        "przejście": "przesunięcie w pionie",
+        "zoom": "powolny najazd w każdym ujęciu",
+        "tempo": "średnie",
+        "grafiki": "jasne karty"
+      }
+    },
+    {
+      "id": "cieply-lifestyle",
+      "name": "Ciepły lifestyle",
+      "description": "Sprężyste odbicia, miękkie przejścia przesunięciem, szklane karty. Do gastronomii, rodziny i marek osobistych.",
+      "inspiredBy": null,
+      "summary": {
+        "animacja": "odbicie (bounce), wejście spod maski",
+        "hak": "duży napis",
+        "przejście": "przesunięcie w pionie",
+        "zoom": "zoom co drugie ujęcie",
+        "tempo": "średnie",
+        "grafiki": "szklane karty"
+      }
+    },
+    {
+      "id": "news-czerwony",
+      "name": "News czerwony",
+      "description": "Wjazdy jak w serwisie informacyjnym, hak na pasku, szybkie „whip” między ujęciami, bez zoomów. Do newsów, komentarzy i aktualności.",
+      "inspiredBy": null,
+      "summary": {
+        "animacja": "wjazd z boku (slide-in)",
+        "hak": "napis na pasku",
+        "przejście": "whip (przesunięcie z rozmyciem)",
+        "zoom": "bez zoomów",
+        "tempo": "szybkie (tnie każdą pauzę)",
+        "grafiki": "ciemne karty"
+      }
+    },
+    {
+      "id": "slowo-po-slowie",
+      "name": "Słowo po słowie, wersaliki",
+      "description": "Jedno–dwa słowa naraz z mocnym popem, zoom „punch” co drugie ujęcie, bardzo szybkie cięcia.",
+      "inspiredBy": "Alex Hormozi",
+      "summary": {
+        "animacja": "pop-out",
+        "hak": "zakreślacz",
+        "przejście": "punch (krótki zoom)",
+        "zoom": "mocny zoom co drugie ujęcie",
+        "tempo": "szybkie (tnie każdą pauzę)",
+        "grafiki": "karty w kolorze akcentu"
+      }
+    },
+    {
+      "id": "luksusowy-dokument",
+      "name": "Luksusowy dokument",
+      "description": "Cienkie wersaliki odsłaniane maską, hak w dwóch liniach, przyciemnienie na cięciach, oszczędne zoomy. Do edukacji premium i marek osobistych z wysoką ceną.",
+      "inspiredBy": "Iman Gadzhi",
+      "summary": {
+        "animacja": "odsłanianie maską (mask reveal)",
+        "hak": "dwie linie, ostatnie słowo duże",
+        "przejście": "miękkie przyciemnienie",
+        "zoom": "bez zoomów",
+        "tempo": "średnie",
+        "grafiki": "ciemne karty"
+      }
+    },
+    {
+      "id": "monochrom-akcent",
+      "name": "Monochrom z jednym akcentem",
+      "description": "Słowa zalewają się kolorem z konturu, jeden akcent, spokojne przejścia. Do produktywności, książek i spokojnej edukacji.",
+      "inspiredBy": "Ali Abdaal",
+      "summary": {
+        "animacja": "zalewanie kolorem",
+        "hak": "duży napis",
+        "przejście": "miękkie przyciemnienie",
+        "zoom": "zoom co drugie ujęcie",
+        "tempo": "średnie",
+        "grafiki": "jasne karty"
+      }
+    },
+    {
+      "id": "napisy-na-dole",
+      "name": "Napisy nisko, nagłówek u góry",
+      "description": "Napisy nisko, hak na pasku u góry, twarde cięcia bez efektów. Do szybkich opinii i komentarzy.",
+      "inspiredBy": "Gary Vaynerchuk",
+      "summary": {
+        "animacja": "wjazd z boku (slide-in), wejście spod maski",
+        "hak": "napis na pasku",
+        "przejście": "twarde cięcie",
+        "zoom": "bez zoomów",
+        "tempo": "szybkie (tnie każdą pauzę)",
+        "grafiki": "karty z obrysem"
+      }
+    },
+    {
+      "id": "vlog-narracyjny",
+      "name": "Vlog narracyjny",
+      "description": "Chybotliwe, zabawne wejścia, „whip” i mocne zoomy jak w vlogu. Do vlogów, wyzwań i opowieści w pierwszej osobie.",
+      "inspiredBy": "Ryan Trahan",
+      "summary": {
+        "animacja": "chybotanie, odbicie (bounce)",
+        "hak": "pieczątka",
+        "przejście": "whip (przesunięcie z rozmyciem)",
+        "zoom": "mocny zoom co drugie ujęcie",
+        "tempo": "szybkie (tnie każdą pauzę)",
+        "grafiki": "jasne karty"
+      }
+    },
+    {
+      "id": "hiper-retencja",
+      "name": "Hiper-retencja",
+      "description": "Ogromne słowo-klucz, popy i litery po kolei, punch na każdym cięciu. Do wyzwań i rozrywki, gdzie liczy się każda sekunda uwagi.",
+      "inspiredBy": "MrBeast",
+      "summary": {
+        "animacja": "pop-out, spadanie z góry, litera po literze",
+        "hak": "pieczątka",
+        "przejście": "punch (krótki zoom)",
+        "zoom": "mocny zoom co drugie ujęcie",
+        "tempo": "szybkie (tnie każdą pauzę)",
+        "grafiki": "karty w kolorze akcentu"
+      }
+    },
+    {
+      "id": "dokument-reporterski",
+      "name": "Dokument reporterski",
+      "description": "Napisy pisane jak na maszynie, hak wystukiwany literami, powolne najazdy. Do opowieści dokumentalnych, historii i reportażu.",
+      "inspiredBy": "Johnny Harris",
+      "summary": {
+        "animacja": "maszyna do pisania (typewriter)",
+        "hak": "wystukiwany jak na maszynie",
+        "przejście": "przesunięcie w pionie",
+        "zoom": "powolny najazd w każdym ujęciu",
+        "tempo": "spokojne (tnie tylko długie pauzy)",
+        "grafiki": "karty z obrysem"
+      }
+    },
+    {
+      "id": "explainer-papierowy",
+      "name": "Explainer papierowy",
+      "description": "Wydrukowane zakreślacze odsłaniane maską, przejścia „poklatkowe” jak w ręcznej animacji. Do wyjaśniania zjawisk, danych i newsów.",
+      "inspiredBy": "Vox",
+      "summary": {
+        "animacja": "odsłanianie maską (mask reveal), wjazd z boku (slide-in)",
+        "hak": "rysowane podkreślenie",
+        "przejście": "poklatkowe drgnięcie",
+        "zoom": "bez zoomów",
+        "tempo": "średnie",
+        "grafiki": "karty w kolorze akcentu"
+      }
+    },
+    {
+      "id": "karaoke",
+      "name": "Karaoke",
+      "description": "Słowa zapalają się kolorem dokładnie w chwili, gdy padają; hak konturem. Do rolek z dużą ilością mowy i nauki języka.",
+      "inspiredBy": null,
+      "summary": {
+        "animacja": "zalewanie kolorem",
+        "hak": "kontur",
+        "przejście": "przesunięcie w pionie",
+        "zoom": "bez zoomów",
+        "tempo": "średnie",
+        "grafiki": "jasne karty"
+      }
+    },
+    {
+      "id": "mem-gen-z",
+      "name": "Mem / Gen Z",
+      "description": "Glitch, chybotanie i pop, pieczątka na haku, szybkie „whip”. Do humoru, trendów i luźnych marek.",
+      "inspiredBy": null,
+      "summary": {
+        "animacja": "glitch, chybotanie, pop-out",
+        "hak": "pieczątka",
+        "przejście": "whip (przesunięcie z rozmyciem)",
+        "zoom": "mocny zoom co drugie ujęcie",
+        "tempo": "szybkie (tnie każdą pauzę)",
+        "grafiki": "karty w kolorze akcentu"
+      }
+    },
+    {
+      "id": "typografia-kinetyczna",
+      "name": "Typografia kinetyczna",
+      "description": "Słowa rozciągają się i składają z liter, hak w dwóch liniach. Do cytatów, motywacji i krótkich manifestów.",
+      "inspiredBy": null,
+      "summary": {
+        "animacja": "kinetic (rozciągnięcie), litera po literze",
+        "hak": "dwie linie, ostatnie słowo duże",
+        "przejście": "przesunięcie w pionie",
+        "zoom": "zoom co drugie ujęcie",
+        "tempo": "średnie",
+        "grafiki": "karty z obrysem"
+      }
+    },
+    {
+      "id": "kino-szerokie",
+      "name": "Kino szerokie",
+      "description": "Małe napisy nisko, hak konturem, przyciemnienie na cięciach jak w kinie. Do filmów klimatycznych i opowieści.",
+      "inspiredBy": null,
+      "summary": {
+        "animacja": "wejście spod maski",
+        "hak": "kontur",
+        "przejście": "miękkie przyciemnienie",
+        "zoom": "bez zoomów",
+        "tempo": "spokojne (tnie tylko długie pauzy)",
+        "grafiki": "ciemne karty"
+      }
+    },
+    {
+      "id": "podcast-dynamiczny",
+      "name": "Podcast dynamiczny",
+      "description": "Grupy po 3–4 słowa, hak jako karta-pytanie, przejścia przesunięciem. Do fragmentów podcastów i rozmów.",
+      "inspiredBy": null,
+      "summary": {
+        "animacja": "wjazd z boku (slide-in), pop-out",
+        "hak": "karta z pytaniem",
+        "przejście": "przesunięcie w pionie",
+        "zoom": "zoom co drugie ujęcie",
+        "tempo": "szybkie (tnie każdą pauzę)",
+        "grafiki": "szklane karty"
+      }
+    },
+    {
+      "id": "luksus-czarno-bialy",
+      "name": "Luksus czarno-biały",
+      "description": "Cienkie litery wyłaniające się z rozmycia, kontur na haku, dużo powietrza. Do mody, biżuterii i architektury.",
+      "inspiredBy": null,
+      "summary": {
+        "animacja": "wyostrzenie z rozmycia (blur-in)",
+        "hak": "kontur",
+        "przejście": "miękkie przyciemnienie",
+        "zoom": "powolny najazd w każdym ujęciu",
+        "tempo": "spokojne (tnie tylko długie pauzy)",
+        "grafiki": "karty z obrysem"
+      }
+    },
+    {
+      "id": "nieruchomosci-premium",
+      "name": "Nieruchomości premium",
+      "description": "Spokojne wejścia i maska, powolne najazdy na wnętrza. Do ofert nieruchomości, hoteli i inwestycji.",
+      "inspiredBy": null,
+      "summary": {
+        "animacja": "wejście spod maski, odsłanianie maską (mask reveal)",
+        "hak": "napis na pasku",
+        "przejście": "przesunięcie w pionie",
+        "zoom": "powolny najazd w każdym ujęciu",
+        "tempo": "spokojne (tnie tylko długie pauzy)",
+        "grafiki": "jasne karty"
+      }
+    },
+    {
+      "id": "produkt-premium",
+      "name": "Produkt premium",
+      "description": "Słowa wyostrzają się i wyskakują, pieczątka na haku, najazd na produkt. Do prezentacji produktów i sklepów.",
+      "inspiredBy": null,
+      "summary": {
+        "animacja": "wyostrzenie z rozmycia (blur-in), pop-out",
+        "hak": "pieczątka",
+        "przejście": "punch (krótki zoom)",
+        "zoom": "powolny najazd w każdym ujęciu",
+        "tempo": "średnie",
+        "grafiki": "jasne karty"
+      }
+    },
+    {
+      "id": "sport-akcja",
+      "name": "Sport i akcja",
+      "description": "Słowa spadają i rozciągają się, „whip” i mocne zoomy. Do sportu, treningów i dynamicznych relacji.",
+      "inspiredBy": null,
+      "summary": {
+        "animacja": "spadanie z góry, kinetic (rozciągnięcie)",
+        "hak": "dwie linie, ostatnie słowo duże",
+        "przejście": "whip (przesunięcie z rozmyciem)",
+        "zoom": "mocny zoom co drugie ujęcie",
+        "tempo": "szybkie (tnie każdą pauzę)",
+        "grafiki": "ciemne karty"
+      }
+    },
+    {
+      "id": "pastelowy-lifestyle",
+      "name": "Pastelowy lifestyle",
+      "description": "Miękkie odbicia i zalewanie kolorem, hak na pastelowym pasku papieru, miękkie przyciemnienia i powolne najazdy. Do beauty, mody, rodziny i codziennych vlogów.",
+      "inspiredBy": null,
+      "summary": {
+        "animacja": "odbicie (bounce), zalewanie kolorem",
+        "hak": "pasek papieru",
+        "przejście": "miękkie przyciemnienie",
+        "zoom": "powolny najazd w każdym ujęciu",
+        "tempo": "średnie",
+        "grafiki": "jasne karty"
+      }
+    },
+    {
+      "id": "medyczny-spokojny",
+      "name": "Medyczny spokojny",
+      "description": "Spokojne wejście, hak jako pytanie pacjenta, bez efektów i zoomów. Do zdrowia, medycyny i usług zaufania publicznego.",
+      "inspiredBy": null,
+      "summary": {
+        "animacja": "wejście spod maski",
+        "hak": "karta z pytaniem",
+        "przejście": "twarde cięcie",
+        "zoom": "bez zoomów",
+        "tempo": "spokojne (tnie tylko długie pauzy)",
+        "grafiki": "jasne karty"
+      }
+    },
+    {
+      "id": "finanse-liczby",
+      "name": "Finanse i liczby",
+      "description": "Liczby i słowa wystukiwane jak na terminalu, ciemne karty z danymi. Do finansów, inwestycji i rolek z danymi.",
+      "inspiredBy": null,
+      "summary": {
+        "animacja": "maszyna do pisania (typewriter), wjazd z boku (slide-in)",
+        "hak": "napis na pasku",
+        "przejście": "przesunięcie w pionie",
+        "zoom": "zoom co drugie ujęcie",
+        "tempo": "średnie",
+        "grafiki": "ciemne karty"
+      }
+    },
+    {
+      "id": "kurs-online",
+      "name": "Kurs online",
+      "description": "Litery wjeżdżają po kolei, hak z podkreśleniem jak w notatkach. Do lekcji, kursów i treści edukacyjnych krok po kroku.",
+      "inspiredBy": null,
+      "summary": {
+        "animacja": "litera po literze, wejście spod maski",
+        "hak": "rysowane podkreślenie",
+        "przejście": "przesunięcie w pionie",
+        "zoom": "zoom co drugie ujęcie",
+        "tempo": "średnie",
+        "grafiki": "jasne karty"
+      }
+    },
+    {
+      "id": "technologia",
+      "name": "Technologia",
+      "description": "Glitch i maszyna do pisania, hak wystukiwany jak w terminalu, przejścia „whip”. Do technologii, AI i aplikacji.",
+      "inspiredBy": null,
+      "summary": {
+        "animacja": "glitch, maszyna do pisania (typewriter)",
+        "hak": "wystukiwany jak na maszynie",
+        "przejście": "whip (przesunięcie z rozmyciem)",
+        "zoom": "zoom co drugie ujęcie",
+        "tempo": "szybkie (tnie każdą pauzę)",
+        "grafiki": "karty z obrysem"
+      }
+    },
+    {
+      "id": "beauty-zloto-rozowe",
+      "name": "Beauty różowe złoto",
+      "description": "Słowa zalewają się różowym złotem, hak z rysowanym podkreśleniem, miękkie przesunięcia i najazdy. Do kosmetyki, salonów i marek osobistych kobiet.",
+      "inspiredBy": null,
+      "summary": {
+        "animacja": "zalewanie kolorem, wejście spod maski",
+        "hak": "rysowane podkreślenie",
+        "przejście": "przesunięcie w pionie",
+        "zoom": "powolny najazd w każdym ujęciu",
+        "tempo": "spokojne (tnie tylko długie pauzy)",
+        "grafiki": "szklane karty"
+      }
+    },
+    {
+      "id": "papierowy-kolaz",
+      "name": "Papierowy kolaż",
+      "description": "Słowa na wycinankach z papieru, lekko przechylone, wchodzą poklatkowo jak w animacji z nożyczek; hak na pasku papieru, karty jak kartki z taśmą. Do edukacji, opowieści i marek rzemieślniczych.",
+      "inspiredBy": null,
+      "summary": {
+        "animacja": "poklatkowe (stop-motion)",
+        "hak": "pasek papieru",
+        "przejście": "poklatkowe drgnięcie",
+        "zoom": "bez zoomów",
+        "tempo": "średnie",
+        "grafiki": "papierowe kartki"
+      }
+    },
+    {
+      "id": "pytania-i-odpowiedzi",
+      "name": "Pytania i odpowiedzi",
+      "description": "Hak jako karta z pytaniem, odpowiedź prostymi napisami, stały kadr bez zoomów. Do biznesu w formie Q&A i odpowiedzi na komentarze.",
+      "inspiredBy": "Codie Sanchez",
+      "summary": {
+        "animacja": "wjazd z boku (slide-in), wejście spod maski",
+        "hak": "karta z pytaniem",
+        "przejście": "twarde cięcie",
+        "zoom": "bez zoomów",
+        "tempo": "średnie",
+        "grafiki": "ciemne karty"
+      }
+    },
+    {
+      "id": "adnotacje-odreczne",
+      "name": "Adnotacje odręczne",
+      "description": "Słowa-klucze pismem odręcznym odsłaniane maską, hak z podkreśleniem jak flamastrem, spokojne przyciemnienia na cięciach. Do poradników i produktywności.",
+      "inspiredBy": "Ali Abdaal (adnotacje)",
+      "summary": {
+        "animacja": "odsłanianie maską (mask reveal), zalewanie kolorem",
+        "hak": "rysowane podkreślenie",
+        "przejście": "miękkie przyciemnienie",
+        "zoom": "powolny najazd w każdym ujęciu",
+        "tempo": "spokojne (tnie tylko długie pauzy)",
+        "grafiki": "jasne karty"
+      }
+    },
+    {
+      "id": "mocna-typografia",
+      "name": "Mocna typografia",
+      "description": "Bardzo gruby, wąski krój na całej szerokości kadru, słowa rozciągają się przy wejściu, hak w dwóch liniach. Do krótkich, mocnych tez biznesowych.",
+      "inspiredBy": "Leila Hormozi",
+      "summary": {
+        "animacja": "kinetic (rozciągnięcie), spadanie z góry",
+        "hak": "dwie linie, ostatnie słowo duże",
+        "przejście": "punch (krótki zoom)",
+        "zoom": "powolny najazd w każdym ujęciu",
+        "tempo": "szybkie (tnie każdą pauzę)",
+        "grafiki": "ciemne karty"
+      }
+    }
+  ],
+  "fonts": [
+    "Caveat",
+    "JetBrains Mono",
+    "Anton",
+    "Montserrat",
+    "Libre Baskerville",
+    "Inter",
+    "Poppins",
+    "Bebas Neue",
+    "Plus Jakarta Sans",
+    "Mulish",
+    "Roboto",
+    "Nunito Sans",
+    "Nunito",
+    "Fustat"
+  ],
+  "colors": [
+    "accent",
+    "text",
+    "background"
+  ],
+  "limits": {
+    "videoMaxBytes": 209715200,
+    "videoMaxSeconds": 60,
+    "videoMinSeconds": 5,
+    "videoTypes": [
+      "video/mp4",
+      "video/quicktime"
+    ],
+    "logoMaxBytes": 5242880,
+    "logoTypes": [
+      "image/png",
+      "image/jpeg",
+      "image/webp"
+    ]
+  }
+}

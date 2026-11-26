@@ -64,7 +64,7 @@ export default async function PolitykaPrywatnosci({
         {/* Sections: treść w lib/privacy-policy.ts (wersja zapisywana przy zgodach) */}
         <div className="space-y-12 font-sans">
           {PRIVACY_SECTIONS.map((sec) => (
-            <section key={sec.title}>
+            <section key={sec.title} id={sec.title.startsWith("2.") ? "proba" : undefined} className="scroll-mt-6">
               <h2 className="font-display text-2xl md:text-3xl text-white tracking-wide mb-4 uppercase">{sec.title}</h2>
               <div className="space-y-4">
                 {sec.items.map((t) => (
