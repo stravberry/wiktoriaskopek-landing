@@ -60,7 +60,8 @@ export default function ConsentProvider({ children, lang = "pl" }: { children: R
   useEffect(() => {
     const s = read()
     setState(s)
-    setBannerOpen(!s)
+    // Baner po załadowaniu fontów: inaczej zmiana kroju przesuwa jego górną krawędź (CLS na telefonie).
+    if (!s) document.fonts.ready.then(() => setBannerOpen(true))
     setReady(true)
     const onOpen = () => {
       const cur = read()
