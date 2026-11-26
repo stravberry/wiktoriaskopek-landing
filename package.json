@@ -5,7 +5,8 @@
   "scripts": {
     "build": "next build",
     "dev": "next dev",
-    "lint": "eslint .",
+    "lint": "eslint app lib components/mf proxy.ts",
+    "lint:all": "eslint .",
     "start": "next start",
     "test": "node --test tests/*.test.mjs",
     "db:migrate": "node scripts/mf-migrate.mjs"
@@ -74,6 +75,8 @@
     "@types/node": "^22",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "eslint": "^9.39.5",
+    "eslint-config-next": "16.4.6",
     "postcss": "^8.5.18",
     "tailwindcss": "^4.1.9",
     "typescript": "^5"

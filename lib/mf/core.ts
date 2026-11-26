@@ -295,6 +295,8 @@ export interface MfDeps {
   log?: (msg: string) => void
 }
 
+// Obiekt zależy od typu zdarzenia (sesja, charge, spór); pola sprawdzamy w miejscu użycia.
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 type StripeEvent = { id: string; type: string; data: { object: any } }
 
 const FULFILL = ["checkout.session.completed", "checkout.session.async_payment_succeeded"]
@@ -382,6 +384,7 @@ async function fulfill(session: PaidSession, deps: MfDeps): Promise<string> {
   return "delivered"
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any -- charge albo dispute ze Stripe
 async function revoke(obj: any, status: "refunded" | "disputed", deps: MfDeps): Promise<string> {
   // charge.refunded: unieważniamy tylko przy pełnym zwrocie. charge.dispute.created: zawsze.
   if (status === "refunded" && obj.refunded !== true) return "partial-refund"

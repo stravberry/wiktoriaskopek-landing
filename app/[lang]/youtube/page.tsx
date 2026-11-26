@@ -24,7 +24,9 @@ export default function YouTubePage() {
   const [openFaq, setOpenFaq] = useState<number | null>(null)
   const [mounted, setMounted] = useState(false)
 
+  // Flaga po pierwszym renderze w przeglądarce: animacje dopiero po hydracji.
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setMounted(true)
   }, [])
 
