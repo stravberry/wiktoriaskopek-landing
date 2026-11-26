@@ -81,7 +81,7 @@ export const clip = (name: string, label: string): MfClip => ({ name, label })
 // Teksty: „co naprawdę robi” z landing-assets/LISTA.md (Coding Builder, wydanie z 26.11.2026). Filmy: render z programu, bez twarzy i klientów.
 const fn = (name: string, aspect: MfVideo["aspect"] = "9/16"): MfVideo =>
   aspect === "16/9" ? { src: `/mf/funkcje/${name}-poziomo.mp4`, poster: `/mf/funkcje/${name}-poziomo.jpg`, aspect } : { src: `/mf/funkcje/${name}.mp4`, poster: `/mf/funkcje/${name}.jpg`, aspect }
-const shot = (file: string, alt: string) => ({ src: `/mf/panel-0l/${file}.jpg`, alt, w: 1440, h: 900 })
+const shot = (file: string, alt: string) => ({ src: `/mf/panel-final/${file}.jpg`, alt, w: 1440, h: 900 })
 
 export const MF_SHOWCASE: MfShowcase[] = [
   {
@@ -93,7 +93,7 @@ export const MF_SHOWCASE: MfShowcase[] = [
       "Ustawienia zostają w folderze marka/. Aktualizacje programu ich nie nadpisują.",
     ],
     video: fn("kreator-marki"),
-    image: { src: "/mf/panel-0l/11-twoja-marka.jpg", alt: "Panel MontageFrames: Twoja marka, wybór lub dodanie marki i trzy kroki kreatora", w: 1440, h: 900 },
+    image: { src: "/mf/panel-final/13-twoja-marka.jpg", alt: "Panel MontageFrames: Twoja marka, profil z kolorami, fontami i stylem", w: 1440, h: 900 },
   },
   {
     id: "style-animacje",
@@ -114,7 +114,7 @@ export const MF_SHOWCASE: MfShowcase[] = [
       "Gdy powiesz „jest git”, styl zostaje zapamiętany dla marki na stałe i wraca w kolejnych montażach.",
     ],
     video: fn("panel-poprawki"),
-    clip: clip("jest-git", "Panel MontageFrames: kliknięcie „Jest git: zatwierdź styl” i zapis stylu dla marki"),
+    clip: clip("edytuj-styl", "Panel MontageFrames: Edytuj styl, liczba słów naraz i animacja, a podgląd od razu pokazuje zmianę"),
   },
   {
     id: "youtube",
@@ -144,7 +144,7 @@ export const MF_SHOWCASE: MfShowcase[] = [
     lead: "Krótka animacja z Twojego tekstu: intro, plansza albo CTA.",
     points: ["Formaty 9:16, 1:1 albo 16:9.", "Najpierw storyboard i podgląd, potem render."],
     video: fn("motion-studio"),
-    image: shot("10-motion-studio", "Panel MontageFrames: Motion Studio, opis filmu i kroki storyboard, podgląd, render"),
+    image: shot("12-motion-studio", "Panel MontageFrames: Motion Studio, opis filmu i kroki storyboard, podgląd, render"),
   },
   {
     id: "cutraw",
@@ -155,7 +155,7 @@ export const MF_SHOWCASE: MfShowcase[] = [
       "Eksport XML do Premiere Pro. Oryginały zostają nietknięte.",
     ],
     video: fn("cutraw", "16/9"),
-    image: shot("09-cutraw", "Panel MontageFrames: CutRaw, nowy projekt z nagrań kamer i mikrofonów"),
+    image: shot("11-cutraw", "Panel MontageFrames: CutRaw, nowy projekt z nagrań kamer i mikrofonów"),
   },
   {
     id: "aktualizacje",
@@ -163,16 +163,16 @@ export const MF_SHOWCASE: MfShowcase[] = [
     lead: "Program, silnik i skille aktualizujesz w panelu albo komendą /aktualizacja.",
     points: ["Przed aktualizacją robi się kopia zapasowa.", "Zawsze możesz wrócić do wersji zalecanej."],
     video: fn("aktualizacje"),
-    image: shot("12-ustawienia", "Panel MontageFrames: ustawienia z wyglądem, kontem Claude i aktualizacjami"),
+    image: shot("16-ustawienia", "Panel MontageFrames: ustawienia z wyglądem (jasny i ciemny), kontem Claude i aktualizacjami"),
   },
 ]
 
 /** Zrzuty panelu (lokalny panel w przeglądarce, komenda /panel). */
 export const MF_PANEL_SHOTS = [
-  { src: "/mf/panel-0l/03-edytor-slowo.jpg", title: "Edytor napisów", alt: "Panel: edytor rolki, wybrane słowo z opcjami wyróżnienia, lista słów i oś czasu" },
-  { src: "/mf/panel-0l/05-edytuj-styl.jpg", title: "Edytuj styl", alt: "Panel: Edytuj styl, ile słów naraz, animacja słów i intensywność ruchu" },
-  { src: "/mf/panel-0l/06-gotowe-filmy.jpg", title: "Render i gotowe filmy", alt: "Panel: gotowe filmy i opis do publikacji obok podglądu rolki" },
-  { src: "/mf/panel-0l/07-quickcontent.jpg", title: "QuickContent", alt: "Panel: QuickContent, zapisane projekty z propozycjami fragmentów z długiego nagrania" },
+  { src: "/mf/panel-final/04-edycja-slowa.jpg", title: "Edytor napisów", alt: "Panel: edytor rolki, wybrane słowo z opcjami wyróżnienia, lista słów i oś czasu" },
+  { src: "/mf/panel-final/06-edytuj-styl.jpg", title: "Edytuj styl", alt: "Panel: Edytuj styl, ile słów naraz, animacja słów i intensywność ruchu" },
+  { src: "/mf/panel-final/08-gotowe-filmy-i-render.jpg", title: "Render i gotowe filmy", alt: "Panel: gotowe filmy i opis do publikacji obok podglądu rolki" },
+  { src: "/mf/panel-final/09-quickcontent.jpg", title: "QuickContent", alt: "Panel: QuickContent, zapisane projekty z propozycjami fragmentów z długiego nagrania" },
 ]
 
 /** „33 style”, „37 stylów”: liczba stylów z poprawną odmianą. */
