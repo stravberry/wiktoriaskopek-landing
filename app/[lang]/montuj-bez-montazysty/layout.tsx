@@ -18,14 +18,15 @@ export default async function MfLayout({ children, params }: { children: React.R
       <ScrollProgress />
       <TestModeBar />
       <header className="mf-wrap flex items-center justify-between gap-4 pt-5 md:pt-8">
-        <Link href={MF_BASE_PATH} className="text-[17px] font-bold tracking-[-0.01em]">
-          MontageFrames <span className="font-normal text-[var(--h-ink-2)]">od Wiktorii Skopek</span>
+        <Link href={MF_BASE_PATH} className="whitespace-nowrap text-[17px] font-bold tracking-[-0.01em]">
+          MontageFrames <span className="hidden font-normal text-[var(--h-ink-2)] sm:inline">od Wiktorii Skopek</span>
         </Link>
         <nav className="flex items-center gap-2 text-[15px] font-semibold">
           <a href={`${MF_BASE_PATH}#style`} className="hidden rounded-full px-4 py-2.5 hover:bg-[var(--h-surface)] md:inline-block">Style</a>
           <a href={`${MF_BASE_PATH}#faq`} className="hidden rounded-full px-4 py-2.5 hover:bg-[var(--h-surface)] md:inline-block">Pytania</a>
           <Link href={`${MF_BASE_PATH}/konto`} className="mf-press rounded-full bg-[var(--h-surface)] px-5 py-2.5 hover:bg-[var(--h-surface-hover)]">
-            Moje konto
+            <span className="sm:hidden">Konto</span>
+            <span className="hidden sm:inline">Moje konto</span>
           </Link>
         </nav>
       </header>

@@ -27,9 +27,10 @@ export default async function Proba() {
   const email = await currentBuyer()
   return (
     <main className="mf-wrap pb-24 pt-10 md:pt-16">
-      <h1 className="mf-h2 max-w-[18ch]">Zrób swoją pierwszą rolkę za darmo</h1>
       {email ? (
-        <div className="mt-8">
+        <div>
+          <h1 className="text-[clamp(1.5rem,2.6vw,2rem)] font-bold tracking-[-0.02em]">Darmowa próba MontageFrames</h1>
+          <div className="mt-5">
           <TrialApp
             api={TRIAL_API}
             styles={MF_STYLES}
@@ -40,11 +41,16 @@ export default async function Proba() {
             consentVersion={TRIAL_CONSENT_VERSION}
             mailWhenReady={process.env.MF_TRIAL_MAIL === "1"}
           />
+          </div>
         </div>
       ) : (
-        <div className="mt-8 grid items-start gap-10 lg:grid-cols-[minmax(0,1fr)_300px] lg:gap-16">
+        <div className="grid items-start gap-10 lg:grid-cols-[minmax(0,1fr)_300px] lg:gap-16">
           <div>
-            <p className="mf-lead max-w-[48ch]">Zobacz MontageFrames na swoim nagraniu. Bez karty, wystarczy e-mail.</p>
+            <h1 className="mf-h2 max-w-[18ch]">Zrób swoją pierwszą rolkę za darmo</h1>
+            <p className="mf-lead mt-4 max-w-[48ch]">Zobacz MontageFrames na swoim nagraniu. Bez karty, wystarczy e-mail.</p>
+            <div className="mt-6 max-w-[560px]">
+              <TrialStart />
+            </div>
             <ol className="mt-8 grid gap-3 sm:grid-cols-2">
               {HOW.map(([t, d], i) => (
                 <li key={t} className="flex items-start gap-3 rounded-[20px] bg-[var(--h-surface)] p-4">
@@ -56,9 +62,6 @@ export default async function Proba() {
                 </li>
               ))}
             </ol>
-            <div className="mt-8 max-w-[560px]">
-              <TrialStart />
-            </div>
             <p className="mt-6 max-w-[60ch] text-[15px] leading-[1.6] text-[var(--h-ink-2)]">
               Jedna rolka na konto, ze znakiem wodnym. Nagranie usuwamy zaraz po montażu, a rolkę po 7 dniach. Pełna wersja działa na Twoim komputerze w Claude
               Code (płatny plan Claude Pro lub Max, min. 15 GB miejsca).

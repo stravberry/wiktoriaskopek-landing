@@ -41,6 +41,7 @@ const AVG_RENDER = 180
 const estimateSeconds = (duration: number, queueAhead = 0) => Math.round(60 + duration * 8 + queueAhead * AVG_RENDER)
 const minutes = (sec: number) => Math.max(1, Math.round(sec / 60))
 const minLabel = (sec: number) => {
+  if (sec < 60) return "mniej niż minutę"
   const m = minutes(sec)
   return `${m} ${m === 1 ? "minutę" : m % 10 >= 2 && m % 10 <= 4 && (m % 100 < 12 || m % 100 > 14) ? "minuty" : "minut"}`
 }
@@ -48,7 +49,7 @@ const minLabel = (sec: number) => {
 const STAGES = [
   { key: "queued", label: "W kolejce" },
   { key: "transcription", label: "Transkrypcja" },
-  { key: "captions", label: "Napisy w Twoim stylu" },
+  { key: "captions", label: "Napisy" },
   { key: "montage", label: "Montaż" },
   { key: "quality", label: "Kontrola jakości" },
   { key: "done", label: "Gotowe" },
@@ -209,8 +210,7 @@ function BrandPreview({ brand, fontFamily, styleName }: { brand: Brand; fontFami
   return (
     <figure className="w-full">
       <div className="relative aspect-[9/16] w-full overflow-hidden rounded-[24px]" style={{ background: brand.background }}>
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={`/mf/style/${brand.style}.jpg`} alt="" className="absolute inset-0 size-full object-cover opacity-35" />
+        <div aria-hidden className="absolute inset-0" style={{ background: `radial-gradient(120% 80% at 50% 0%, ${brand.accent}33, transparent 60%), linear-gradient(180deg, transparent 40%, #00000055)` }} />
         <div className="absolute inset-x-0 top-[9%] text-center">
           <span className="rounded-md px-2 py-1 text-[13px] font-bold uppercase tracking-wide" style={{ background: brand.accent, color: brand.background, fontFamily }}>
             {brand.name || "Twoja marka"}
@@ -222,7 +222,7 @@ function BrandPreview({ brand, fontFamily, styleName }: { brand: Brand; fontFami
         </p>
       </div>
       <figcaption className="mt-2 text-[13px] leading-[1.4] text-[var(--h-ink-2)]">
-        Podgląd kolorów i fontu{styleName ? ` na kadrze stylu ${styleName}` : ""}. Animację zobaczysz w gotowej rolce.
+        Podgląd kolorów i fontu{styleName ? ` (styl: ${styleName})` : ""}. Animację stylu zobaczysz w gotowej rolce.
       </figcaption>
     </figure>
   )
@@ -331,9 +331,13 @@ export function TrialApp({ api, styles, fonts, fontFamilies, limits, consentText
 
   const styleName = styles.find((s) => s.slug === brand.style)?.name
 
+  const STEP_TITLES = ["Twoja marka", "Wybierz styl", "Wgraj nagranie", "Montaż", "Twoja rolka"]
   return (
-    <div className="flex flex-col gap-8">
+    <div className="flex flex-col gap-6">
       <Stepper step={step} maxStep={maxStep} onGo={go} />
+      <p className="text-[15px] font-semibold text-[var(--h-ink-2)]" aria-live="polite">
+        Krok {step + 1} z 5 · {STEP_TITLES[step]}
+      </p>
       {step === 0 && (
         <BrandStep brand={brand} setBrand={setBrand} fonts={fonts} fontFamily={fontFamilies[brand.font]} styleName={styleName} logo={logo} setLogo={setLogo} logoMax={limits.logoMaxBytes} onNext={() => go(1)} />
       )}
@@ -480,7 +484,7 @@ function StyleStep({ styles, brand, fontFamily, onPick, onBack, onNext }: {
       </div>
       <StyleGallery styles={styles} selected={brand.style} onSelect={onPick} initialCount={10} />
       {error && <p role="alert" className="rounded-2xl bg-[var(--h-accent)]/15 p-4 text-[15px] font-semibold">{error}</p>}
-      <div className="sticky bottom-3 z-10 flex flex-wrap items-center gap-4 rounded-full bg-[var(--h-bg)]/95 p-2 shadow-[0_8px_30px_-12px_rgba(0,0,0,0.35)] backdrop-blur">
+      <div className="sticky bottom-3 z-10 mx-auto flex w-fit max-w-full flex-wrap items-center justify-center gap-4 rounded-full bg-[var(--h-bg)]/95 p-2 pr-5 shadow-[0_8px_30px_-12px_rgba(0,0,0,0.35)] backdrop-blur">
         <button
           type="button"
           disabled={busy}
@@ -597,7 +601,7 @@ function VideoStep({ api, auth, limits, consentText, consentVersion, onBack, onS
 
         {file && (
           <p role="status" className="mt-5 rounded-2xl bg-[var(--h-bg)] p-4 text-[17px]">
-            Twoja rolka będzie gotowa za ok. <strong>{minLabel(eta)}</strong> (montujemy jedną rolkę naraz, więc przy kolejce może to potrwać dłużej).
+            Twoja rolka będzie gotowa za {eta < 60 ? "" : "ok. "}<strong>{minLabel(eta)}</strong> (montujemy jedną rolkę naraz, więc przy kolejce może to potrwać dłużej).
           </p>
         )}
 
@@ -669,7 +673,7 @@ function RenderStep({ status, start, mailWhenReady, onRetry }: { status: Status 
       <p className="flex items-center gap-3 text-[24px] font-semibold"><Loader2 className="size-6 animate-spin" aria-hidden />Montuję Twoją rolkę</p>
       <p className="mt-2 text-[17px] text-[var(--h-ink-2)]">
         {status?.status === "queued" && status.queuePosition ? `Miejsce w kolejce: ${status.queuePosition}. ` : ""}
-        {remaining != null ? <>Zostało ok. <strong className="text-[var(--h-ink)]">{minLabel(remaining)}</strong>.</> : "Zwykle trwa to 2–4 minuty."}
+        {remaining != null ? <>Zostało {remaining < 60 ? "" : "ok. "}<strong className="text-[var(--h-ink)]">{minLabel(remaining)}</strong>.</> : "Zwykle trwa to 2–4 minuty."}
       </p>
       <div className="mt-6 h-2.5 overflow-hidden rounded-full bg-[var(--h-bg)]">
         <div className="h-full rounded-full bg-[var(--h-accent)] transition-[width] duration-700" style={{ width: `${pct}%` }} />
@@ -704,7 +708,7 @@ function DoneStep({ status, hasOrder }: { status: Status; hasOrder: boolean }) {
         <video src={status.previewUrl} controls playsInline autoPlay muted className="aspect-[9/16] w-full rounded-[28px] bg-[#1d1d1f]" aria-label="Twoja rolka z próby" />
         {status.outputUrl && (
           <a href={status.outputUrl} onClick={() => logFunnel("trial_downloaded")} className="mf-press mt-4 flex min-h-12 items-center justify-center rounded-full bg-[var(--h-surface)] text-[17px] font-semibold hover:bg-[var(--h-surface-hover)]">
-            Pobierz rolkę (MP4)
+            Pobierz rolkę (MP4, ze znakiem wodnym)
           </a>
         )}
         <p className="mt-3 text-center text-[15px] text-[var(--h-ink-2)]">Wersja próbna ze znakiem wodnym. Usuniemy ją {until ?? "po 7 dniach"}.</p>
@@ -727,12 +731,13 @@ function DoneStep({ status, hasOrder }: { status: Status; hasOrder: boolean }) {
                 </li>
               ))}
             </ul>
-            <button type="button" onClick={() => openBuy("paczka", "trial_preview")} className={`${primary} mt-6 w-full sm:w-auto`}>
+            <p className="mt-5 rounded-2xl bg-[var(--h-bg)] p-4 text-[16px] leading-[1.55]">
+              <strong>Czego potrzebujesz:</strong> komputera z min. 15 GB miejsca i płatnego planu Claude Pro lub Max. Program działa w Claude Code na Twoim komputerze.
+            </p>
+            <button type="button" onClick={() => openBuy("paczka", "trial_preview")} className={`${primary} mt-5 w-full sm:w-auto`}>
               Kup pełną wersję za {MF_PRODUCTS.paczka.priceLabel}
             </button>
-            <p className="mt-4 text-[15px] leading-[1.6] text-[var(--h-ink-2)]">
-              Jednorazowo. Program działa na Twoim komputerze w Claude Code (płatny plan Claude Pro lub Max, min. 15 GB miejsca).
-            </p>
+            <p className="mt-3 text-[15px] text-[var(--h-ink-2)]">Jednorazowo, bez abonamentu.</p>
             <button type="button" onClick={() => openBuy("konsultacja", "trial_preview")} className="mt-3 text-[15px] font-semibold underline underline-offset-4">
               Wolę zainstalować z Wiktorią: {MF_PRODUCTS.konsultacja.priceLabel}
             </button>

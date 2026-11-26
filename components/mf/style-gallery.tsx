@@ -73,12 +73,12 @@ function StyleCard({ s, selected, onSelect, active, setActive }: {
       </div>
       <p className="mt-3 text-[17px] font-semibold leading-[1.25]">{s.name}</p>
       <p className="mt-1 text-[15px] leading-[1.45] text-[var(--h-ink-2)]">{s.forWhom}</p>
-      <ul className="mt-2 flex flex-wrap gap-1.5 text-[13px]" aria-label="Cechy stylu">
+      <ul className="mt-2 flex flex-wrap gap-1.5 text-[14px] text-[#4a4a4a]" aria-label="Cechy stylu">
         <li className="rounded-full bg-[var(--h-surface)] px-2.5 py-1">{s.motion.split(",")[0]}</li>
         <li className="rounded-full bg-[var(--h-surface)] px-2.5 py-1">tempo {s.tempo}</li>
         {s.use[0] && <li className="rounded-full bg-[var(--h-surface)] px-2.5 py-1">{USE_LABEL[s.use[0]]}</li>}
       </ul>
-      {s.inspired && <p className="mt-2 text-[13px] text-[var(--h-ink-2)]">inspirowane stylem: {s.inspired}</p>}
+      {s.inspired && <p className="mt-2 text-[14px] text-[#4a4a4a]">inspirowane stylem: {s.inspired}</p>}
     </>
   )
 
