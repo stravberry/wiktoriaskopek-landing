@@ -6,7 +6,11 @@ import TestimonialsSection from "@/components/testimonials-section"
 import ServicesTrioSection from "@/components/services-trio-section"
 import PodcastKatowiceSection from "@/components/podcast-katowice-section"
 import ContactSection from "@/components/contact-section"
+import type { Metadata } from "next"
 import type { Locale } from "@/lib/translations"
+
+// Stara strona główna: zostaje pod adresem, ale poza wyszukiwarką (duplikat treści, nigdzie nie linkowana).
+export const metadata: Metadata = { robots: { index: false, follow: false } }
 
 export default async function OldMainPage({ params }: { params: Promise<{ lang: Locale }> }) {
   const { lang } = await params
@@ -20,7 +24,7 @@ export default async function OldMainPage({ params }: { params: Promise<{ lang: 
       <TestimonialsSection />
       <ServicesTrioSection />
       <PodcastKatowiceSection lang={lang} />
-      <ContactSection lang={lang} />
+      <ContactSection />
     </div>
   )
 }

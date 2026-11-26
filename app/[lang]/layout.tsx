@@ -1,5 +1,5 @@
 import type React from "react"
-import type { Metadata } from "next"
+import type { Metadata, Viewport } from "next"
 import { notFound } from "next/navigation"
 import { Bebas_Neue } from "next/font/google"
 import "../globals.css"
@@ -72,25 +72,23 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: Loc
       shortcut: "/favicon.svg",
       apple: "/favicon.svg",
     },
-    viewport: {
-      width: "device-width",
-      initialScale: 1,
-      maximumScale: 5,
-    },
-    themeColor: "#050505",
   }
 }
+
+// Next 14+: viewport i themeColor poza metadata (wcześniej ostrzeżenie przy każdym buildzie).
+export const viewport: Viewport = { width: "device-width", initialScale: 1, maximumScale: 5, themeColor: "#050505" }
 
 export default async function LangLayout({
   children,
   params,
 }: {
   children: React.ReactNode
-  params: Promise<{ lang: Locale }>
+  params: Promise<{ lang: string }>
 }) {
-  const { lang } = await params
+  const { lang: raw } = await params
   // Tylko pl i en: inne pierwsze segmenty (np. /llms.txt) dawały 200 z pustą stroną (soft 404).
-  if (!(locales as readonly string[]).includes(lang)) notFound()
+  if (!(locales as readonly string[]).includes(raw)) notFound()
+  const lang = raw as Locale
 
   return (
     <html lang={lang} className="scroll-smooth" style={{ backgroundColor: "#050505" }} suppressHydrationWarning>

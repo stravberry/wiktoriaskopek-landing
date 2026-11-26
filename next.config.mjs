@@ -1,10 +1,12 @@
+import { cspHeader } from "./lib/security/csp.mjs"
+
+// CSP: false = Report-Only (tylko raporty w /api/csp-report), true = wymuszanie. Decyzja Dayli 26.11: najpierw raporty.
+const CSP_ENFORCE = false
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   // Font do PDF poradnika czytany z dysku w funkcji serwerowej
   outputFileTracingIncludes: { "/api/mf/poradnik-pdf": ["./lib/mf/fonts/**"] },
-  typescript: {
-    ignoreBuildErrors: true,
-  },
   images: {
     formats: ["image/avif", "image/webp"],
     deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
@@ -30,6 +32,7 @@ const nextConfig = {
       {
         source: "/(.*)",
         headers: [
+          cspHeader({ enforce: CSP_ENFORCE }),
           {
             key: "X-Content-Type-Options",
             value: "nosniff",
