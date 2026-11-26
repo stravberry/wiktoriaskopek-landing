@@ -21,6 +21,7 @@ test("CSP: dopuszcza to, czego strona naprawdę używa (Supabase próby, wideo z
   assert.ok(p["media-src"].includes("https://hebbkx1anhila5yf.public.blob.vercel-storage.com"))
   assert.ok(p["script-src"].includes("https://app.cal.com"))
   assert.ok(p["frame-src"].includes("https://app.cal.com"))
+  assert.ok(p["script-src"].includes("https://challenges.cloudflare.com") && p["frame-src"].includes("https://challenges.cloudflare.com"), "Turnstile")
   assert.ok(!p["script-src"].includes("'unsafe-eval'"), "bez unsafe-eval na produkcji")
 })
 

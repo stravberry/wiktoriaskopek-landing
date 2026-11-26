@@ -1,4 +1,5 @@
 import { NextResponse, type NextRequest } from "next/server"
+import { verifyTurnstile } from "@/lib/turnstile"
 import { normalizedEmail, parseUtm, randomToken, sha256, testerAllowed } from "@/lib/mf/core"
 import { saveAttribution, sql } from "@/lib/mf/db"
 import { logEvent } from "@/lib/mf/events"
@@ -16,6 +17,8 @@ export async function POST(request: NextRequest) {
   const email = typeof body.email === "string" ? body.email.trim().toLowerCase() : ""
   if (!/^[^\s@]{1,64}@[^\s@]{1,255}\.[^\s@]{2,}$/.test(email)) return NextResponse.json({ error: "Podaj prawidłowy adres e-mail." }, { status: 400 })
   if (isDisposable(email)) return NextResponse.json({ error: "Podaj swój stały adres e-mail, nie jednorazowy." }, { status: 400 })
+  const ts = await verifyTurnstile(body.turnstileToken, clientIp(request.headers))
+  if (!ts.ok) return NextResponse.json({ error: ts.error }, { status: ts.status })
 
   const db = sql()
   // S5 (przegląd 26.11): limity liczone w bazie na adresie bez +aliasu (i bez kropek w Gmailu) oraz globalnie.

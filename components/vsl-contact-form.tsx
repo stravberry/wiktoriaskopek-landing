@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from "react"
+import { Turnstile } from "@/components/turnstile"
 import { Send, CheckCircle2, AlertCircle } from "lucide-react"
 import { motion } from "framer-motion"
 
@@ -8,6 +9,8 @@ export default function VslContactForm() {
   const [isSubmitted, setIsSubmitted] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
+  const [tsToken, setTsToken] = useState<string | null>(null)
+  const [tsReset, setTsReset] = useState(0)
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -47,6 +50,7 @@ export default function VslContactForm() {
       revenue: formData.get("revenue") as string,
       challenge: formData.get("challenge") as string,
       _honey: formData.get("_honey") as string,
+      turnstileToken: tsToken,
     }
 
     try {
@@ -59,6 +63,7 @@ export default function VslContactForm() {
       const result = await response.json()
 
       if (!response.ok) {
+        setTsReset((n) => n + 1)
         setErrorMessage(result.error || "Wystąpił błąd. Spróbuj ponownie.")
         return
       }
@@ -235,6 +240,7 @@ export default function VslContactForm() {
 
             {/* Submit Button */}
             <motion.div variants={itemVariants} className="md:col-span-2 pt-6">
+              <Turnstile action="contact" onToken={setTsToken} resetKey={tsReset} />
               <button
                 disabled={isSubmitting}
                 type="submit"

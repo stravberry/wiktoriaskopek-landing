@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server"
+import { clientIp, verifyTurnstile } from "@/lib/turnstile"
 import { z } from "zod"
 import { resend, emailConfig } from "@/lib/resend"
 import ConfirmationEmail from "@/emails/confirmation-email"
@@ -67,6 +68,9 @@ export async function POST(request: NextRequest) {
       // Silently succeed for bots
       return NextResponse.json({ success: true })
     }
+
+    const ts = await verifyTurnstile(body?.turnstileToken, clientIp(request.headers))
+    if (!ts.ok) return NextResponse.json({ error: ts.error }, { status: ts.status })
 
     const submittedAt = new Intl.DateTimeFormat("pl-PL", {
       dateStyle: "long",

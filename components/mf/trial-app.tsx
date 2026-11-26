@@ -1,5 +1,6 @@
 "use client"
 
+import { Turnstile } from "@/components/turnstile"
 import { getUtm } from "@/lib/mf/utm-client"
 import { useCallback, useEffect, useRef, useState } from "react"
 import Link from "next/link"
@@ -128,15 +129,18 @@ export function TrialStart() {
   const [email, setEmail] = useState("")
   const [marketing, setMarketing] = useState(false)
   const [state, setState] = useState<"idle" | "busy" | "sent">("idle")
+  const [tsToken, setTsToken] = useState<string | null>(null)
+  const [tsReset, setTsReset] = useState(0)
   const [error, setError] = useState<string | null>(null)
   async function submit(e: React.FormEvent) {
     e.preventDefault()
     setError(null)
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email.trim())) return setError("Wpisz pełny adres e-mail, np. jan@firma.pl.")
     setState("busy")
-    const res = await fetch("/api/mf/trial/start", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ email, marketing, utm: getUtm() }) })
+    const res = await fetch("/api/mf/trial/start", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ email, marketing, utm: getUtm(), turnstileToken: tsToken }) })
     const data = await res.json().catch(() => ({}))
     if (!res.ok) {
+      setTsReset((n) => n + 1)
       setError(data.error || "Nie udało się wysłać linku. Spróbuj za chwilę.")
       setState("idle")
       return
@@ -161,6 +165,7 @@ export function TrialStart() {
         <input type="checkbox" checked={marketing} onChange={(e) => setMarketing(e.target.checked)} className="mt-0.5 size-6 shrink-0 accent-[var(--h-accent)]" />
         <span>Chcę dostawać maile z nowościami i ofertami Wiktorii Skopek (dobrowolne, mogę cofnąć w każdej chwili).</span>
       </label>
+      <Turnstile action="trial_start" onToken={setTsToken} resetKey={tsReset} />
       {error && <p role="alert" className="mt-4 rounded-2xl bg-[var(--h-accent)]/15 p-4 text-[15px] font-semibold">{error}</p>}
       <button type="submit" disabled={state === "busy"} className={`${primary} mt-5 w-full`}>
         {state === "busy" && <Loader2 className="size-5 animate-spin" />}

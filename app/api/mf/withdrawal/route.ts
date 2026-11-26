@@ -1,4 +1,5 @@
 import { NextResponse, type NextRequest } from "next/server"
+import { clientIp, verifyTurnstile } from "@/lib/turnstile"
 import { Resend } from "resend"
 import { SELLER } from "@/lib/mf/config"
 import { sql } from "@/lib/mf/db"
@@ -19,6 +20,8 @@ export async function POST(request: NextRequest) {
   if (name.length < 2 || !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email) || statement.length < 10) {
     return NextResponse.json({ error: "Uzupełnij imię i nazwisko, e-mail i treść oświadczenia." }, { status: 400 })
   }
+  const ts = await verifyTurnstile(b.turnstileToken, clientIp(request.headers))
+  if (!ts.ok) return NextResponse.json({ error: ts.error }, { status: ts.status })
   const outbox = !resendConfigured(process.env.RESEND_API_KEY) && process.env.MF_MAIL_MODE === "outbox" && process.env.VERCEL_ENV !== "production"
   if (!process.env.DATABASE_URL || (!resendConfigured(process.env.RESEND_API_KEY) && !outbox)) {
     return NextResponse.json({ error: `Formularz jest chwilowo niedostępny. Wyślij oświadczenie mailem na ${SELLER.email}.` }, { status: 503 })
