@@ -163,3 +163,14 @@ html .mf-page.mf-page.home {
   --h-accent: var(--mf-accent);
   --h-accent-ink: var(--mf-accent-ink);
 }
+
+/* Kotek na pasku postępu: sprite sheet 8 (bieg) i 6 (lizanie) klatek po 44 px, ostre piksele, ruch tylko transform. */
+.mf-kot { --kot: 32px; width: var(--kot); height: var(--kot); overflow: hidden; margin-right: calc(var(--kot) * -0.3); }
+@media (min-width: 768px) { .mf-kot { --kot: 44px; } }
+.mf-kot > span { display: block; height: 100%; background-size: auto 100%; background-repeat: no-repeat; image-rendering: pixelated; }
+.mf-kot[data-anim="bieg"] > span { width: calc(var(--kot) * 8); background-image: url("/mf/kotek/kotek-bieg.webp"); animation: mf-kot-bieg 0.64s steps(8) infinite; }
+.mf-kot[data-anim="lize"] > span { width: calc(var(--kot) * 6); background-image: url("/mf/kotek/kotek-lize.webp"); animation: mf-kot-lize 1.2s steps(6) infinite; }
+.mf-kot[data-still] > span { animation: none; }
+@keyframes mf-kot-bieg { to { transform: translateX(calc(var(--kot) * -8)); } }
+@keyframes mf-kot-lize { to { transform: translateX(calc(var(--kot) * -6)); } }
+@media (prefers-reduced-motion: reduce) { .mf-kot > span { animation: none !important; } }
