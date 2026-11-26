@@ -1,3 +1,4 @@
+import { createHash } from "node:crypto"
 import Stripe from "stripe"
 import { cookies } from "next/headers"
 import { Resend } from "resend"
@@ -179,6 +180,11 @@ export function rateLimited(key: string, max: number, windowMs: number) {
   }
   e.n++
   return e.n > max
+}
+
+/** Skrót IP do limitów w bazie (bez zapisu samego adresu). */
+export function ipHash(headers: Headers) {
+  return createHash("sha256").update(`${secret()}:ip:${clientIp(headers)}`).digest("hex").slice(0, 32)
 }
 
 export function clientIp(headers: Headers) {

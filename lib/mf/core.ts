@@ -30,6 +30,24 @@ export function mfDisabledReason(env: Env): string | null {
   return null
 }
 
+// ── Tryb testowy na produkcji (przegląd bezpieczeństwa 26.11, S2) ──
+// Testowy klucz Stripe na produkcji: karta 4242 „płaci” za darmo, więc produkt dostają tylko testerzy.
+
+/** Produkcja na testowym kluczu Stripe: sklep pokazuje „zakup wkrótce”, a dostawa tylko dla testerów. */
+export function shopTestLocked(env: Env) {
+  return env.VERCEL_ENV === "production" && (env.STRIPE_SECRET_KEY ?? "").startsWith("sk_test_")
+}
+
+/** Testerzy: skrzynka Wiktorii z aliasami +… oraz adresy z MF_TEST_ALLOWLIST (po przecinku). */
+export function testerAllowed(email: string | null | undefined, env: Env) {
+  if (!email) return false
+  const [local, domain] = email.trim().toLowerCase().split("@")
+  if (!local || !domain) return false
+  const base = `${local.split("+")[0]}@${domain}`
+  const list = ["wskopek.all@gmail.com", ...(env.MF_TEST_ALLOWLIST ?? "").split(",")].map((x) => x.trim().toLowerCase()).filter(Boolean)
+  return list.includes(base) || list.includes(`${local}@${domain}`)
+}
+
 export function priceIdFor(product: MfProductId, env: Env): string | null {
   const id = env[MF_PRODUCTS[product].priceEnv]
   return id && id.startsWith("price_") ? id : null
@@ -183,16 +201,19 @@ function safeEqual(a: string, b: string) {
   return x.length === y.length && timingSafeEqual(x, y)
 }
 
+/** Wersja podpisu sesji. Zmiana unieważnia wszystkie wydane sesje (v2: po usunięciu logowania po płatności, S1 26.11). */
+export const SESSION_SIG = "session-v2"
+
 /** Ciasteczko sesji konta: e-mail + termin, podpis HMAC. */
 export function createSessionCookie(email: string, ttlSeconds: number, secret: string, nowMs = Date.now()) {
   const payload = b64(JSON.stringify({ e: email.toLowerCase(), x: nowMs + ttlSeconds * 1000 }))
-  return `${payload}.${sign(`session:${payload}`, secret)}`
+  return `${payload}.${sign(`${SESSION_SIG}:${payload}`, secret)}`
 }
 
 export function verifySessionCookie(value: string | undefined, secret: string, nowMs = Date.now()): string | null {
   if (!value) return null
   const [payload, sig] = value.split(".")
-  if (!payload || !sig || !safeEqual(sign(`session:${payload}`, secret), sig)) return null
+  if (!payload || !sig || !safeEqual(sign(`${SESSION_SIG}:${payload}`, secret), sig)) return null
   try {
     const data = JSON.parse(Buffer.from(payload, "base64url").toString()) as { e: string; x: number }
     return typeof data.e === "string" && data.x > nowMs ? data.e : null
@@ -207,6 +228,7 @@ export type ClaimOutcome = "claimed" | "busy" | "delivered" | "revoked"
 
 export type PaidSession = {
   id: string
+  livemode?: boolean
   payment_status?: string | null
   payment_intent?: string | { id: string } | null
   amount_total?: number | null
@@ -294,6 +316,11 @@ async function fulfill(session: PaidSession, deps: MfDeps): Promise<string> {
   const email = session.customer_details?.email?.toLowerCase()
   if (!email) throw new Error(`Missing customer email for session ${session.id}`)
   const consentId = meta.consent_id ?? null
+  // Testowa płatność na produkcji: bez klucza, poradnika, paczki i maila dla adresów spoza listy testerów (S2).
+  if (session.livemode === false && deps.env.VERCEL_ENV === "production" && !testerAllowed(email, deps.env)) {
+    deps.log?.(`[mf] test-mode purchase blocked for ${session.id}`)
+    return "test-blocked"
+  }
 
   const outcome = await deps.store.claim(session.id, product, email)
   if (outcome === "delivered") return "duplicate"

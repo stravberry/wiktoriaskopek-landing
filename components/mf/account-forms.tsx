@@ -113,7 +113,7 @@ export function WithdrawalForm() {
         e.preventDefault()
         run(async () => {
           const d = await post("/api/mf/withdrawal", f)
-          return `Przyjęliśmy oświadczenie (nr ${d.id}). Potwierdzenie wysłaliśmy na ${f.email}.`
+          return `Przyjęliśmy oświadczenie (nr ${d.id}). Jeśli to adres z zamówienia, wyślemy na niego potwierdzenie z numerem zgłoszenia.`
         })
       }}
       className="flex flex-col gap-4"
