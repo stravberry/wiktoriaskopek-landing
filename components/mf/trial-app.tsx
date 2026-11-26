@@ -344,7 +344,7 @@ function VideoStep({ api: apiUrl, auth, limits, consentText, consentVersion, onB
     <form onSubmit={send} className={card} noValidate>
       <h2 className="text-[24px] font-semibold">Twoje nagranie</h2>
       <p className="mt-2 text-[17px] leading-[1.6] text-[var(--h-ink-2)]">
-        Pionowe nagranie z telefonu, od {limits.videoMinSeconds} do {limits.videoMaxSeconds} sekund, MP4 albo MOV do 50 MB. Mów do kamery: z tego program zrobi napisy.
+        Pionowe nagranie z telefonu, od {limits.videoMinSeconds} do {limits.videoMaxSeconds} sekund, MP4 albo MOV do 50 MB, najlepiej 1080p. Mów do kamery: z tego program zrobi napisy.
       </p>
       <input type="file" accept="video/mp4,video/quicktime" onChange={(e) => setFile(e.target.files?.[0] ?? null)} className="mt-6 text-[15px]" aria-label="Nagranie" />
       <label className="mt-6 flex min-h-11 cursor-pointer items-start gap-3 text-[15px] leading-[1.5]">
@@ -389,7 +389,7 @@ function RenderStep({ status, onRetry }: { status: Status | null; onRetry: () =>
           : status?.stage || "Transkrypcja, napisy w Twoim stylu i render."}
       </p>
       <div className="mt-5 h-2 overflow-hidden rounded-full bg-[var(--h-bg)]"><div className="h-full bg-[var(--h-accent)] transition-[width] duration-700" style={{ width: `${status?.progress ?? 0}%` }} /></div>
-      <p className="mt-4 text-[15px] text-[var(--h-ink-2)]">Możesz zamknąć stronę. Wróć tu z tego samego linku albo zaloguj się na koncie.</p>
+      <p className="mt-4 text-[15px] text-[var(--h-ink-2)]">Możesz zamknąć stronę. Gotową rolkę znajdziesz na koncie (zaloguj się swoim adresem e-mail).</p>
     </div>
   )
 }
