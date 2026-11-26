@@ -1,5 +1,5 @@
 import postgres from "postgres"
-import type { ClaimOutcome, MfStore } from "./core.ts"
+import { sha256, type ClaimOutcome, type MfStore } from "./core.ts"
 import type { MfProductId } from "./config.ts"
 
 let client: postgres.Sql | null = null
@@ -55,12 +55,17 @@ export function pgStore(db: postgres.Sql): MfStore {
     async markDelivered(sessionId) {
       const done = await db`
         update mf_orders set status = 'delivered', delivered_at = now(), lease_until = null
-        where session_id = ${sessionId} and status = 'sending' returning product, amount_total, email`
+        where session_id = ${sessionId} and status = 'sending' returning product, amount_total, email, utm`
       // Dziennik lejka (zakup): raz na zamówienie, bo zmiana statusu z „sending” zachodzi raz.
       if (done.length) {
-        const o = done[0]
+        const o = done[0] as unknown as { product: string; amount_total: number | null; email: string; utm: Record<string, string> | null }
+        // Zakup bez logowania po próbie: źródło i próbę bierzemy z zapisanej atrybucji tego e-maila (first-touch).
+        const a = await getAttribution(db, o.email)
+        const utm: Record<string, string> = { ...(a?.utm ?? {}), ...(o.utm ?? {}) }
+        if (!utm.mf_trial_id && a?.trial_id) Object.assign(utm, { mf_trial_id: a.trial_id, mf_trial_at: new Date(a.trial_at ?? Date.now()).toISOString() })
+        o.utm = utm
         await db`insert into mf_events (event, props, email_hash)
-          values ('purchase_completed', ${db.json({ offer: o.product, amount: o.amount_total })}, encode(sha256(convert_to(lower(${o.email}), 'UTF8')), 'hex'))`.catch(() => {})
+          values ('purchase_completed', ${db.json(purchaseProps(o))}, encode(sha256(convert_to(lower(${o.email}), 'UTF8')), 'hex'))`.catch(() => {})
       }
     },
     async markFailed(sessionId, error) {
@@ -117,6 +122,42 @@ export async function consumeLoginToken(db: postgres.Sql, tokenHash: string) {
 }
 
 /** Darmowa próba (funkcje Coding Buildera w schemacie public): otwiera albo odświeża próbę i zwraca nowy token do Edge Function. */
+/** Źródło wejścia (first-touch): zapisuje UTM tylko wtedy, gdy dla tego e-maila jeszcze go nie ma. */
+export async function saveAttribution(db: postgres.Sql, email: string, utm: Record<string, string>) {
+  if (!Object.keys(utm).length) return
+  await db`
+    insert into mf_attribution (email_hash, utm) values (${sha256(email.toLowerCase())}, ${db.json(utm)})
+    on conflict (email_hash) do update set utm = excluded.utm where mf_attribution.utm = '{}'::jsonb`.catch((e) => console.error("[mf] attribution:", e?.message))
+}
+
+/** Pierwsza próba dla e-maila: zapisujemy jej id i czas (do liczenia dni od próby do zakupu). */
+export async function markAttributionTrial(db: postgres.Sql, email: string, trialId: string) {
+  await db`
+    insert into mf_attribution (email_hash, trial_id, trial_at) values (${sha256(email.toLowerCase())}, ${trialId}, now())
+    on conflict (email_hash) do update set trial_id = excluded.trial_id, trial_at = excluded.trial_at where mf_attribution.trial_id is null`.catch((e) => console.error("[mf] attribution:", e?.message))
+}
+
+export async function getAttribution(db: postgres.Sql, email: string) {
+  const [row] = await db`
+    select utm, trial_id, trial_at from mf_attribution
+    where email_hash = ${sha256(email.toLowerCase())} and created_at > now() - interval '14 months'`.catch(() => [])
+  return (row ?? null) as null | { utm: Record<string, string>; trial_id: string | null; trial_at: Date | null }
+}
+
+/** Zdarzenie zakupu (audyt Ecom 2, pkt 4): oferta, kwota, UTM, id próby i liczba dni od próby. */
+export function purchaseProps(o: { product: string; amount_total: number | null; utm?: Record<string, string> | null }, now = Date.now()) {
+  const u = o.utm ?? {}
+  const props: Record<string, string | number | null> = { offer: o.product, amount: o.amount_total }
+  for (const k of ["utm_source", "utm_medium", "utm_campaign", "utm_content", "utm_term"]) if (u[k]) props[k] = u[k].slice(0, 100)
+  if (u.fbclid) props.fbclid = "1"
+  if (u.mf_trial_id) {
+    props.trial_id = u.mf_trial_id
+    const t = Date.parse(u.mf_trial_at ?? "")
+    if (!Number.isNaN(t)) props.days_since_trial = Math.max(0, Math.floor((now - t) / 86_400_000))
+  }
+  return props
+}
+
 export async function trialOpen(db: postgres.Sql, email: string, brand: unknown = null, marketing: boolean | null = null) {
   const [row] = await db`select * from mf_trial_open(${email}, ${brand === null ? null : db.json(brand as never)}, ${marketing})`
   return row as { trial_id: string; token: string; status: string }

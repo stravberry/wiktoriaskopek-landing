@@ -18,6 +18,13 @@ const nextConfig = {
       },
     ],
   },
+  // Krótki adres darmowej próby do bio i reklam (audyt Ecom 2, pkt 7): 308, query (UTM) przechodzi dalej.
+  async redirects() {
+    return [
+      { source: "/proba", destination: "/pl/montuj-bez-montazysty/proba", permanent: true },
+      { source: "/pl/proba", destination: "/pl/montuj-bez-montazysty/proba", permanent: true },
+    ]
+  },
   async headers() {
     return [
       {

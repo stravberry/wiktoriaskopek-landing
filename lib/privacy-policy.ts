@@ -2,7 +2,7 @@
 // Wersja: POLICY_VERSION w lib/mf/config.ts (zapisywana w dzienniku zgód). Nie jest poradą prawną.
 import { SELLER } from "./mf/config.ts"
 
-export const PRIVACY_UPDATED = "26 listopada 2026 (wersja polityka-2026-11-26: darmowa próba MontageFrames, dziennik zdarzeń sprzedaży)"
+export const PRIVACY_UPDATED = "26 listopada 2026 (wersja polityka-2026-11-26-2: darmowa próba MontageFrames, dziennik zdarzeń sprzedaży, źródło wejścia)"
 
 export const PRIVACY_SECTIONS: { title: string; items: string[] }[] = [
   {
@@ -20,7 +20,7 @@ export const PRIVACY_SECTIONS: { title: string; items: string[] }[] = [
       "Formularz „Odstąp od umowy”: imię i nazwisko, e-mail, numer zamówienia i treść oświadczenia (lit. c).",
       "Zgody na cookies: losowy identyfikator zgody, data, wybór kategorii, wersja banera i polityki, język i adres podstrony. Bez adresu IP i bez odcisku przeglądarki (lit. c w zw. z art. 7 ust. 1 RODO).",
       "Darmowa próba MontageFrames: e-mail, ustawienia marki (nazwa, kolory, font, styl, opcjonalnie logo, ton i odbiorcy), nagranie, które wgrywasz, i gotowa rolka próbna ze znakiem wodnym, a także treść i czas zgody na przetworzenie nagrania — żeby zmontować próbną rolkę (lit. b, a dla nagrania z Twoim wizerunkiem i głosem także Twoja zgoda, lit. a). Wgrywasz nagranie tylko z sobą albo z osobami, które się na to zgodziły. Montaż próby wykonuje program MontageFrames na komputerze administratora, a transkrypcja działa lokalnie, bez zewnętrznych usług AI.",
-      "Dziennik zdarzeń sprzedaży po stronie serwera (np. kliknięcie „Kup”, rozpoczęcie płatności, zakup, etapy próby): bez plików cookies i bez identyfikatora urządzenia, a dla zalogowanych ze skrótem (hash) adresu e-mail — żeby mierzyć działanie sklepu i próby (lit. f).",
+      "Dziennik zdarzeń sprzedaży po stronie serwera (np. kliknięcie „Kup”, rozpoczęcie płatności, zakup, etapy próby): bez plików cookies i bez identyfikatora urządzenia, a dla zalogowanych ze skrótem (hash) adresu e-mail — żeby mierzyć działanie sklepu i próby (lit. f). Zapisujemy też źródło wejścia z adresu strony (parametry utm_ i fbclid): w pamięci karty przeglądarki (sessionStorage, znika po zamknięciu karty), przy próbie i przy zamówieniu, żeby wiedzieć, z której kampanii przyszedł zakup (lit. f).",
       "Statystyki odwiedzin (Vercel Analytics) — tylko po Twojej zgodzie (lit. a). Marketing e-mail — tylko po osobnej zgodzie przy zamówieniu albo przy zapisie na próbę (lit. a).",
     ],
   },

@@ -3,8 +3,9 @@ import { test } from "node:test"
 import assert from "node:assert/strict"
 import {
   parseCheckoutInput, checkoutParams, licenseKeyFor, createSessionCookie, verifySessionCookie,
-  handleStripeEvent, mfDisabledReason, InputError, GITHUB_LOGIN_RE,
+  handleStripeEvent, mfDisabledReason, InputError, GITHUB_LOGIN_RE, parseUtm, ATTR_KEYS,
 } from "../lib/mf/core.ts"
+import { purchaseProps } from "../lib/mf/db.ts"
 
 const SECRET = "x".repeat(40)
 const okBody = { product: "paczka", terms: true, digital: true, email: "Ala@Example.com", githubLogin: "@ala-dev" }
@@ -190,4 +191,19 @@ test("cleanProps: tylko znane klucze, krótkie teksty bez znaków specjalnych", 
   assert.equal(p.email, undefined)
   assert.equal(p.utm_source.length, 60)
   assert.equal(p.device, undefined)
+})
+
+test("UTM (audyt Ecom 2): tylko znane klucze, fbclid przechodzi, id próby nie da się podać z przeglądarki", () => {
+  const u = parseUtm({ utm_source: "meta", utm_campaign: "start", fbclid: "IwAR" + "x".repeat(300), mf_trial_id: "fake", evil: "1" })
+  assert.deepEqual(Object.keys(u).sort(), ["fbclid", "utm_campaign", "utm_source"])
+  assert.equal(u.fbclid.length, 200)
+  assert.deepEqual(parseCheckoutInput({ ...okBody, utm: { mf_trial_id: "x", utm_medium: "cpc" } }).utm, { utm_medium: "cpc" })
+  assert.ok(ATTR_KEYS.includes("mf_trial_id"))
+})
+
+test("zdarzenie zakupu: oferta, kwota, UTM, id próby i dni od próby", () => {
+  const now = Date.parse("2026-12-03T12:00:00Z")
+  const p = purchaseProps({ product: "paczka", amount_total: 23800, utm: { utm_source: "meta", utm_campaign: "start", fbclid: "abc", mf_trial_id: "t1", mf_trial_at: "2026-11-30T10:00:00Z" } }, now)
+  assert.deepEqual(p, { offer: "paczka", amount: 23800, utm_source: "meta", utm_campaign: "start", fbclid: "1", trial_id: "t1", days_since_trial: 3 })
+  assert.deepEqual(purchaseProps({ product: "konsultacja", amount_total: 58900, utm: null }), { offer: "konsultacja", amount: 58900 })
 })

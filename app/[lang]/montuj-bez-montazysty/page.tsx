@@ -8,9 +8,10 @@ import { StyleGallery } from "@/components/mf/style-gallery"
 import { LazyVideo } from "@/components/mf/lazy-video"
 import { Section, WithTodo } from "@/components/mf/ui"
 import { BuyButton, BuyDialog, BuyForm, BuyRow, GuaranteeLine, KonsultacjaLink, StickyBuyBar } from "@/components/mf/buy"
-import { ReelFrame } from "@/components/mf/reel"
 import { Reveal, ScrollScale } from "@/components/mf/motion"
 import { StepByStep } from "@/components/mf/steps"
+import { Compare } from "@/components/mf/compare"
+import { PanelTilt, PhoneSpin } from "@/components/mf/apple"
 
 const URL = `https://www.wiktoriaskopek.pl${MF_BASE_PATH}`
 const TITLE = "Montuj swoje filmy i rolki w AI! Bez montażysty | MontageFrames"
@@ -63,36 +64,31 @@ export default function MontujBezMontazysty() {
     <main className="pb-8">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(ld) }} />
 
-      {/* Pierwszy ekran: co to jest, ile kosztuje, co zrobić. Obok kadr rolki z napisem w stylu marki. */}
-      <section className="mf-wrap pt-10 md:pt-16" aria-labelledby="hero-title">
-        <h1 id="hero-title" className="mf-h1 mf-h1-slogan max-w-[14ch] md:max-w-[22ch]">Montuj swoje filmy i rolki w AI! Bez montażysty</h1>
-        <div className="mt-10 grid items-start gap-10 lg:mt-14 lg:grid-cols-[minmax(0,1fr)_400px] lg:gap-16">
-        <div>
-          <p className="mf-lead max-w-[46ch]">
-            Dla ekspertów i małych firm, które regularnie publikują rolki. Wrzucasz nagranie z telefonu, wybierasz styl i dostajesz gotową rolkę w kolorach
-            swojej firmy. Poprawki piszesz zwykłym językiem albo nanosisz w panelu. Działa w Claude Code na Twoim komputerze.
-          </p>
-          <div className="mt-10 flex flex-wrap items-center gap-x-6 gap-y-4">
-            <BuyButton source="hero">Kupuję za {p.priceLabel}</BuyButton>
-            {TRIAL ? (
-              <Link href={TRIAL} className="text-[17px] font-semibold underline decoration-[var(--h-accent)] decoration-2 underline-offset-4">Wypróbuj za darmo na 1 rolce</Link>
-            ) : (
-              <a href="#style" className="text-[17px] font-semibold underline decoration-[var(--h-accent)] decoration-2 underline-offset-4">Zobacz {stylesLabel()}</a>
-            )}
-          </div>
-          <GuaranteeLine className="mt-5" />
-          <p className="mt-6 max-w-[52ch] text-[15px] leading-[1.6] text-[var(--h-ink-2)]">
-            Wolisz zainstalować razem z Wiktorią? <KonsultacjaLink>Wersja z konsultacją 1:1 i instalacją: {k.priceLabel}</KonsultacjaLink>.
-            Jednorazowo, bez limitu komputerów. Potrzebujesz płatnego planu Claude Pro lub Max i min. 15 GB miejsca.
-          </p>
+      {/* 0f: pierwszy ekran w stylu Apple. Hasło bez zmian (decyzja Wiktorii), jedno zdanie, dwie akcje, gwarancja. Telefon z rolką obraca się przy przewijaniu. */}
+      <section className="mf-wrap pt-14 text-center md:pt-24" aria-labelledby="hero-title">
+        <h1 id="hero-title" className="mf-display mx-auto max-w-[13ch] md:max-w-[16ch]">Montuj swoje filmy i rolki w AI! Bez montażysty</h1>
+        <p className="mf-lead mx-auto mt-7 max-w-[40ch]">
+          Wrzucasz nagranie z telefonu, wybierasz styl i dostajesz gotową rolkę w kolorach swojej firmy. W Claude Code, na Twoim komputerze.
+        </p>
+        <div className="mt-9 flex flex-wrap items-center justify-center gap-x-7 gap-y-4">
+          <BuyButton source="hero">Kupuję za {p.priceLabel}</BuyButton>
+          {TRIAL ? (
+            <Link href={TRIAL} className="text-[17px] font-semibold underline decoration-[var(--h-accent)] decoration-2 underline-offset-4">Wypróbuj za darmo na 1 rolce</Link>
+          ) : (
+            <a href="#style" className="text-[17px] font-semibold underline decoration-[var(--h-accent)] decoration-2 underline-offset-4">Zobacz {stylesLabel()}</a>
+          )}
         </div>
-        <ReelFrame slug="dynamiczny-zakreslacz" priority className="mx-auto max-w-[360px] lg:max-w-none" />
+        <GuaranteeLine className="mt-5" />
+        <p className="mx-auto mt-3 max-w-[56ch] text-[15px] leading-[1.6] text-[var(--h-ink-2)]">
+          Wolisz razem z Wiktorią? <KonsultacjaLink>Z konsultacją 1:1 i instalacją: {k.priceLabel}</KonsultacjaLink>.
+        </p>
+        <div className="mt-14 md:mt-20">
+          <PhoneSpin src="/mf/style/dynamiczny-zakreslacz.mp4" poster="/mf/style/dynamiczny-zakreslacz.jpg" label="Rolka zmontowana w MontageFrames, styl Dynamiczny zakreślacz" />
         </div>
       </section>
 
-      {/* Film promo 16:9 (Coding Builder, 26.11; muzyka wygenerowana, bez cudzych nagrań) */}
-      <section className="mf-wrap mt-20 md:mt-28" aria-labelledby="promo-title">
-        <h2 id="promo-title" className="sr-only">MontageFrames w 20 sekund</h2>
+      {/* Ciemna scena: film promo na całą szerokość kontenera */}
+      <Section id="promo" title="Mówisz. Claude montuje." tone="dark" center lead="Napisy, animacje, cięcia i kolory Twojej marki. Bez osi czasu i bez klatkowania.">
         <ScrollScale>
           <LazyVideo
             className="aspect-video w-full rounded-[24px] bg-[#050505] object-cover"
@@ -102,53 +98,61 @@ export default function MontujBezMontazysty() {
             controls
           />
         </ScrollScale>
-      </section>
-
-      {/* Problem */}
-      <Section id="problem" title="Montażysta kosztuje. Wieczory też." lead="Każda rolka to albo faktura od montażysty i czekanie na poprawki, albo wieczór nad napisami klatka po klatce. MontageFrames przejmuje tę robotę, a Ty zostajesz przy decyzjach.">
-        <div className="grid gap-12 md:grid-cols-2">
-          <Reveal>
-            <p className="text-[21px] font-semibold">Z montażystą</p>
-            <p className="mt-3 max-w-[44ch] leading-[1.6]">
-              Płacisz za każdą rolkę, czekasz na wersję i na poprawki, a przy regularnych publikacjach koszt rośnie z każdym miesiącem.
-            </p>
-          </Reveal>
-          <Reveal delay={0.08}>
-            <p className="text-[21px] font-semibold">Z MontageFrames</p>
-            <p className="mt-3 max-w-[44ch] leading-[1.6]">
-              Jednorazowo {p.priceLabel}. Rolkę dostajesz w rozmowie, a poprawki nanosisz sam(a), bez czekania na montażystę. Styl zawsze ten sam. Przy dużych produkcjach reklamowych montażysta
-              dalej ma sens: proste rolki zrobisz sam(a).
-            </p>
-          </Reveal>
-        </div>
       </Section>
 
-      {/* Jak to działa krok po kroku: od zakupu do publikacji (00-PLAN 0d, pkt 10) */}
-      <Section id="jak-to-dziala" title="Jak to działa krok po kroku" lead="Od zakupu do gotowej rolki. Przewiń, a obok zobaczysz każdy krok.">
+      {/* Liczby jako bohater: tylko fakty z oferty i regulaminu, bez wymyślonych wyników */}
+      <section className="mf-wrap mt-28 md:mt-44" aria-labelledby="liczby-title">
+        <h2 id="liczby-title" className="sr-only">MontageFrames w liczbach</h2>
+        <dl className="grid gap-x-10 gap-y-14 sm:grid-cols-2 lg:grid-cols-4">
+          {[
+            [String(MF_STYLES.length), "stylów", "animacji napisów, każdy z własnym ruchem i tempem"],
+            [String(p.amountGrosze / 100), "zł", "jednorazowo, bez abonamentu i bez limitu komputerów w firmie"],
+            ["14", "dni", "gwarancji działania: uruchomimy program albo oddam pieniądze"],
+            ["15–30", "min", "instalacji z rozmową w /start, krok po kroku"],
+          ].map(([n, u, t], i) => (
+            <Reveal key={u} delay={i * 0.06}>
+              <dt className="mf-num whitespace-nowrap">{n}<span className="ml-2 text-[0.38em] tracking-[-0.02em]">{u}</span></dt>
+              <dd className="mt-4 max-w-[26ch] text-[17px] leading-[1.5] text-[var(--h-ink-2)]">{t}</dd>
+            </Reveal>
+          ))}
+        </dl>
+      </section>
+
+      {/* Porównanie zamiast akapitów */}
+      <Section id="problem" title="Montażysta kosztuje. Wieczory też." center>
+        <Compare rows={[
+          ["Koszt", "płacisz za każdą rolkę", `${p.priceLabel} jednorazowo`],
+          ["Poprawki", "czekasz na kolejną wersję", "piszesz zdanie albo klikasz w panelu"],
+          ["Styl", "zależy od osoby i terminu", "zawsze ten sam, w kolorach marki"],
+          ["Ma sens przy", "dużych produkcjach reklamowych", "regularnych rolkach eksperta i firmy"],
+        ]} />
+      </Section>
+
+      {/* Jak to działa krok po kroku: od zakupu do publikacji (00-PLAN 0d, pkt 10), przyklejony podgląd */}
+      <Section id="jak-to-dziala" title="Jak to działa krok po kroku" lead="Przewiń, a obok zobaczysz każdy krok.">
         <StepByStep steps={MF_STEPS} />
       </Section>
 
       <BuyRow source="after_steps" trialHref={TRIAL} />
 
-      {/* Rozmowa albo panel */}
-      <Section id="panel" title="Poprawiasz tak, jak Ci wygodniej" lead="Obie drogi pracują na tym samym projekcie: zacznij w rozmowie, dokończ w panelu albo odwrotnie. Efekt jest ten sam.">
-        <div className="grid gap-12">
-          <div className="grid gap-10 md:grid-cols-2">
-            <Reveal>
-              <h3 className="text-[24px] font-semibold">W rozmowie z Claude Code</h3>
-              <p className="mt-3 max-w-[46ch] leading-[1.6]">Piszesz: „przesuń napis niżej”, „podświetl słowo promocja”, „wytnij pauzę w 0:20”. Claude nanosi poprawkę i renderuje rolkę.</p>
-            </Reveal>
-            <Reveal delay={0.08}>
-              <h3 className="text-[24px] font-semibold">W panelu w przeglądarce</h3>
-              <p className="mt-3 max-w-[46ch] leading-[1.6]">Lokalny panel otwierasz komendą /panel. Edytujesz i poprawiasz napisy, zmieniasz styl i stamtąd renderujesz rolkę, bez pisania.</p>
-            </Reveal>
-          </div>
-          <PanelShots />
+      {/* Ciemna scena: duże zbliżenie na panel (3D: zrzut prostuje się przy przewijaniu) */}
+      <Section id="panel" title="Każde słowo pod ręką." tone="dark" center lead="Poprawiasz w rozmowie z Claude Code albo w panelu w przeglądarce. Oba sposoby działają na tym samym projekcie.">
+        <PanelTilt src="/mf/panel/02-edytor-napisow.jpg" alt="Panel: edytor rolki z podglądem, listą słów do kliknięcia i osią czasu" />
+        <div className="mx-auto mt-16 grid max-w-[920px] gap-10 text-left md:mt-24 md:grid-cols-2">
+          <Reveal>
+            <h3 className="text-[24px] font-semibold">W rozmowie</h3>
+            <p className="mt-3 leading-[1.6] text-[var(--h-ink-2)]">„Przesuń napis niżej”, „podświetl słowo promocja”, „wytnij pauzę w 0:20”.</p>
+          </Reveal>
+          <Reveal delay={0.08}>
+            <h3 className="text-[24px] font-semibold">W panelu</h3>
+            <p className="mt-3 leading-[1.6] text-[var(--h-ink-2)]">Komenda /panel otwiera edytor: klikasz słowo, zmieniasz styl, renderujesz.</p>
+          </Reveal>
         </div>
+        <div className="mt-16 md:mt-24"><PanelShots /></div>
       </Section>
 
       {/* Style: żywy element */}
-      <Section id="style" title={`${stylesLabel()} w paczce`} lead="Style różnią się animacją tekstu, krojem i tempem, nie tylko kolorem. Kolor akcentu bierzemy z Twojej marki. „Inspirowane stylem” opisuje kierunek, nie współpracę z tą osobą.">
+      <Section id="style" title={`${stylesLabel()} w paczce`} lead="Różnią się animacją tekstu, krojem i tempem, nie tylko kolorem. Kolor akcentu bierzemy z Twojej marki. „Inspirowane stylem” opisuje kierunek, nie współpracę z tą osobą.">
         <LazyVideo
           className="mb-12 aspect-video w-full rounded-[24px] bg-[#1d1d1f] object-cover"
           src="/mf/funkcje/przeglad-stylow-poziomo.mp4"
@@ -160,17 +164,17 @@ export default function MontujBezMontazysty() {
 
       <BuyRow source="after_styles" trialHref={TRIAL} />
 
-      {/* Funkcje: każda z własnym filmem */}
+      {/* Funkcje: każda z własnym filmem, sceny na zmianę ciemne i jasne */}
       <section id="funkcje" aria-labelledby="funkcje-title" className="mt-28 scroll-mt-6 md:mt-44">
-        <div className="mf-wrap">
-          <h2 id="funkcje-title" className="mf-h2 max-w-[18ch]">Funkcje w akcji</h2>
-          <p className="mf-lead mt-6 max-w-[56ch]">Filmy poniżej to rolki wyrenderowane programem MontageFrames.</p>
+        <div className="mf-wrap pb-4 text-center">
+          <h2 id="funkcje-title" className="mf-h2 mx-auto max-w-[16ch]">Funkcje w akcji</h2>
+          <p className="mf-lead mx-auto mt-6 max-w-[44ch]">Każdy film poniżej to rolka wyrenderowana programem MontageFrames.</p>
         </div>
-        {MF_SHOWCASE.filter((f) => f.video || f.image).map((f, i) => <ShowcaseBlock key={f.id} f={f} flip={i % 2 === 1} />)}
+        {MF_SHOWCASE.filter((f) => f.video || f.image).map((f, i) => <ShowcaseBlock key={f.id} f={f} flip={i % 2 === 1} dark={i % 2 === 0} />)}
       </section>
 
       {/* Kontrola jakości */}
-      <Section id="jakosc" title="Krytyk jakości pilnuje rolki" tone="ink" lead="Zanim rolka się wyrenderuje, program sprawdza ją pod kątem błędów, które widać od razu na telefonie.">
+      <Section id="jakosc" title="Krytyk jakości pilnuje rolki" tone="dark" lead="Zanim rolka się wyrenderuje, program sprawdza ją pod kątem błędów, które widać od razu na telefonie.">
         <div className="grid items-start gap-12 lg:grid-cols-[1.1fr_1fr]">
           <ul className="grid gap-x-10 gap-y-5 text-[21px] font-semibold leading-[1.3] sm:grid-cols-2">
             {MF_QUALITY_CHECKS.map((q, i) => (

@@ -296,3 +296,18 @@ body:has(.mf-page) { font-family: var(--font-mf), system-ui, sans-serif; }
   .group:hover .mf-nudge, .group:focus-visible .mf-nudge { animation: none; }
   .mf-lift, .mf-lift:hover { transition: none; transform: none; }
 }
+
+/* MontageFrames, 0f (kierunek Apple, marka wiktoriaskopek.pl): tokeny, większa i ciaśniejsza typografia, rytm jasne / ciemne. */
+.mf-page {
+  --mf-dark: #0b0b0c;
+  --mf-dark-ink: #f5f5f7;
+  --mf-dark-ink-2: #a1a1a6;
+  --mf-dark-surface: #1c1c1e;
+  --mf-device: #1d1d1f;
+}
+html:has(.mf-page), body:has(.mf-page) { overflow-x: clip; }
+.mf-display { font-size: clamp(3.25rem, 7.2vw, 6rem); font-weight: 800; line-height: 0.94; letter-spacing: -0.045em; text-wrap: balance; overflow-wrap: break-word; min-width: 0; }
+.mf-h2 { font-size: clamp(2.4rem, 5.4vw, 4.75rem); line-height: 0.98; letter-spacing: -0.04em; }
+.mf-lead { font-size: clamp(1.15rem, 1.6vw, 1.5rem); line-height: 1.45; color: var(--h-ink-2); }
+.mf-num { font-size: clamp(3.4rem, 6.4vw, 5.75rem); font-weight: 800; line-height: 0.9; letter-spacing: -0.05em; font-variant-numeric: tabular-nums; }
+.mf-tone-dark { background: var(--mf-dark); color: var(--mf-dark-ink); --h-ink: var(--mf-dark-ink); --h-ink-2: var(--mf-dark-ink-2); --h-surface: var(--mf-dark-surface); --h-surface-hover: #2c2c2e; --h-bg: var(--mf-dark); }

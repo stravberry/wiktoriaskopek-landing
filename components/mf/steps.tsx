@@ -50,6 +50,8 @@ function Mock({ ui }: { ui: "checkout" | "invite" | "install" }) {
     return (
       <div ref={ref} className="grid h-full place-items-center bg-[#f5f5f7] p-6">
         <div className="w-full max-w-[340px] rounded-[20px] bg-white p-6 border border-black/10">
+          {/* Audyt Ecom 2, pkt 13: podpis, żeby nikt nie pomyślał, że już zapłacił. */}
+          <p className="mb-3 inline-block rounded-full bg-[#f5f5f7] px-2.5 py-1 text-[13px] font-semibold text-[#4a4a4a]">Przykład</p>
           <p className="flex items-baseline justify-between gap-4 text-[17px] font-semibold">
             MontageFrames <span className="text-[28px] font-bold tracking-[-0.02em]">238,00 zł</span>
           </p>

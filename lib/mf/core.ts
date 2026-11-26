@@ -53,7 +53,21 @@ export type CheckoutInput = {
 
 export class InputError extends Error {}
 
-const UTM_KEYS = ["utm_source", "utm_medium", "utm_campaign", "utm_content", "utm_term"]
+// Źródło wejścia (audyt Ecom 2, pkt 4): first-touch z przeglądarki + fbclid. Do metadata Stripe i rekordu zamówienia.
+export const UTM_KEYS = ["utm_source", "utm_medium", "utm_campaign", "utm_content", "utm_term", "fbclid"]
+/** Klucze, które webhook przepisuje z metadata do zamówienia: UTM oraz próba (ustawia serwer, nie przeglądarka). */
+export const ATTR_KEYS = [...UTM_KEYS, "mf_trial_id", "mf_trial_at"]
+
+/** UTM z body żądania: tylko znane klucze, krótkie teksty. */
+export function parseUtm(raw: unknown): Record<string, string> {
+  const utm: Record<string, string> = {}
+  if (!raw || typeof raw !== "object") return utm
+  for (const k of UTM_KEYS) {
+    const v = (raw as Record<string, unknown>)[k]
+    if (typeof v === "string" && v.trim()) utm[k] = v.trim().slice(0, 200)
+  }
+  return utm
+}
 
 export function parseCheckoutInput(body: unknown): CheckoutInput {
   if (!body || typeof body !== "object") throw new InputError("Nieprawidłowe dane")
@@ -75,13 +89,7 @@ export function parseCheckoutInput(body: unknown): CheckoutInput {
     githubLogin = b.githubLogin.trim().replace(/^@/, "")
     if (!GITHUB_LOGIN_RE.test(githubLogin)) throw new InputError("Nieprawidłowy login GitHub")
   }
-  const utm: Record<string, string> = {}
-  if (b.utm && typeof b.utm === "object") {
-    for (const k of UTM_KEYS) {
-      const v = (b.utm as Record<string, unknown>)[k]
-      if (typeof v === "string" && v) utm[k] = v.slice(0, 100)
-    }
-  }
+  const utm = parseUtm(b.utm)
   return {
     product,
     email,
@@ -302,7 +310,7 @@ async function fulfill(session: PaidSession, deps: MfDeps): Promise<string> {
     const pi = typeof session.payment_intent === "string" ? session.payment_intent : session.payment_intent?.id ?? null
     const taxId = session.customer_details?.tax_ids?.[0]?.value ?? null
     const utm: Record<string, string> = {}
-    for (const k of UTM_KEYS) if (meta[k]) utm[k] = meta[k]
+    for (const k of ATTR_KEYS) if (meta[k]) utm[k] = meta[k]
     await deps.store.saveOrderDetails(session.id, {
       paymentIntent: pi, amountTotal: session.amount_total ?? null, currency: session.currency ?? null,
       name: session.customer_details?.name ?? null, taxId, consentId, githubLogin,

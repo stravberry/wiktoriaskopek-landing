@@ -1,7 +1,7 @@
 import { NextResponse, type NextRequest } from "next/server"
 import { MF_BASE_PATH } from "@/lib/mf/config"
 import { sha256 } from "@/lib/mf/core"
-import { consumeLoginTokenFull, sql, trialOpen } from "@/lib/mf/db"
+import { consumeLoginTokenFull, markAttributionTrial, sql, trialOpen } from "@/lib/mf/db"
 import { logEvent } from "@/lib/mf/events"
 import { mfEnv, origin, SESSION_COOKIE, sessionCookieOptions, sessionCookieValue } from "@/lib/mf/server"
 
@@ -25,7 +25,8 @@ export async function GET(request: NextRequest) {
     if (t.purpose !== "trial_ready") {
       try {
         // null = nie zmieniaj zapisanej zgody marketingowej (tylko trial_m ją ustawia).
-        await trialOpen(sql(), t.email, null, t.purpose === "trial_m" ? true : null)
+        const tr = await trialOpen(sql(), t.email, null, t.purpose === "trial_m" ? true : null)
+        if (tr?.trial_id) await markAttributionTrial(sql(), t.email, tr.trial_id)
       } catch (e) {
         console.error("[mf] trial open on verify failed:", e instanceof Error ? e.message : e)
       }

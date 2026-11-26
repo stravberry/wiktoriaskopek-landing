@@ -1,5 +1,6 @@
 "use client"
 
+import { getUtm } from "@/lib/mf/utm-client"
 import { useCallback, useEffect, useRef, useState } from "react"
 import Link from "next/link"
 import { Loader2, Upload } from "lucide-react"
@@ -18,6 +19,8 @@ type Status = {
   stage?: string | null
   stageKey?: string | null
   etaSeconds?: number | null
+  startedAt?: string | null
+  failReason?: string | null
   error?: string | null
   expiresAt?: string | null
   purged?: boolean
@@ -131,7 +134,7 @@ export function TrialStart() {
     setError(null)
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email.trim())) return setError("Wpisz pełny adres e-mail, np. jan@firma.pl.")
     setState("busy")
-    const res = await fetch("/api/mf/trial/start", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ email, marketing }) })
+    const res = await fetch("/api/mf/trial/start", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ email, marketing, utm: getUtm() }) })
     const data = await res.json().catch(() => ({}))
     if (!res.ok) {
       setError(data.error || "Nie udało się wysłać linku. Spróbuj za chwilę.")
@@ -293,7 +296,9 @@ export function TrialApp({ api, styles, fonts, fontFamilies, limits, consentText
     })()
   }, [api])
 
-  // Montaż: status co 12 s (Edge Function ma limit 60 zapytań na 10 min na próbę; częściej = odrzucone odpowiedzi i opóźnienie).
+  // Montaż: status co 6 s (limit Edge Function: 200 zapytań na 10 min na próbę). Po błędzie 429 lub sieci odpytujemy dalej.
+  // Po „failed” z powodu timeout też odpytujemy: gdy worker skończy później, status zmienia się na done.
+  const failLogged = useRef(false)
   useEffect(() => {
     if (step !== 3) return
     const id = setInterval(async () => {
@@ -303,11 +308,14 @@ export function TrialApp({ api, styles, fonts, fontFamilies, limits, consentText
           logFunnel("trial_render_completed")
           go(4)
         }
-        if (s?.status === "failed") logFunnel("trial_render_failed")
+        if (s?.status === "failed" && !failLogged.current) {
+          failLogged.current = true
+          logFunnel("trial_render_failed", { reason: s.failReason || "unknown" })
+        }
       } catch {
-        /* chwilowy błąd sieci: kolejna próba za 4 s */
+        /* chwilowy błąd sieci albo limit: kolejna próba za 6 s */
       }
-    }, 12000)
+    }, 6000)
     return () => clearInterval(id)
   }, [step, refresh])
 
@@ -530,7 +538,9 @@ function VideoStep({ api, auth, limits, consentText, consentVersion, onBack, onS
     setFile(null)
     setDuration(null)
     if (!f) return
-    if (!["video/mp4", "video/quicktime"].includes(f.type)) return setError("To nie jest film MP4 ani MOV. Wybierz nagranie z galerii telefonu albo z dysku.")
+    // Audyt Ecom 2, pkt 16: część telefonów podaje pusty typ pliku albo „video/x-quicktime”, więc sprawdzamy też rozszerzenie.
+    const okType = ["video/mp4", "video/quicktime", "video/x-quicktime", "video/x-m4v"].includes(f.type) || (!f.type && /\.(mp4|mov|m4v)$/i.test(f.name))
+    if (!okType) return setError("To nie jest film MP4 ani MOV. Wybierz nagranie z galerii telefonu albo z dysku.")
     if (f.size > limits.videoMaxBytes)
       return setError(`Plik ma ${Math.round(f.size / 1024 / 1024)} MB, a limit to 50 MB. Nagraj w 1080p (nie w 4K) albo skróć nagranie.`)
     const sec = await videoSeconds(f)
@@ -561,7 +571,7 @@ function VideoStep({ api, auth, limits, consentText, consentVersion, onBack, onS
     if (!consent) return setError("Zaznacz zgodę na przetworzenie nagrania, żebyśmy mogli je zmontować.")
     try {
       setProgress(0)
-      const u = await callTrial<{ uploadUrl: string; headers: Record<string, string> }>(api, "upload-url", { ...auth, kind: "video", contentType: file.type, bytes: file.size })
+      const u = await callTrial<{ uploadUrl: string; headers: Record<string, string> }>(api, "upload-url", { ...auth, kind: "video", contentType: /quicktime/.test(file.type) || /\.mov$/i.test(file.name) ? "video/quicktime" : "video/mp4", bytes: file.size })
       await putFile(u.uploadUrl, file, u.headers, setProgress)
       logFunnel("trial_upload_completed")
       const r = await callTrial<{ etaSeconds?: number }>(api, "submit", { ...auth, consent: true, consentVersion, durationSeconds: duration ? Math.round(duration) : undefined })
@@ -596,7 +606,7 @@ function VideoStep({ api, auth, limits, consentText, consentVersion, onBack, onS
               ? `${duration ? `${Math.round(duration)} s · ` : ""}${(file.size / 1024 / 1024).toFixed(1)} MB · kliknij, żeby zmienić`
               : `MP4 albo MOV · ${limits.videoMinSeconds}–${limits.videoMaxSeconds} s · do 50 MB`}
           </span>
-          <input type="file" accept="video/mp4,video/quicktime" onChange={(e) => pick(e.target.files?.[0] ?? null)} className="sr-only" aria-label="Nagranie" />
+          <input type="file" accept="video/mp4,video/quicktime,.mp4,.mov,.m4v" onChange={(e) => pick(e.target.files?.[0] ?? null)} className="sr-only" aria-label="Nagranie" />
         </label>
 
         {file && (
@@ -656,6 +666,15 @@ function RenderStep({ status, start, mailWhenReady, onRetry }: { status: Status 
     const id = setInterval(() => tick((x) => x + 1), 5000)
     return () => clearInterval(id)
   }, [])
+  const mailNote = mailWhenReady ? "dostaniesz maila, gdy rolka będzie gotowa." : "gotową rolkę znajdziesz na koncie."
+  if (status?.status === "failed" && status.failReason === "timeout")
+    return (
+      <div role="status" className={card}>
+        <p className="text-[24px] font-semibold">Trwa to dłużej niż zwykle</p>
+        <p className="mt-3 text-[17px] leading-[1.6]">Nic nie musisz robić: {mailNote} Jeśli rolka nie pojawi się w ciągu godziny, napisz do nas albo wgraj nagranie jeszcze raz.</p>
+        <button type="button" onClick={onRetry} className={`${primary} mt-6`}>Wgraj nagranie jeszcze raz</button>
+      </div>
+    )
   if (status?.status === "failed")
     return (
       <div role="alert" className={card}>
@@ -665,6 +684,10 @@ function RenderStep({ status, start, mailWhenReady, onRetry }: { status: Status 
       </div>
     )
   const idx = stageIndex(status)
+  // Audyt Ecom 2, pkt 1: szacunek z API (mediana ostatnich renderów u Coding Buildera); gdy minie, zamiast odliczania uczciwy komunikat.
+  const startedMs = status?.startedAt ? Date.parse(status.startedAt) : start?.at ?? NaN
+  const elapsed = Number.isNaN(startedMs) ? 0 : (Date.now() - startedMs) / 1000
+  const overdue = (start ? Date.now() - start.at > start.eta * 1000 : false) || elapsed > 10 * 60
   const remaining =
     status?.etaSeconds != null ? status.etaSeconds : start ? Math.max(30, start.eta - (Date.now() - start.at) / 1000) : null
   const pct = status?.status === "queued" ? 3 : Math.max(5, status?.progress ?? 0)
@@ -673,7 +696,13 @@ function RenderStep({ status, start, mailWhenReady, onRetry }: { status: Status 
       <p className="flex items-center gap-3 text-[24px] font-semibold"><Loader2 className="size-6 animate-spin" aria-hidden />Montuję Twoją rolkę</p>
       <p className="mt-2 text-[17px] text-[var(--h-ink-2)]">
         {status?.status === "queued" && status.queuePosition ? `Miejsce w kolejce: ${status.queuePosition}. ` : ""}
-        {remaining != null ? <>Zostało {remaining < 60 ? "" : "ok. "}<strong className="text-[var(--h-ink)]">{minLabel(remaining)}</strong>.</> : "Zwykle trwa to 2–4 minuty."}
+        {overdue ? (
+          <>Trwa to dłużej niż zwykle. Nic nie musisz robić: {mailNote}</>
+        ) : remaining != null ? (
+          <>Zostało {remaining < 60 ? "" : "ok. "}<strong className="text-[var(--h-ink)]">{minLabel(remaining)}</strong>.</>
+        ) : (
+          "Zwykle trwa to 5–10 minut."
+        )}
       </p>
       <div className="mt-6 h-2.5 overflow-hidden rounded-full bg-[var(--h-bg)]">
         <div className="h-full rounded-full bg-[var(--h-accent)] transition-[width] duration-700" style={{ width: `${pct}%` }} />
@@ -690,7 +719,7 @@ function RenderStep({ status, start, mailWhenReady, onRetry }: { status: Status 
       </ol>
       <p className="mt-6 rounded-2xl bg-[var(--h-bg)] p-4 text-[15px] leading-[1.5]">
         {mailWhenReady
-          ? "Możesz zamknąć kartę. Gdy rolka będzie gotowa, wyślemy Ci link mailem. Znajdziesz ją też na koncie."
+          ? "Możesz zamknąć kartę: link do gotowej rolki wyślemy na Twój e-mail. Znajdziesz ją też na koncie."
           : "Możesz zamknąć kartę. Gotową rolkę znajdziesz na koncie (zaloguj się swoim adresem e-mail)."}
       </p>
     </div>
