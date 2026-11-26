@@ -627,7 +627,7 @@ function VideoStep({ api, auth, limits, consentText, consentVersion, onBack, onS
         {progress !== null && (
           <div className="mt-5" role="status">
             <div className="h-2 overflow-hidden rounded-full bg-[var(--h-bg)]"><div className="h-full bg-[var(--h-accent)] transition-[width]" style={{ width: `${progress}%` }} /></div>
-            <p className="mt-2 text-[15px] tabular-nums">Wgrywam nagranie: {progress}%</p>
+            <p className="mt-2 text-[15px]">Wgrywam nagranie: <span className="tabular-nums">{progress}%</span></p>
           </div>
         )}
         {error && <p role="alert" className="mt-5 rounded-2xl bg-[var(--h-accent)]/15 p-4 text-[15px] font-semibold">{error}</p>}
