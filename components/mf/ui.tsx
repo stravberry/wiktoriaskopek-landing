@@ -1,5 +1,6 @@
 import type React from "react"
 import { TODO } from "@/lib/mf/content"
+import { HeadingReveal } from "@/components/mf/motion"
 
 /** Sekcja: nagłówek nazywa temat (bez etykiet nad nim). Odstępy 120–200 px na desktopie. */
 export function Section({ id, title, lead, children, className = "", tone = "plain" }: {
@@ -14,7 +15,7 @@ export function Section({ id, title, lead, children, className = "", tone = "pla
   return (
     <section id={id} className={`scroll-mt-6 ${tones[tone]} ${tone === "plain" ? "mt-28 md:mt-44" : "mt-28 py-20 md:mt-44 md:py-32"} ${className}`} aria-labelledby={id ? `${id}-title` : undefined}>
       <div className="mf-wrap">
-        <h2 id={id ? `${id}-title` : undefined} className="mf-h2 max-w-[18ch]">{title}</h2>
+        <HeadingReveal id={id ? `${id}-title` : undefined} className="mf-h2 max-w-[18ch]">{title}</HeadingReveal>
         {lead && <p className="mf-lead mt-6 max-w-[56ch]">{lead}</p>}
         <div className="mt-12 md:mt-16">{children}</div>
       </div>

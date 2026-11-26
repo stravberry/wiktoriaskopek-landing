@@ -124,10 +124,22 @@ export const MF_QUALITY_CHECKS = [
   "bez uciętych słów",
 ]
 
-export const MF_STEPS = [
-  { title: "Otwierasz paczkę w Claude Code i wpisujesz /start", text: "Claude sprawdza komputer i po Twojej zgodzie instaluje potrzebne narzędzia. Bez ręcznych poleceń w Terminalu." },
-  { title: "Ustawiasz markę i styl", text: `Komendą /marka podajesz kolory, logo i zdjęcia. Komendą /styl wybierasz jeden z ${MF_STYLES.length} stylów.` },
-  { title: "Wrzucasz nagranie i piszesz poprawki zwykłym językiem", text: "Komenda /rolka montuje film. Poprawki piszesz w rozmowie albo nanosisz w panelu." },
+export type MfStepMedia =
+  | { kind: "ui"; ui: "checkout" | "invite" | "install" }
+  | { kind: "img"; src: string; alt: string }
+  | { kind: "video"; src: string; poster: string; label: string }
+export type MfStep = { title: string; text: string; media: MfStepMedia }
+
+/** „Jak to działa krok po kroku” (00-PLAN 0d, pkt 10). Każdy krok: zrzut, rolka z programu albo makieta ekranu. */
+export const MF_STEPS: MfStep[] = [
+  { title: "Kupujesz", text: "Płacisz 238 zł BLIK-iem albo kartą na stronie Stripe. W kilka minut dostajesz mail z kluczem licencyjnym i linkiem do konta.", media: { kind: "ui", ui: "checkout" } },
+  { title: "Dostajesz zaproszenie do paczki", text: "Podajesz login GitHub i dostajesz zaproszenie do prywatnego repozytorium z paczką. Akceptujesz je i pobierasz paczkę. Z tego samego repozytorium przychodzą aktualizacje.", media: { kind: "ui", ui: "invite" } },
+  { title: "Instalujesz w Claude Code", text: "Otwierasz paczkę w Claude Code i wpisujesz /start. Claude sprawdza komputer i po Twojej zgodzie instaluje narzędzia. Bez ręcznych poleceń w Terminalu, realnie 15–30 minut.", media: { kind: "ui", ui: "install" } },
+  { title: "Ustawiasz markę", text: "Komenda /marka: Claude pyta o kolory, logo, zdjęcia i preferencje montażu, a na koniec robi próbną rolkę.", media: { kind: "img", src: "/mf/poradnik/04-marka.jpg", alt: "Panel MontageFrames: ustawienia marki" } },
+  { title: "Wybierasz styl", text: `Komenda /styl albo galeria w panelu: ${stylesLabel()}, od spokojnych eksperckich po dynamiczne sprzedażowe. Kolor akcentu bierzemy z Twojej marki.`, media: { kind: "img", src: "/mf/poradnik/10-galeria-stylow.jpg", alt: "Panel MontageFrames: galeria stylów" } },
+  { title: "Montujesz", text: "Komenda /rolka i plik z nagraniem. Program robi transkrypcję, układa napisy w wybranym stylu, a krytyk jakości sprawdza rolkę przed renderem.", media: { kind: "video", src: "/mf/demo-1-slowo-po-slowie.mp4", poster: "/mf/demo-1-slowo-po-slowie.jpg", label: "Rolka zmontowana w MontageFrames" } },
+  { title: "Poprawiasz w panelu albo w rozmowie", text: "Piszesz zwykłym językiem: „przesuń napis niżej”, „podświetl słowo promocja”. Albo klikasz słowo w panelu i poprawiasz. Obie drogi zapisują ten sam projekt.", media: { kind: "img", src: "/mf/panel-edytor-napisow.jpg", alt: "Panel MontageFrames: edytor napisów z podglądem i osią czasu" } },
+  { title: "Renderujesz i publikujesz", text: "Gotowa rolka to plik MP4 do publikacji. Komenda /opis podpowiada opis pod rolkę.", media: { kind: "video", src: "/mf/demo-3-neon-noc.mp4", poster: "/mf/demo-3-neon-noc.jpg", label: "Gotowa rolka w stylu Neon noc" } },
 ]
 
 export type CaseStudy = { name: string; scope: string; situation: string; result: string; quote: string }

@@ -8,8 +8,8 @@ import { LazyVideo } from "@/components/mf/lazy-video"
 import { Section, WithTodo } from "@/components/mf/ui"
 import { BuyButton } from "@/components/mf/client-bits"
 import { ReelFrame, StylePicker } from "@/components/mf/reel"
-import { Reveal } from "@/components/mf/motion"
-import ClaudeTranscript from "@/components/mf/claude-transcript"
+import { Reveal, ScrollScale } from "@/components/mf/motion"
+import { StepByStep } from "@/components/mf/steps"
 import OrderForm from "@/components/mf/order-form"
 
 const URL = `https://www.wiktoriaskopek.pl${MF_BASE_PATH}`
@@ -85,13 +85,15 @@ export default function MontujBezMontazysty() {
       {/* Film promo 16:9 (Coding Builder, 26.11; muzyka wygenerowana, bez cudzych nagrań) */}
       <section className="mf-wrap mt-20 md:mt-28" aria-labelledby="promo-title">
         <h2 id="promo-title" className="sr-only">MontageFrames w 20 sekund</h2>
-        <LazyVideo
-          className="aspect-video w-full rounded-[24px] bg-[#050505] object-cover"
-          src="/mf/montageframes-promo-16x9.mp4"
-          poster="/mf/montageframes-promo-poster.jpg"
-          label="Film: MontageFrames w 20 sekund"
-          controls
-        />
+        <ScrollScale>
+          <LazyVideo
+            className="aspect-video w-full rounded-[24px] bg-[#050505] object-cover"
+            src="/mf/montageframes-promo-16x9.mp4"
+            poster="/mf/montageframes-promo-poster.jpg"
+            label="Film: MontageFrames w 20 sekund"
+            controls
+          />
+        </ScrollScale>
       </section>
 
       {/* Problem */}
@@ -113,21 +115,9 @@ export default function MontujBezMontazysty() {
         </div>
       </Section>
 
-      {/* Jak to działa: prawdziwy przebieg w Claude Code */}
-      <Section id="jak-to-dziala" title="Jak to działa" tone="surface">
-        <div className="grid items-start gap-12 lg:grid-cols-2 lg:gap-16">
-          <ol className="flex flex-col gap-10">
-            {MF_STEPS.map((s, i) => (
-              <Reveal as="li" key={s.title} delay={i * 0.08}>
-                <h3 className="text-[24px] font-semibold leading-[1.2] tracking-[-0.015em]">{s.title}</h3>
-                <p className="mt-3 max-w-[48ch] leading-[1.6]">{s.text}</p>
-              </Reveal>
-            ))}
-          </ol>
-          <Reveal delay={0.1}>
-            <ClaudeTranscript />
-          </Reveal>
-        </div>
+      {/* Jak to działa krok po kroku: od zakupu do publikacji (00-PLAN 0d, pkt 10) */}
+      <Section id="jak-to-dziala" title="Jak to działa krok po kroku" lead="Od zakupu do gotowej rolki. Przewiń, a obok zobaczysz każdy krok.">
+        <StepByStep steps={MF_STEPS} />
       </Section>
 
       {/* Rozmowa albo panel */}
@@ -304,7 +294,10 @@ export default function MontujBezMontazysty() {
         <div className="grid gap-x-12 lg:grid-cols-2">
           {MF_FAQ.map((f) => (
             <details key={f.q} className="group mb-3 bg-[var(--h-surface)] px-6 py-5">
-              <summary className="mf-press cursor-pointer list-none text-[21px] font-semibold marker:hidden">{f.q}</summary>
+              <summary className="mf-press flex cursor-pointer list-none items-start justify-between gap-4 text-[21px] font-semibold marker:hidden">
+                {f.q}
+                <svg viewBox="0 0 20 20" aria-hidden className="mt-1.5 size-5 shrink-0 transition-transform duration-300 group-open:rotate-45"><path d="M10 3v14M3 10h14" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" /></svg>
+              </summary>
               <p className="mt-3 max-w-[60ch] leading-[1.6] text-[var(--h-ink-2)]"><WithTodo text={f.a} /></p>
             </details>
           ))}
