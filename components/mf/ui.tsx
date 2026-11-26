@@ -22,11 +22,6 @@ export function Section({ id, title, lead, children, className = "", tone = "pla
   )
 }
 
-/** Brakująca treść: strona jest publiczna, więc nic nie wyświetlamy (lista braków: DOWOD-PRODUKCJA.md). */
-export function Todo(_props: { children?: React.ReactNode; block?: boolean; className?: string }) {
-  return null
-}
-
 /** Tekst z wyróżnionym „DO UZUPEŁNIENIA”. */
 export function WithTodo({ text }: { text: string }) {
   return <>{text.split(TODO).join("").replace(/\s+([.,:;])/g, "$1").trim()}</>

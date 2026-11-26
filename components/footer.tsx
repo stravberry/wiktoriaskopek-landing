@@ -45,10 +45,10 @@ export default function Footer({ lang = "pl" }: { lang?: Locale }) {
 
           {/* Brand Column */}
           <div className="lg:col-span-6">
-            <h3 className="font-display text-4xl md:text-5xl text-white tracking-tighter mb-8 group cursor-default will-change-transform">
+            <h2 className="font-display text-4xl md:text-5xl text-white tracking-tighter mb-8 group cursor-default will-change-transform">
               WIKTORIA <br />
               <span className="text-white/20 group-hover:text-accent transition-[color] duration-700">SKOPEK</span>
-            </h3>
+            </h2>
 
             <p className="font-sans text-white/40 text-sm md:text-base leading-relaxed mb-8 max-w-sm">
               Twój partner strategiczny w budowaniu autorytetu wideo. Łączymy produkcję premium z psychologią sprzedaży.
@@ -72,7 +72,7 @@ export default function Footer({ lang = "pl" }: { lang?: Locale }) {
 
           {/* Navigation Column */}
           <div className="lg:col-span-3">
-            <h4 className="font-display text-xs tracking-[.2em] text-accent/60 uppercase mb-8 font-bold">Nawigacja</h4>
+            <h3 className="font-display text-xs tracking-[.2em] text-accent/60 uppercase mb-8 font-bold">Nawigacja</h3>
             <ul className="space-y-4">
               {navLinks.map((item) => (
                 <li key={item.name}>
@@ -102,7 +102,7 @@ export default function Footer({ lang = "pl" }: { lang?: Locale }) {
 
           {/* Socials & Legal Column */}
           <div className="lg:col-span-3">
-            <h4 className="font-display text-xs tracking-[.2em] text-accent/60 uppercase mb-8 font-bold">Social Media</h4>
+            <h3 className="font-display text-xs tracking-[.2em] text-accent/60 uppercase mb-8 font-bold">Social Media</h3>
             <div className="flex gap-4 mb-12">
               {socials.map((social) => (
                 <a

@@ -2,7 +2,7 @@ import type { MetadataRoute } from "next"
 import { locales } from "@/lib/translations"
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = "https://wiktoriaskopek.pl"
+  const baseUrl = "https://www.wiktoriaskopek.pl"
   
   // Base localized routes
   const routes = locales.flatMap((lang) => [
