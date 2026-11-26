@@ -12,6 +12,8 @@ export const metadata: Metadata = {
   title: "Zrób swoją pierwszą rolkę za darmo | MontageFrames",
   description: "Ustaw markę, wybierz styl, wgraj nagranie do 60 sekund i zobacz rolkę w swoich kolorach. Bez karty, wystarczy e-mail.",
   alternates: { canonical: "https://www.wiktoriaskopek.pl/pl/montuj-bez-montazysty/proba" },
+  // Strona zapisu na próbę: poza wyszukiwarką (decyzja z Coding Builderem 26.11); ruch idzie z landingu i reklam.
+  robots: { index: false, follow: true },
 }
 
 const HOW = [

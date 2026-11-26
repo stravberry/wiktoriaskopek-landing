@@ -1,11 +1,11 @@
 import type { MetadataRoute } from "next"
-import { locales } from "@/lib/translations"
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = "https://www.wiktoriaskopek.pl"
   
   // Base localized routes
-  const routes = locales.flatMap((lang) => [
+  // Tylko /pl: /en ma dziś tę samą polską treść (canonical wskazuje /pl), patrz lib/seo.ts.
+  const routes = (["pl"] as const).flatMap((lang) => [
     {
       url: `${baseUrl}/${lang}`,
       lastModified: new Date(),
@@ -47,7 +47,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
   return [
     ...routes,
     { url: `${baseUrl}/pl/montuj-bez-montazysty`, lastModified: new Date(), changeFrequency: "weekly" as const, priority: 0.9 },
-    { url: `${baseUrl}/pl/montuj-bez-montazysty/proba`, lastModified: new Date(), changeFrequency: "weekly" as const, priority: 0.8 },
     { url: `${baseUrl}/pl/montuj-bez-montazysty/regulamin`, lastModified: new Date(), changeFrequency: "yearly" as const, priority: 0.3 },
     { url: `${baseUrl}/pl/polityka-prywatnosci`, lastModified: new Date(), changeFrequency: "yearly" as const, priority: 0.2 },
   ]
