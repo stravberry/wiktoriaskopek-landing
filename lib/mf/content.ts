@@ -5,53 +5,66 @@ import { MF_ENGINE_OPEN_LICENSE } from "./config.ts"
 
 export const TODO = "DO UZUPEŁNIENIA"
 
-export type MfStyle = { slug: string; name: string; text: string; tags: string[]; inspired?: string }
+// Katalog stylów z paczki (trial-options.json od Coding Buildera, wydanie 26.11.2026; Paper = papierowy-kolaz z LISTA.md).
+// „Inspirowane stylem” oznacza tylko podobny rytm i typografię, bez logo, wizerunku i nagrań twórców.
+export type MfStyle = { slug: string; name: string; text: string; motion: string; inspired?: string }
 
 export const MF_STYLES: MfStyle[] = [
-  { slug: "czysty-minimal", name: "Czysty minimal", text: "Spokojne białe napisy, cienka kreska pod słowem-kluczem. Do porad, edukacji i marek eksperckich.", tags: ["spokojny", "ekspercki"] },
-  { slug: "dynamiczny-zakreslacz", name: "Dynamiczny zakreślacz", text: "Duże słowo-klucz na zakreślaczu, szybkie wejścia z boków. Do energicznych rolek sprzedażowych.", tags: ["dynamiczny", "sprzedażowy"] },
-  { slug: "elegancki-premium", name: "Elegancki premium", text: "Szeryfowa kursywa w słowach-kluczach, ciepły krem i złoto, łagodny ruch. Do marek premium, beauty i doradztwa.", tags: ["elegancki", "premium"] },
-  { slug: "edukacyjny-wysoka-energia", name: "Edukacyjny, wysoka energia", text: "Wąskie, wysokie wersaliki na limonkowym zakreślaczu, żywe wejścia. Do rolek z liczbami i listami.", tags: ["dynamiczny", "edukacyjny"] },
-  { slug: "podcast-spokojny", name: "Podcast spokojny", text: "Równe, czytelne napisy, delikatne wejście z dołu. Do wywiadów i podcastów.", tags: ["spokojny", "rozmowa"] },
-  { slug: "mocny-kontrast", name: "Mocny kontrast", text: "Bardzo grube wersaliki, czarne słowo-klucz na białym zakreślaczu. Do mocnych tez i hooków.", tags: ["dynamiczny", "mocny"] },
-  { slug: "neon-noc", name: "Neon noc", text: "Różowy neon z poświatą na słowach-kluczach. Do lifestyle, eventów i treści nocnych.", tags: ["dynamiczny", "lifestyle"] },
-  { slug: "biznes-granat", name: "Biznes granat", text: "Rzeczowy krój, białe słowo-klucz na granatowym zakreślaczu. Do B2B, finansów i usług profesjonalnych.", tags: ["ekspercki", "biznes"] },
-  { slug: "cieply-lifestyle", name: "Ciepły lifestyle", text: "Zaokrąglony krój, koralowy akcent, miękkie wejścia. Do gastronomii, rodziny i marek osobistych.", tags: ["lifestyle", "przyjazny"] },
-  { slug: "news-czerwony", name: "News czerwony", text: "Wersaliki w stylu wiadomości, czerwony zakreślacz, krótkie wejścia z boku. Do newsów i komentarzy.", tags: ["dynamiczny", "news"] },
-  { slug: "slowo-po-slowie", name: "Słowo po słowie, wersaliki", inspired: "Alex Hormozi", text: "Jedno–dwa słowa naraz, bardzo grube wersaliki, słowo-klucz w zielonym akcencie. Czytelne na wyciszonym telefonie.", tags: ["dynamiczny", "sprzedażowy"] },
-  { slug: "luksusowy-dokument", name: "Luksusowy dokument", inspired: "Iman Gadzhi", text: "Cienkie, szeroko rozstawione wersaliki, złoty akcent, spokojne wejścia. Do edukacji premium.", tags: ["premium", "edukacyjny"] },
-  { slug: "monochrom-akcent", name: "Monochrom z jednym akcentem", inspired: "Ali Abdaal", text: "Kremowy tekst, jeden ciepły akcent, mało ruchu. Do produktywności i spokojnej edukacji.", tags: ["spokojny", "edukacyjny"] },
-  { slug: "napisy-na-dole", name: "Napisy nisko, nagłówek u góry", inspired: "Gary Vaynerchuk", text: "Napisy w dolnej części kadru i hook na górze przez całą rolkę. Do szybkich opinii.", tags: ["dynamiczny", "komentarz"] },
-  { slug: "vlog-narracyjny", name: "Vlog narracyjny", inspired: "Ryan Trahan", text: "Zaokrąglony font, sprężyste wejścia, ciepły pomarańcz. Do vlogów i opowieści w pierwszej osobie.", tags: ["lifestyle", "dynamiczny"] },
-  { slug: "hiper-retencja", name: "Hiper-retencja", inspired: "MrBeast", text: "Ogromne słowo-klucz, szybkie popy i ciasne grupy. Do rozrywki, gdzie liczy się każda sekunda.", tags: ["dynamiczny", "rozrywka"] },
-  { slug: "dokument-reporterski", name: "Dokument reporterski", inspired: "Johnny Harris", text: "Szeryfowe słowa-klucze, kremowy tekst, powolny ruch. Do opowieści dokumentalnych.", tags: ["spokojny", "dokument"] },
-  { slug: "explainer-papierowy", name: "Explainer papierowy", inspired: "Vox", text: "Ciemny tekst na kremowych zakreślaczach jak na wydruku. Do wyjaśniania zjawisk i danych.", tags: ["edukacyjny", "ekspercki"] },
-  { slug: "karaoke", name: "Karaoke", text: "Słowa zapalają się kolorem w chwili, gdy padają. Do rolek z dużą ilością mowy.", tags: ["czytelny", "edukacyjny"] },
-  { slug: "mem-gen-z", name: "Mem / Gen Z", text: "Dwa kolory zakreślaczy na przemian, glitch i chybotanie. Do humoru i trendów.", tags: ["rozrywka", "dynamiczny"] },
-  { slug: "typografia-kinetyczna", name: "Typografia kinetyczna", text: "Litery wjeżdżają po kolei, duży kontrast wielkości. Do cytatów i krótkich manifestów.", tags: ["kreatywny", "dynamiczny"] },
-  { slug: "kino-szerokie", name: "Kino szerokie", text: "Małe, spokojne napisy nisko w kadrze, szerokie odstępy. Do filmów klimatycznych.", tags: ["spokojny", "filmowy"] },
-  { slug: "podcast-dynamiczny", name: "Podcast dynamiczny", text: "Białe napisy z mocnym słowem-kluczem, grupy po 3–4 słowa. Do fragmentów rozmów.", tags: ["rozmowa", "dynamiczny"] },
-  { slug: "luksus-czarno-bialy", name: "Luksus czarno-biały", text: "Biel, czerń i dużo powietrza, wolne przejścia. Do mody, biżuterii i architektury.", tags: ["premium", "elegancki"] },
-  { slug: "nieruchomosci-premium", name: "Nieruchomości premium", text: "Granat i złoto, nowoczesny bezszeryf, spokojne najazdy. Do nieruchomości i hoteli.", tags: ["premium", "biznes"] },
-  { slug: "produkt-premium", name: "Produkt premium", text: "Wyraźny kontrast, czarny tekst na białym zakreślaczu, szybkie wejścia. Do prezentacji produktów.", tags: ["sprzedażowy", "produkt"] },
-  { slug: "sport-akcja", name: "Sport i akcja", text: "Wąskie, wysokie wersaliki, czerwień i czerń, ostre wejścia. Do sportu i treningów.", tags: ["dynamiczny", "sport"] },
-  { slug: "pastelowy-lifestyle", name: "Pastelowy lifestyle", text: "Pudrowy róż, zaokrąglone zakreślacze, miękki ruch. Do beauty, mody i codziennych vlogów.", tags: ["lifestyle", "przyjazny"] },
-  { slug: "medyczny-spokojny", name: "Medyczny spokojny", text: "Turkus, dużo kontrastu, bez agresywnych efektów. Do zdrowia i usług zaufania publicznego.", tags: ["ekspercki", "spokojny"] },
-  { slug: "finanse-liczby", name: "Finanse i liczby", text: "Zielony akcent dla liczb i wyników, kreska pod kluczem. Do finansów i rolek z danymi.", tags: ["ekspercki", "biznes"] },
-  { slug: "kurs-online", name: "Kurs online", text: "Fiolet, czytelne grupy, spokojne podkreślenie. Do lekcji i kursów krok po kroku.", tags: ["edukacyjny", "przyjazny"] },
-  { slug: "technologia", name: "Technologia", text: "Chłodny cyjan na ciemnym tle, szybkie wejścia. Do technologii, AI i aplikacji.", tags: ["ekspercki", "dynamiczny"] },
-  { slug: "beauty-zloto-rozowe", name: "Beauty różowe złoto", text: "Szeryfowa kursywa, różowe złoto, łagodny ruch. Do kosmetyki i salonów.", tags: ["elegancki", "lifestyle"] },
+  { slug: "czysty-minimal", name: "Czysty minimal", text: "Słowa odsłaniają się maską od lewej, hak z rysowanym podkreśleniem, powolny najazd kamery. Do porad, edukacji i marek eksperckich.", motion: "odsłanianie maską (mask reveal), wejście spod maski" },
+  { slug: "dynamiczny-zakreslacz", name: "Dynamiczny zakreślacz", text: "Wjazdy z boku i pop, „punch” na każdym cięciu, karty w kolorze akcentu. Do energicznych rolek sprzedażowych.", motion: "wjazd z boku (slide-in), pop-out" },
+  { slug: "elegancki-premium", name: "Elegancki premium", text: "Słowa wyostrzają się z rozmycia, miękkie przyciemnienie na cięciach, szklane karty. Do marek premium, beauty i usług doradczych.", motion: "wyostrzenie z rozmycia (blur-in), wejście spod maski" },
+  { slug: "edukacyjny-wysoka-energia", name: "Edukacyjny, wysoka energia", text: "Słowa „rozciągają się” przy wejściu, hak w dwóch liniach, mocne zoomy co drugie ujęcie. Do rolek edukacyjnych z liczbami i listami.", motion: "kinetic (rozciągnięcie), pop-out, odbicie (bounce)" },
+  { slug: "podcast-spokojny", name: "Podcast spokojny", text: "Spokojne wejście z dołu, hak na ciemnym pasku, bez zoomów i z dłuższym oddechem między zdaniami. Do wywiadów i podcastów.", motion: "wejście spod maski" },
+  { slug: "mocny-kontrast", name: "Mocny kontrast", text: "Słowa spadają z góry, hak jak pieczątka, ciemne karty. Do mocnych tez i kontrowersyjnych hooków.", motion: "spadanie z góry, pop-out" },
+  { slug: "neon-noc", name: "Neon noc", text: "Litery zalewają się neonem z krótkim glitchem, hak konturem, przejścia „whip” z rozmyciem. Do lifestyle, eventów i treści nocnych.", motion: "zalewanie kolorem, glitch" },
+  { slug: "biznes-granat", name: "Biznes granat", text: "Rzeczowe wjazdy i maska, hak na pasku, przejścia przesunięciem w pionie. Do B2B, finansów i usług profesjonalnych.", motion: "wjazd z boku (slide-in), odsłanianie maską (mask reveal)" },
+  { slug: "cieply-lifestyle", name: "Ciepły lifestyle", text: "Sprężyste odbicia, miękkie przejścia przesunięciem, szklane karty. Do gastronomii, rodziny i marek osobistych.", motion: "odbicie (bounce), wejście spod maski" },
+  { slug: "news-czerwony", name: "News czerwony", text: "Wjazdy jak w serwisie informacyjnym, hak na pasku, szybkie „whip” między ujęciami, bez zoomów. Do newsów, komentarzy i aktualności.", motion: "wjazd z boku (slide-in)" },
+  { slug: "slowo-po-slowie", name: "Słowo po słowie, wersaliki", text: "Jedno–dwa słowa naraz z mocnym popem, zoom „punch” co drugie ujęcie, bardzo szybkie cięcia.", motion: "pop-out", inspired: "Alex Hormozi" },
+  { slug: "luksusowy-dokument", name: "Luksusowy dokument", text: "Cienkie wersaliki odsłaniane maską, hak w dwóch liniach, przyciemnienie na cięciach, oszczędne zoomy. Do edukacji premium i marek osobistych z wysoką ceną.", motion: "odsłanianie maską (mask reveal)", inspired: "Iman Gadzhi" },
+  { slug: "monochrom-akcent", name: "Monochrom z jednym akcentem", text: "Słowa zalewają się kolorem z konturu, jeden akcent, spokojne przejścia. Do produktywności, książek i spokojnej edukacji.", motion: "zalewanie kolorem", inspired: "Ali Abdaal" },
+  { slug: "napisy-na-dole", name: "Napisy nisko, nagłówek u góry", text: "Napisy nisko, hak na pasku u góry, twarde cięcia bez efektów. Do szybkich opinii i komentarzy.", motion: "wjazd z boku (slide-in), wejście spod maski", inspired: "Gary Vaynerchuk" },
+  { slug: "vlog-narracyjny", name: "Vlog narracyjny", text: "Chybotliwe, zabawne wejścia, „whip” i mocne zoomy jak w vlogu. Do vlogów, wyzwań i opowieści w pierwszej osobie.", motion: "chybotanie, odbicie (bounce)", inspired: "Ryan Trahan" },
+  { slug: "hiper-retencja", name: "Hiper-retencja", text: "Ogromne słowo-klucz, popy i litery po kolei, punch na każdym cięciu. Do wyzwań i rozrywki, gdzie liczy się każda sekunda uwagi.", motion: "pop-out, spadanie z góry, litera po literze", inspired: "MrBeast" },
+  { slug: "dokument-reporterski", name: "Dokument reporterski", text: "Napisy pisane jak na maszynie, hak wystukiwany literami, powolne najazdy. Do opowieści dokumentalnych, historii i reportażu.", motion: "maszyna do pisania (typewriter)", inspired: "Johnny Harris" },
+  { slug: "explainer-papierowy", name: "Explainer papierowy", text: "Wydrukowane zakreślacze odsłaniane maską, przejścia „poklatkowe” jak w ręcznej animacji. Do wyjaśniania zjawisk, danych i newsów.", motion: "odsłanianie maską (mask reveal), wjazd z boku (slide-in)", inspired: "Vox" },
+  { slug: "karaoke", name: "Karaoke", text: "Słowa zapalają się kolorem dokładnie w chwili, gdy padają; hak konturem. Do rolek z dużą ilością mowy i nauki języka.", motion: "zalewanie kolorem" },
+  { slug: "mem-gen-z", name: "Mem / Gen Z", text: "Glitch, chybotanie i pop, pieczątka na haku, szybkie „whip”. Do humoru, trendów i luźnych marek.", motion: "glitch, chybotanie, pop-out" },
+  { slug: "typografia-kinetyczna", name: "Typografia kinetyczna", text: "Słowa rozciągają się i składają z liter, hak w dwóch liniach. Do cytatów, motywacji i krótkich manifestów.", motion: "kinetic (rozciągnięcie), litera po literze" },
+  { slug: "kino-szerokie", name: "Kino szerokie", text: "Małe napisy nisko, hak konturem, przyciemnienie na cięciach jak w kinie. Do filmów klimatycznych i opowieści.", motion: "wejście spod maski" },
+  { slug: "podcast-dynamiczny", name: "Podcast dynamiczny", text: "Grupy po 3–4 słowa, hak jako karta-pytanie, przejścia przesunięciem. Do fragmentów podcastów i rozmów.", motion: "wjazd z boku (slide-in), pop-out" },
+  { slug: "luksus-czarno-bialy", name: "Luksus czarno-biały", text: "Cienkie litery wyłaniające się z rozmycia, kontur na haku, dużo powietrza. Do mody, biżuterii i architektury.", motion: "wyostrzenie z rozmycia (blur-in)" },
+  { slug: "nieruchomosci-premium", name: "Nieruchomości premium", text: "Spokojne wejścia i maska, powolne najazdy na wnętrza. Do ofert nieruchomości, hoteli i inwestycji.", motion: "wejście spod maski, odsłanianie maską (mask reveal)" },
+  { slug: "produkt-premium", name: "Produkt premium", text: "Słowa wyostrzają się i wyskakują, pieczątka na haku, najazd na produkt. Do prezentacji produktów i sklepów.", motion: "wyostrzenie z rozmycia (blur-in), pop-out" },
+  { slug: "sport-akcja", name: "Sport i akcja", text: "Słowa spadają i rozciągają się, „whip” i mocne zoomy. Do sportu, treningów i dynamicznych relacji.", motion: "spadanie z góry, kinetic (rozciągnięcie)" },
+  { slug: "pastelowy-lifestyle", name: "Pastelowy lifestyle", text: "Miękkie odbicia i zalewanie kolorem, hak na pastelowym pasku papieru, miękkie przyciemnienia i powolne najazdy. Do beauty, mody, rodziny i codziennych vlogów.", motion: "odbicie (bounce), zalewanie kolorem" },
+  { slug: "medyczny-spokojny", name: "Medyczny spokojny", text: "Spokojne wejście, hak jako pytanie pacjenta, bez efektów i zoomów. Do zdrowia, medycyny i usług zaufania publicznego.", motion: "wejście spod maski" },
+  { slug: "finanse-liczby", name: "Finanse i liczby", text: "Liczby i słowa wystukiwane jak na terminalu, ciemne karty z danymi. Do finansów, inwestycji i rolek z danymi.", motion: "maszyna do pisania (typewriter), wjazd z boku (slide-in)" },
+  { slug: "kurs-online", name: "Kurs online", text: "Litery wjeżdżają po kolei, hak z podkreśleniem jak w notatkach. Do lekcji, kursów i treści edukacyjnych krok po kroku.", motion: "litera po literze, wejście spod maski" },
+  { slug: "technologia", name: "Technologia", text: "Glitch i maszyna do pisania, hak wystukiwany jak w terminalu, przejścia „whip”. Do technologii, AI i aplikacji.", motion: "glitch, maszyna do pisania (typewriter)" },
+  { slug: "beauty-zloto-rozowe", name: "Beauty różowe złoto", text: "Słowa zalewają się różowym złotem, hak z rysowanym podkreśleniem, miękkie przesunięcia i najazdy. Do kosmetyki, salonów i marek osobistych kobiet.", motion: "zalewanie kolorem, wejście spod maski" },
+  { slug: "papierowy-kolaz", name: "Papierowy kolaż", text: "Słowa na wycinankach z papieru, lekko przechylone, wchodzą poklatkowo jak w animacji z nożyczek; hak na pasku papieru, karty jak kartki z taśmą. Do edukacji, opowieści i marek rzemieślniczych.", motion: "poklatkowe (stop-motion)" },
+  { slug: "pytania-i-odpowiedzi", name: "Pytania i odpowiedzi", text: "Hak jako karta z pytaniem, odpowiedź prostymi napisami, stały kadr bez zoomów. Do biznesu w formie Q&A i odpowiedzi na komentarze.", motion: "wjazd z boku (slide-in), wejście spod maski", inspired: "Codie Sanchez" },
+  { slug: "adnotacje-odreczne", name: "Adnotacje odręczne", text: "Słowa-klucze pismem odręcznym odsłaniane maską, hak z podkreśleniem jak flamastrem, spokojne przyciemnienia na cięciach. Do poradników i produktywności.", motion: "odsłanianie maską (mask reveal), zalewanie kolorem", inspired: "Ali Abdaal (adnotacje)" },
+  { slug: "mocna-typografia", name: "Mocna typografia", text: "Bardzo gruby, wąski krój na całej szerokości kadru, słowa rozciągają się przy wejściu, hak w dwóch liniach. Do krótkich, mocnych tez biznesowych.", motion: "kinetic (rozciągnięcie), spadanie z góry", inspired: "Leila Hormozi" },
 ]
 
 /** Plik wideo w public/mf (skompresowany, bez dźwięku) + poster. Na stronę trafiają tylko pliki, które są w repo. */
 export type MfVideo = { src: string; poster: string; aspect: "9/16" | "16/9" }
 const vid = (name: string, aspect: MfVideo["aspect"] = "9/16"): MfVideo => ({ src: `/mf/${name}.mp4`, poster: `/mf/${name}.jpg`, aspect })
 
-/** Pokaz stylów: prawdziwe rolki z programu (render HyperFrames). Opis i dopisek „inspirowane stylem” z MF_STYLES. */
-export const MF_STYLE_REELS: { slug: string; motion: string; video: MfVideo }[] = [
-  { slug: "slowo-po-slowie", motion: "słowa wskakują pojedynczo", video: vid("demo-1-slowo-po-slowie") },
-  { slug: "elegancki-premium", motion: "łagodne wejście, szeryfowa kursywa", video: vid("demo-2-elegancki-premium") },
-  { slug: "neon-noc", motion: "neonowa poświata na słowie-kluczu", video: vid("demo-3-neon-noc") },
+/** Pokaz stylów: prawdziwe rolki z programu (render HyperFrames, to samo nagranie demo). Opis animacji i „inspirowane stylem” z MF_STYLES. */
+export const styleVideo = (slug: string): MfVideo => ({ src: `/mf/style/${slug}.mp4`, poster: `/mf/style/${slug}.jpg`, aspect: "9/16" })
+export const MF_STYLE_REELS: string[] = [
+  "slowo-po-slowie",
+  "papierowy-kolaz",
+  "elegancki-premium",
+  "mem-gen-z",
+  "dokument-reporterski",
+  "luksusowy-dokument",
+  "mocna-typografia",
+  "neon-noc",
+  "pytania-i-odpowiedzi",
 ]
 
 /** Funkcje z własnym filmem lub zrzutem. Sekcja bez filmu i zrzutu nie trafia na stronę. */
@@ -64,41 +77,104 @@ export type MfShowcase = {
   image?: { src: string; alt: string; w: number; h: number }
 }
 
+// Teksty: „co naprawdę robi” z landing-assets/LISTA.md (Coding Builder, wydanie z 26.11.2026). Filmy: render z programu, bez twarzy i klientów.
+const fn = (name: string, aspect: MfVideo["aspect"] = "9/16"): MfVideo =>
+  aspect === "16/9" ? { src: `/mf/funkcje/${name}-poziomo.mp4`, poster: `/mf/funkcje/${name}-poziomo.jpg`, aspect } : { src: `/mf/funkcje/${name}.mp4`, poster: `/mf/funkcje/${name}.jpg`, aspect }
+const shot = (file: string, alt: string) => ({ src: `/mf/panel/${file}.jpg`, alt, w: 1440, h: 900 })
+
 export const MF_SHOWCASE: MfShowcase[] = [
   {
     id: "kreator-marki",
     title: "Kreator marki",
-    lead: "Raz ustawiasz markę, a każda kolejna rolka się jej trzyma.",
+    lead: "Raz zapisujesz markę, a każda kolejna rolka używa jej automatycznie.",
     points: [
-      "Komenda /marka: Claude pyta o kolory, logo, zdjęcia i preferencje montażu, a potem robi próbną rolkę.",
-      "Kolor akcentu stylu bierzemy z Twojej marki: napisy, podkreślenia i grafiki w rolce mają Twoje kolory.",
+      "Kolory, logo, fonty, styl montażu i preferencje: w Claude Code komendą /marka albo w panelu w zakładce „Twoja marka”.",
       "Ustawienia zostają w folderze marka/. Aktualizacje programu ich nie nadpisują.",
     ],
-    video: vid("funkcja-marka"),
-    image: { src: "/mf/poradnik/04-marka.jpg", alt: "Panel MontageFrames: ustawienia marki z kolorami, logo i zdjęciami", w: 1440, h: 900 },
+    video: fn("kreator-marki"),
+    image: shot("04b-marka-studio-demo", "Panel MontageFrames: Twoja marka z wybranym stylem i zakładkami Marka, Kolory, Fonty, Napisy"),
+  },
+  {
+    id: "style-animacje",
+    title: "Style to nie tylko kolor",
+    lead: "Każdy styl ma własną animację napisów, hak, przejścia na cięciach, zoomy i tempo cięć.",
+    points: [
+      "Pop-out, glitch, maszyna do pisania, odsłanianie maską, poklatkowy papierowy kolaż i inne.",
+      "Automatyczny test pilnuje, żeby żadne dwa style nie były do siebie zbyt podobne.",
+    ],
+    video: fn("style-animacje"),
+  },
+  {
+    id: "poprawki",
+    title: "Poprawki i „jest git”",
+    lead: "Poprawiasz w panelu albo w rozmowie z Claude Code, a zatwierdzony styl zostaje zapamiętany.",
+    points: [
+      "W panelu klikasz słowo i poprawiasz napis albo prosisz o zmianę w Claude Code.",
+      "Gdy powiesz „jest git”, styl zostaje zapamiętany dla marki na stałe i wraca w kolejnych montażach.",
+    ],
+    video: fn("panel-poprawki"),
+    image: shot("03-render-jest-git", "Panel MontageFrames: zakładka Render z przyciskiem „Jest git: zatwierdź styl”"),
+  },
+  {
+    id: "youtube",
+    title: "Film poziomy na YouTube",
+    lead: "Ten sam styl działa w montażu poziomym 16:9.",
+    points: [
+      "Napisy nisko, karty z boku, a krytyk jakości pilnuje skoków obrazu i zasłaniania.",
+      "Na filmie: style Mocna typografia i Papierowy kolaż.",
+    ],
+    video: fn("youtube-16x9", "16/9"),
+    image: shot("06-film-poziomy", "Panel MontageFrames: film poziomy 16:9"),
   },
   {
     id: "quickcontent",
     title: "QuickContent",
-    lead: "Szybka rolka z gotowego nagrania, bez ustawiania wszystkiego od zera.",
+    lead: "Z długiego nagrania program proponuje fragmenty na rolki.",
     points: [
-      "Komenda /quickcontent albo ekran QuickContent w panelu.",
-      "Wskazujesz nagranie, a program robi transkrypcję i układa napisy w stylu Twojej marki.",
+      "Plik albo link YouTube: propozycje fragmentów z początkiem, rozwinięciem i puentą.",
+      "Montuje tylko te, które zaznaczysz.",
     ],
-    video: vid("funkcja-quickcontent"),
-    image: { src: "/mf/poradnik/05-quickcontent.jpg", alt: "Panel MontageFrames: ekran QuickContent", w: 1440, h: 900 },
+    video: fn("quickcontent"),
+    image: shot("05b-quickcontent-projekt", "Panel MontageFrames: QuickContent z propozycjami fragmentów"),
+  },
+  {
+    id: "motion-studio",
+    title: "Motion Studio",
+    lead: "Krótka animacja z Twojego tekstu: intro, plansza albo CTA.",
+    points: ["Formaty 9:16, 1:1 albo 16:9.", "Najpierw storyboard i podgląd, potem render."],
+    video: fn("motion-studio"),
+    image: shot("07b-motion-projekt", "Panel MontageFrames: projekt w Motion Studio z podglądem"),
+  },
+  {
+    id: "cutraw",
+    title: "CutRaw dla podcastów",
+    lead: "Surowy podcast z 1–4 kamer bez ręcznego cięcia.",
+    points: [
+      "Synchronizacja po dźwięku, wycięte cisze i „yyy”.",
+      "Eksport XML do Premiere Pro. Oryginały zostają nietknięte.",
+    ],
+    video: fn("cutraw", "16/9"),
+    image: shot("08b-cutraw-projekt", "Panel MontageFrames: projekt podcastu w CutRaw"),
+  },
+  {
+    id: "aktualizacje",
+    title: "Aktualizacje jednym klikiem",
+    lead: "Program, silnik i skille aktualizujesz w panelu albo komendą /aktualizacja.",
+    points: ["Przed aktualizacją robi się kopia zapasowa.", "Zawsze możesz wrócić do wersji zalecanej."],
+    video: fn("aktualizacje"),
+    image: shot("09b-aktualizacje", "Panel MontageFrames: aktualizacje programu i silnika"),
   },
 ]
 
 /** Zrzuty panelu (lokalny panel w przeglądarce, komenda /panel). */
 export const MF_PANEL_SHOTS = [
-  { src: "/mf/panel-edytor-napisow.jpg", title: "Edytor napisów", alt: "Panel: edytor napisów z podglądem rolki i osią czasu" },
-  { src: "/mf/poradnik/01-lista-rolek.jpg", title: "Lista rolek", alt: "Panel: lista rolek" },
-  { src: "/mf/poradnik/10-galeria-stylow.jpg", title: "Galeria stylów", alt: "Panel: galeria stylów montażu" },
-  { src: "/mf/poradnik/04-marka.jpg", title: "Marka", alt: "Panel: ustawienia marki" },
+  { src: "/mf/panel/02-edytor-napisow.jpg", title: "Edytor napisów", alt: "Panel: edytor rolki z podglądem, listą słów do kliknięcia i osią czasu" },
+  { src: "/mf/panel/01-lista-rolek.jpg", title: "Lista rolek", alt: "Panel: lista rolek z miniaturami, podzielona na markę i „Bez marki”" },
+  { src: "/mf/panel/05-quickcontent.jpg", title: "QuickContent", alt: "Panel: start projektu QuickContent z pliku albo z YouTube" },
+  { src: "/mf/panel/09-ustawienia.jpg", title: "Ustawienia", alt: "Panel: ustawienia programu i aktualizacji" },
 ]
 
-/** „33 style”, „25 stylów”: liczba stylów z poprawną odmianą. */
+/** „33 style”, „37 stylów”: liczba stylów z poprawną odmianą. */
 export const stylesLabel = (n = MF_STYLES.length) =>
   `${n} ${n === 1 ? "styl" : n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14) ? "style" : "stylów"}`
 
@@ -135,11 +211,11 @@ export const MF_STEPS: MfStep[] = [
   { title: "Kupujesz", text: "Płacisz 238 zł BLIK-iem albo kartą na stronie Stripe. W kilka minut dostajesz mail z kluczem licencyjnym i linkiem do konta.", media: { kind: "ui", ui: "checkout" } },
   { title: "Odbierasz paczkę", text: "Na koncie podajesz login GitHub i dostajesz zaproszenie do prywatnego repozytorium z paczką i aktualizacjami. Nie masz GitHuba? Pobierasz ZIP z konta.", media: { kind: "ui", ui: "invite" } },
   { title: "Instalujesz w Claude Code", text: "Otwierasz paczkę w Claude Code i wpisujesz /start. Claude sprawdza komputer i po Twojej zgodzie instaluje narzędzia. Bez ręcznych poleceń w Terminalu, realnie 15–30 minut.", media: { kind: "ui", ui: "install" } },
-  { title: "Ustawiasz markę", text: "Komenda /marka: Claude pyta o kolory, logo, zdjęcia i preferencje montażu, a na koniec robi próbną rolkę.", media: { kind: "img", src: "/mf/poradnik/04-marka.jpg", alt: "Panel MontageFrames: ustawienia marki" } },
-  { title: "Wybierasz styl", text: `Komenda /styl albo galeria w panelu: ${stylesLabel()}, od spokojnych eksperckich po dynamiczne sprzedażowe. Kolor akcentu bierzemy z Twojej marki.`, media: { kind: "img", src: "/mf/poradnik/10-galeria-stylow.jpg", alt: "Panel MontageFrames: galeria stylów" } },
-  { title: "Montujesz", text: "Komenda /rolka i plik z nagraniem. Program robi transkrypcję, układa napisy w wybranym stylu, a krytyk jakości sprawdza rolkę przed renderem.", media: { kind: "video", src: "/mf/demo-1-slowo-po-slowie.mp4", poster: "/mf/demo-1-slowo-po-slowie.jpg", label: "Rolka zmontowana w MontageFrames" } },
-  { title: "Poprawiasz w panelu albo w rozmowie", text: "Piszesz zwykłym językiem: „przesuń napis niżej”, „podświetl słowo promocja”. Albo klikasz słowo w panelu i poprawiasz. Obie drogi zapisują ten sam projekt.", media: { kind: "img", src: "/mf/panel-edytor-napisow.jpg", alt: "Panel MontageFrames: edytor napisów z podglądem i osią czasu" } },
-  { title: "Renderujesz i publikujesz", text: "Gotowa rolka to plik MP4 do publikacji. Komenda /opis podpowiada opis pod rolkę.", media: { kind: "video", src: "/mf/demo-3-neon-noc.mp4", poster: "/mf/demo-3-neon-noc.jpg", label: "Gotowa rolka w stylu Neon noc" } },
+  { title: "Ustawiasz markę", text: "Komenda /marka: Claude pyta o kolory, logo, zdjęcia i preferencje montażu, a na koniec robi próbną rolkę.", media: { kind: "img", src: "/mf/panel/04b-marka-studio-demo.jpg", alt: "Panel MontageFrames: Twoja marka z wybranym stylem" } },
+  { title: "Wybierasz styl", text: `Komenda /styl albo galeria w panelu: ${stylesLabel()}, od spokojnych eksperckich po dynamiczne sprzedażowe. Kolor akcentu bierzemy z Twojej marki.`, media: { kind: "video", src: "/mf/funkcje/przeglad-stylow.mp4", poster: "/mf/funkcje/przeglad-stylow.jpg", label: "Sześć stylów MontageFrames na tym samym nagraniu" } },
+  { title: "Montujesz", text: "Komenda /rolka i plik z nagraniem. Program robi transkrypcję, układa napisy w wybranym stylu, a krytyk jakości sprawdza rolkę przed renderem.", media: { kind: "video", src: "/mf/style/dynamiczny-zakreslacz.mp4", poster: "/mf/style/dynamiczny-zakreslacz.jpg", label: "Rolka zmontowana w MontageFrames, styl Dynamiczny zakreślacz" } },
+  { title: "Poprawiasz w panelu albo w rozmowie", text: "Piszesz zwykłym językiem: „przesuń napis niżej”, „podświetl słowo promocja”. Albo klikasz słowo w panelu i poprawiasz. Obie drogi zapisują ten sam projekt.", media: { kind: "img", src: "/mf/panel/02-edytor-napisow.jpg", alt: "Panel MontageFrames: edytor napisów z podglądem i osią czasu" } },
+  { title: "Renderujesz i publikujesz", text: "Gotowa rolka to plik MP4 do publikacji. Komenda /opis podpowiada opis pod rolkę.", media: { kind: "video", src: "/mf/style/neon-noc.mp4", poster: "/mf/style/neon-noc.jpg", label: "Gotowa rolka w stylu Neon noc" } },
 ]
 
 export type CaseStudy = { name: string; scope: string; situation: string; result: string; quote: string }

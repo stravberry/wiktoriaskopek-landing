@@ -5,6 +5,7 @@ import { useEffect, useState } from "react"
 import { motion, useReducedMotion } from "framer-motion"
 import { CAPTION_LOOKS, type CaptionLook } from "@/lib/mf/caption-styles"
 import type { MfStyle } from "@/lib/mf/content"
+import { LazyVideo } from "@/components/mf/lazy-video"
 
 const WORDS = ["Montujesz", "sam,", "bez", "montażysty"]
 const KEY = 3
@@ -95,12 +96,19 @@ export function StylePicker({ styles }: { styles: MfStyle[] }) {
         </ul>
       </div>
       <div>
-        <ReelFrame slug={slug} className="mx-auto max-w-[340px] lg:max-w-none" />
+        {/* Prawdziwa rolka z programu dla wybranego stylu (to samo nagranie demo dla wszystkich stylów). */}
+        <LazyVideo
+          key={slug}
+          className="mx-auto aspect-[9/16] w-full max-w-[340px] rounded-[32px] bg-[#1d1d1f] object-cover lg:max-w-none"
+          src={`/mf/style/${slug}.mp4`}
+          poster={`/mf/style/${slug}.jpg`}
+          label={`Rolka demo w stylu ${current.name}`}
+        />
         <div className="mt-5">
           <p className="text-[21px] font-semibold tracking-[-0.01em]">{current.name}</p>
-          {current.inspired && <p className="mt-1 text-[15px] text-[var(--h-ink-2)]">inspirowane stylem: {current.inspired}</p>}
+          <p className="mt-1 text-[15px] text-[var(--h-ink-2)]">Animacja: {current.motion}{current.inspired && <> · inspirowane stylem: {current.inspired}</>}</p>
           <p className="mt-2 text-[17px] leading-[1.5]">{current.text}</p>
-          <p className="mt-3 text-[15px] text-[var(--h-ink-2)]">Przybliżony podgląd napisu. Prawdziwe rolki z programu są wyżej.</p>
+          <p className="mt-3 text-[15px] text-[var(--h-ink-2)]">Rolka z programu na tym samym nagraniu demo. Kolor akcentu weźmiemy z Twojej marki.</p>
         </div>
       </div>
     </div>
