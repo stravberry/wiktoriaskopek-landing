@@ -14,7 +14,9 @@ export default function PodcastyPage() {
   const [openFaq, setOpenFaq] = useState<number | null>(null)
   const [isLoaded, setIsLoaded] = useState(false)
 
+  // Flaga po pierwszym renderze w przeglądarce: startuje animację wejścia (na serwerze elementy są ukryte).
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setIsLoaded(true)
   }, [])
 

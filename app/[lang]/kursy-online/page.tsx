@@ -21,6 +21,9 @@ import type { Locale } from "@/lib/translations"
 import SubpageNav from "@/components/subpage-nav"
 import { useState } from "react"
 
+// Stały „losowy” układ ozdobnych kafelków: Math.random w renderze dawał inny wynik na serwerze i w przeglądarce.
+const rnd = (i: number, k: number) => ((Math.sin(i * 12.9898 + k * 78.233) * 43758.5453) % 1 + 1) % 1
+
 export default function KursyOnlinePage() {
   const params = useParams()
   const lang = (params.lang as Locale) || "pl"
@@ -159,11 +162,11 @@ export default function KursyOnlinePage() {
               key={`module-${i}`}
               className="absolute border border-white/10 bg-white/5 backdrop-blur-sm"
               style={{
-                width: `${40 + Math.random() * 30}px`,
-                height: `${40 + Math.random() * 30}px`,
-                top: `${15 + Math.random() * 70}%`,
-                left: `${10 + Math.random() * 80}%`,
-                animation: `float ${5 + Math.random() * 4}s ease-in-out infinite ${Math.random() * 3}s`,
+                width: `${40 + rnd(i, 1) * 30}px`,
+                height: `${40 + rnd(i, 2) * 30}px`,
+                top: `${15 + rnd(i, 3) * 70}%`,
+                left: `${10 + rnd(i, 4) * 80}%`,
+                animation: `float ${5 + rnd(i, 5) * 4}s ease-in-out infinite ${rnd(i, 6) * 3}s`,
                 opacity: 0.3,
               }}
             />

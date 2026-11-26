@@ -106,6 +106,7 @@ export default async function Konto({ searchParams }: { searchParams: Promise<{ 
               <>
                 <div className="mt-5"><GithubForm current={active.github_login} /></div>
                 <div className="mt-6 pt-6">
+                  {/* eslint-disable-next-line @next/next/no-html-link-for-pages -- pobranie pliku z API, nie strona (Link robiłby prefetch) */}
                   <a href="/api/mf/download" className="mf-press inline-flex min-h-12 items-center gap-2 rounded-full bg-[var(--h-bg)] px-6 text-[16px] font-semibold">
                     <Download className="size-5" /> Pobierz ZIP{version ? ` (wersja ${version.sha} z ${new Date(version.date).toLocaleDateString("pl-PL")})` : ""}
                   </a>

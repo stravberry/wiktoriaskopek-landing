@@ -68,7 +68,12 @@ export function BuyForm({ initialProduct = "paczka", compact = false }: { initia
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [waitlist, setWaitlist] = useState(false)
-  useEffect(() => setProduct(initialProduct), [initialProduct])
+  // Zmiana produktu z zewnątrz (inny przycisk „Kupuję”): aktualizacja w trakcie renderu zamiast efektu.
+  const [prevInitial, setPrevInitial] = useState(initialProduct)
+  if (prevInitial !== initialProduct) {
+    setPrevInitial(initialProduct)
+    setProduct(initialProduct)
+  }
   useEffect(() => {
     fetch("/api/mf/checkout", { cache: "no-store" }).then((r) => r.json()).then((d) => d.waitlist && setWaitlist(true)).catch(() => {})
   }, [])

@@ -22,7 +22,7 @@ export async function POST(request: NextRequest) {
   }
 
   try {
-    const result = await handleStripeEvent(event as any, mfDeps())
+    const result = await handleStripeEvent(event as unknown as Parameters<typeof handleStripeEvent>[0], mfDeps())
     if (result === "busy") return NextResponse.json({ result }, { status: 409 }) // Stripe ponowi
     return NextResponse.json({ result })
   } catch (e) {

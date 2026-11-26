@@ -256,7 +256,8 @@ export function TrialApp({ api, styles, fonts, fontFamilies, limits, consentText
   const [brand, setBrand] = useState<Brand>({ name: "", style: "czysty-minimal", font: fonts.includes("Montserrat") ? "Montserrat" : fonts[0], accent: "#FF6A13", text: "#FFFFFF", background: "#111111", tone: "", audience: "", terms: "" })
   const [logo, setLogo] = useState<File | null>(null)
   const [renderStart, setRenderStart] = useState<{ at: number; eta: number } | null>(null)
-  const auth = useRef<Auth | null>(null)
+  const auth = useRef<Auth | null>(null) // do wywołań asynchronicznych
+  const [authState, setAuthState] = useState<Auth | null>(null) // do renderu
 
   const go = (i: number) => {
     setStep(i)
@@ -279,6 +280,7 @@ export function TrialApp({ api, styles, fonts, fontFamilies, limits, consentText
         if (!res.ok) throw new Error(data.error)
         setHasOrder(!!data.hasOrder)
         auth.current = { trialId: data.trialId, token: data.token }
+        setAuthState(auth.current)
         const s = await callTrial<Status>(api, "status", auth.current)
         setStatus(s)
         if (s.brand?.name) {
@@ -333,6 +335,7 @@ export function TrialApp({ api, styles, fonts, fontFamilies, limits, consentText
     const t = await res.json()
     if (!res.ok) throw new Error(t.error || "Nie udało się zapisać marki.")
     auth.current = { trialId: t.trialId, token: t.token }
+    setAuthState(auth.current)
     if (logo) {
       const u = await callTrial<{ uploadUrl: string; headers: Record<string, string> }>(api, "upload-url", { ...auth.current, kind: "logo", contentType: logo.type, bytes: logo.size })
       await putFile(u.uploadUrl, logo, u.headers, () => {})
@@ -367,10 +370,10 @@ export function TrialApp({ api, styles, fonts, fontFamilies, limits, consentText
           }}
         />
       )}
-      {step === 2 && auth.current && (
+      {step === 2 && authState && (
         <VideoStep
           api={api}
-          auth={auth.current}
+          auth={authState}
           limits={limits}
           consentText={consentText}
           consentVersion={consentVersion}
@@ -666,9 +669,9 @@ function VideoStep({ api, auth, limits, consentText, consentVersion, onBack, onS
 }
 
 function RenderStep({ status, start, mailWhenReady, onRetry }: { status: Status | null; start: { at: number; eta: number } | null; mailWhenReady: boolean; onRetry: () => void }) {
-  const [, tick] = useState(0)
+  const [now, setNow] = useState(() => Date.now())
   useEffect(() => {
-    const id = setInterval(() => tick((x) => x + 1), 5000)
+    const id = setInterval(() => setNow(Date.now()), 5000)
     return () => clearInterval(id)
   }, [])
   const mailNote = mailWhenReady ? "dostaniesz maila, gdy rolka będzie gotowa." : "gotową rolkę znajdziesz na koncie."
@@ -691,10 +694,10 @@ function RenderStep({ status, start, mailWhenReady, onRetry }: { status: Status 
   const idx = stageIndex(status)
   // Audyt Ecom 2, pkt 1: szacunek z API (mediana ostatnich renderów u Coding Buildera); gdy minie, zamiast odliczania uczciwy komunikat.
   const startedMs = status?.startedAt ? Date.parse(status.startedAt) : start?.at ?? NaN
-  const elapsed = Number.isNaN(startedMs) ? 0 : (Date.now() - startedMs) / 1000
-  const overdue = (start ? Date.now() - start.at > start.eta * 1000 : false) || elapsed > 10 * 60
+  const elapsed = Number.isNaN(startedMs) ? 0 : (now - startedMs) / 1000
+  const overdue = (start ? now - start.at > start.eta * 1000 : false) || elapsed > 10 * 60
   const remaining =
-    status?.etaSeconds != null ? status.etaSeconds : start ? Math.max(30, start.eta - (Date.now() - start.at) / 1000) : null
+    status?.etaSeconds != null ? status.etaSeconds : start ? Math.max(30, start.eta - (now - start.at) / 1000) : null
   const pct = status?.status === "queued" ? 3 : Math.max(5, status?.progress ?? 0)
   return (
     <div role="status" aria-live="polite" className={card}>

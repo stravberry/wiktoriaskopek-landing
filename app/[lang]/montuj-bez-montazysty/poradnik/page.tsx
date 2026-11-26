@@ -14,6 +14,7 @@ export default async function Poradnik() {
       <h1 className="text-[clamp(2rem,5vw,3.5rem)] font-bold leading-[1.05] tracking-[-0.035em]">Poradnik MontageFrames</h1>
       <p className="mt-4 mb-8 text-[18px] text-[var(--h-ink-2)]">
         Od instalacji do pierwszej rolki.{" "}
+        {/* eslint-disable-next-line @next/next/no-html-link-for-pages -- pobranie PDF z API, nie strona */}
         <a href="/api/mf/poradnik-pdf" className="font-semibold underline decoration-[var(--h-accent)] decoration-2 underline-offset-4">Pobierz poradnik w PDF</a>
       </p>
       <PoradnikSearch chapters={CHAPTERS} />

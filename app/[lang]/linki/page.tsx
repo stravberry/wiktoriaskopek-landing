@@ -1,5 +1,6 @@
 "use client"
 
+import Link from "next/link"
 import { useParams } from "next/navigation"
 import { Instagram, Youtube, Headphones, Globe, Mail, Phone, ExternalLink } from "lucide-react"
 import type { Locale } from "@/lib/translations"
@@ -105,18 +106,18 @@ export default function LinkiPage() {
 
       {/* Language Switcher */}
       <div className="mt-8 flex gap-2">
-        <a
+        <Link
           href="/pl/linki"
           className={`px-3 py-1 font-mono text-xs ${lang === "pl" ? "bg-accent text-black" : "text-white/60 hover:text-white"}`}
         >
           PL
-        </a>
-        <a
+        </Link>
+        <Link
           href="/en/linki"
           className={`px-3 py-1 font-mono text-xs ${lang === "en" ? "bg-accent text-black" : "text-white/60 hover:text-white"}`}
         >
           EN
-        </a>
+        </Link>
       </div>
     </div>
   )
