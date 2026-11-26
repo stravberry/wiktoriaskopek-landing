@@ -9,9 +9,12 @@ export default function TestModeBar() {
   const text = shopTestLocked(process.env)
     ? "Sklep w trybie testowym: zakup wkrótce. Zapisz się, a damy znać, gdy sprzedaż ruszy."
     : "TRYB TESTOWY: płatności nie są prawdziwe. Do testu użyj karty 4242 4242 4242 4242."
+  // Telefon: krótsza wersja (maks. 2 wiersze przy 320 px).
+  const short = shopTestLocked(process.env) ? "Tryb testowy: zakup wkrótce. Zapisz się na listę." : "TRYB TESTOWY: użyj karty 4242 4242 4242 4242."
   return (
     <div role="note" className="bg-[#1d1d1f] px-5 py-3 text-center text-[15px] font-semibold text-white">
-      {text}
+      <span className="sm:hidden">{short}</span>
+      <span className="hidden sm:inline">{text}</span>
     </div>
   )
 }
