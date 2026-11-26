@@ -25,6 +25,7 @@ export function accessEmailText(p: MfAccessEmailProps) {
     `Twój klucz licencyjny: ${p.licenseKey}`,
     `Wejdź na konto (link działa raz, 72 h): ${p.loginUrl}`,
     `Później logujesz się tu: ${p.accountUrl}`,
+    `Poradnik online (po zalogowaniu): ${p.origin}/pl/montuj-bez-montazysty/poradnik`,
     "",
     p.githubInvited
       ? `Dostęp do paczki: wysłaliśmy zaproszenie GitHub dla @${p.githubLogin}. Zaakceptuj je w mailu od GitHuba albo na github.com/notifications.`
@@ -72,6 +73,9 @@ export default function MfAccessEmail(p: MfAccessEmailProps) {
             </Button>
             <Text style={{ fontSize: 13, color: muted }}>
               Link działa raz przez 72 godziny. Później zaloguj się na <Link href={p.accountUrl}>{p.accountUrl}</Link>.
+            </Text>
+            <Text style={{ fontSize: 15 }}>
+              Poradnik online (po zalogowaniu): <Link href={`${p.origin}/pl/montuj-bez-montazysty/poradnik`}>{`${p.origin}/pl/montuj-bez-montazysty/poradnik`}</Link>
             </Text>
 
             <Hr />

@@ -100,7 +100,7 @@ export function StylePicker({ styles }: { styles: MfStyle[] }) {
           <p className="text-[21px] font-semibold tracking-[-0.01em]">{current.name}</p>
           {current.inspired && <p className="mt-1 text-[15px] text-[var(--h-ink-2)]">inspirowane stylem: {current.inspired}</p>}
           <p className="mt-2 text-[17px] leading-[1.5]">{current.text}</p>
-          <p className="mt-3 text-[15px] text-[var(--h-ink-2)]">Przybliżony podgląd napisu. Prawdziwe rolki z programu są wyżej; próbki pozostałych stylów: DO UZUPEŁNIENIA.</p>
+          <p className="mt-3 text-[15px] text-[var(--h-ink-2)]">Przybliżony podgląd napisu. Prawdziwe rolki z programu są wyżej.</p>
         </div>
       </div>
     </div>

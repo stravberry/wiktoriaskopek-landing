@@ -72,8 +72,7 @@ export default async function Dziekujemy({ searchParams }: { searchParams: Promi
         <div className="mt-12 rounded-[28px] bg-[var(--h-surface)] p-7">
           <h2 className="text-[22px] font-semibold">Chcesz zainstalować razem ze mną?</h2>
           <p className="mt-2 text-[16px] text-[var(--h-ink-2)]">
-            Konsultacja 1:1 z instalacją i pierwszą rolką na Twoim materiale. Napisz na wskopek.all@gmail.com, ustalimy termin i dopłatę.{" "}
-            <span className="font-semibold">Kwota dopłaty dla kupujących program: DO UZUPEŁNIENIA.</span>
+            Konsultacja 1:1 z instalacją i pierwszą rolką na Twoim materiale. Napisz na wskopek.all@gmail.com, ustalimy termin i warunki.
           </p>
         </div>
       )}

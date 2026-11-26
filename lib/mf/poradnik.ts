@@ -1,7 +1,7 @@
 // Poradnik MontageFrames (strony za logowaniem). Komendy wg Coding Buildera (25.11.2026), mogą się jeszcze zmienić.
-// Zrzuty ekranu i nagrania: DO UZUPEŁNIENIA.
+// Zrzuty panelu: Coding Builder, czysta paczka bez klientów (26.11). Brakujące zrzuty i nagrania: lista w DOWOD-PRODUKCJA.md.
 
-export type Block = { p: string } | { code: string } | { list: string[] } | { todo: string }
+export type Block = { p: string } | { code: string } | { list: string[] } | { img: string; alt: string } | { todo: string }
 export type Chapter = { slug: string; title: string; lead: string; blocks: Block[] }
 
 export const CHAPTERS: Chapter[] = [
@@ -28,7 +28,6 @@ export const CHAPTERS: Chapter[] = [
       { code: "git clone https://github.com/DKWGroup/MontageFrames-dist.git MontageFrames\ncd MontageFrames\nclaude" },
       { p: "Bez GitHuba: pobierz ZIP z konta, rozpakuj, otwórz folder w Terminalu i wpisz claude." },
       { p: "W Claude Code wpisz /start. Claude sprawdzi komputer i po Twojej zgodzie zainstaluje brakujące narzędzia. Stan instalacji w każdej chwili sprawdzisz komendą /stan." },
-      { todo: "Zrzuty ekranu: zaproszenie GitHub, pierwszy ekran /start, wynik /stan" },
     ],
   },
   {
@@ -38,7 +37,7 @@ export const CHAPTERS: Chapter[] = [
     blocks: [
       { p: "Wpisz /marka. Claude zapyta o kolory, logo, zdjęcia i preferencje montażu, a potem zrobi próbną rolkę." },
       { p: "Ustawienia marki zostają w folderze marka/. Aktualizacje go nie nadpisują." },
-      { todo: "Zrzut ekranu kreatora marki" },
+      { img: "/mf/poradnik/04-marka.jpg", alt: "Panel: ustawienia marki (kolory, logo, zdjęcia)" },
     ],
   },
   {
@@ -48,6 +47,7 @@ export const CHAPTERS: Chapter[] = [
     blocks: [
       { p: "Wpisz /styl, żeby zobaczyć katalog i wybrać styl. Ten sam wybór zrobisz w panelu. Kolor akcentu stylu bierzemy z Twojej marki." },
       { p: "Podgląd wszystkich stylów jest też w pliku catalog/gallery.html w paczce." },
+      { img: "/mf/poradnik/10-galeria-stylow.jpg", alt: "Panel: galeria stylów" },
     ],
   },
   {
@@ -57,7 +57,7 @@ export const CHAPTERS: Chapter[] = [
     blocks: [
       { p: "Wpisz /rolka i wskaż plik z nagraniem. Claude zrobi transkrypcję, ułoży napisy w wybranym stylu i przygotuje rolkę do renderu." },
       { p: "Do szybkich rolek z gotowych fragmentów użyj /quickcontent." },
-      { todo: "Nagranie ekranu: pierwsza rolka od początku do końca" },
+      { img: "/mf/poradnik/05-quickcontent.jpg", alt: "Panel: QuickContent" },
     ],
   },
   {
@@ -90,7 +90,8 @@ export const CHAPTERS: Chapter[] = [
     lead: "Te same rzeczy co w rozmowie, tylko w okienkach.",
     blocks: [
       { p: "Wpisz /panel, żeby otworzyć panel. Poprawisz w nim napisy, zmienisz styl i wyrenderujesz rolkę." },
-      { todo: "Zrzuty ekranu panelu" },
+      { img: "/mf/poradnik/01-lista-rolek.jpg", alt: "Panel: lista rolek" },
+      { img: "/mf/panel-edytor-napisow.jpg", alt: "Panel: edytor napisów z podglądem i osią czasu" },
     ],
   },
   {

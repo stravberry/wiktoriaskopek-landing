@@ -22,26 +22,12 @@ export function Section({ id, title, lead, children, className = "", tone = "pla
   )
 }
 
-/** Widoczny znacznik brakującej treści lub mediów (pełne tło, bez przerywanej ramki). */
-export function Todo({ children = TODO, block = false, className = "" }: { children?: React.ReactNode; block?: boolean; className?: string }) {
-  return block ? (
-    <div className={`grid place-items-center bg-[#ececf0] p-6 text-center text-[15px] font-semibold text-[#9a3412] ${className}`}>{children}</div>
-  ) : (
-    <span className="rounded bg-[#ececf0] px-1.5 py-0.5 font-semibold text-[#9a3412]">{children}</span>
-  )
+/** Brakująca treść: strona jest publiczna, więc nic nie wyświetlamy (lista braków: DOWOD-PRODUKCJA.md). */
+export function Todo(_props: { children?: React.ReactNode; block?: boolean; className?: string }) {
+  return null
 }
 
 /** Tekst z wyróżnionym „DO UZUPEŁNIENIA”. */
 export function WithTodo({ text }: { text: string }) {
-  const parts = text.split(TODO)
-  return (
-    <>
-      {parts.map((p, i) => (
-        <span key={i}>
-          {p}
-          {i < parts.length - 1 && <Todo />}
-        </span>
-      ))}
-    </>
-  )
+  return <>{text.split(TODO).join("").replace(/\s+([.,:;])/g, "$1").trim()}</>
 }

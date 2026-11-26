@@ -1,5 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  // Font do PDF poradnika czytany z dysku w funkcji serwerowej
+  outputFileTracingIncludes: { "/api/mf/poradnik-pdf": ["./lib/mf/fonts/**"] },
   typescript: {
     ignoreBuildErrors: true,
   },

@@ -93,8 +93,8 @@ export const MF_FAQ: { q: string; a: string }[] = [
   { q: "Czy muszę umieć montować?", a: "Nie. Opisujesz, co chcesz, zwykłym językiem. Poradnik pokazuje, jak pisać poprawki, żeby AI dobrze je zrozumiało." },
   { q: "Na ilu komputerach mogę używać programu?", a: "Bez limitu komputerów, na potrzeby Twojej firmy. Nie wolno udostępniać ani odsprzedawać programu innym osobom." },
   { q: "Jak dostanę program?", a: "Po płatności dostajesz mail z kluczem i linkiem do konta. Podajesz login GitHub i dostajesz zaproszenie do prywatnego repozytorium z paczką i aktualizacjami. Bez GitHuba pobierzesz ZIP z konta." },
-  { q: "Jak działają aktualizacje?", a: "Komenda /aktualizacja pobiera nową wersję i nie rusza Twojej marki. Okres aktualizacji w cenie: DO UZUPEŁNIENIA." },
+  { q: "Jak działają aktualizacje?", a: "Komenda /aktualizacja pobiera nową wersję i nie rusza Twojej marki." },
   { q: "Co, jeśli Claude zmieni zasady?", a: "Program działa przez Twoje konto Claude. Za zmiany cennika i zasad Anthropic nie odpowiadam, ale dostosowuję program w aktualizacjach, jeśli to możliwe." },
-  { q: "Czy dostanę fakturę?", a: "Sprzedaję jako działalność nierejestrowana, bez VAT. Potwierdzenie zakupu dostajesz mailem. Sposób dokumentowania sprzedaży dla firm: DO UZUPEŁNIENIA." },
-  { q: "Co, jeśli program nie zadziała?", a: "Obowiązuje gwarancja działania opisana wyżej. Napisz na wskopek.all@gmail.com, odpowiadam w sprawie instalacji do 3 dni roboczych." },
+  { q: "Czy dostanę fakturę?", a: "Sprzedaję jako działalność nierejestrowana, bez VAT. Potwierdzenie zakupu i treść umowy dostajesz mailem." },
+  { q: "Co, jeśli program nie zadziała?", a: "Gwarancja działania: jeśli w ciągu 14 dni nie uruchomisz programu na swoim komputerze mimo naszej pomocy, oddaję pieniądze. Napisz na wskopek.all@gmail.com, w sprawie instalacji odpowiadam do 3 dni roboczych." },
 ]

@@ -284,3 +284,5 @@ body:has(.mf-page) { font-family: var(--font-mf), system-ui, sans-serif; }
   .mf-drift { animation: none; }
   .mf-press { transition: none; }
 }
+
+.mf-h1-slogan { font-size: clamp(2.3rem, 6.4vw, 6rem); }
