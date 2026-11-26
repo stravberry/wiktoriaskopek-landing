@@ -163,7 +163,7 @@ export function StepByStep({ steps }: { steps: Step[] }) {
             >
               {i + 1}
             </span>
-            <div className={`transition-opacity duration-300 ${i === active ? "lg:opacity-100" : "lg:opacity-40"}`}>
+            <div className={`transition-opacity duration-300 ${i === active ? "lg:opacity-100" : "lg:opacity-[0.65]"}`}>
               <h3 className="text-[24px] font-semibold leading-[1.2] tracking-[-0.015em]">{s.title}</h3>
               <p className="mt-3 max-w-[46ch] leading-[1.6]">{s.text}</p>
             </div>
