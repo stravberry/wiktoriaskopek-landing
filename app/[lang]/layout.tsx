@@ -1,5 +1,6 @@
 import type React from "react"
 import type { Metadata } from "next"
+import { notFound } from "next/navigation"
 import { Bebas_Neue } from "next/font/google"
 import "../globals.css"
 import "../fonts-satoshi.css"
@@ -88,6 +89,8 @@ export default async function LangLayout({
   params: Promise<{ lang: Locale }>
 }) {
   const { lang } = await params
+  // Tylko pl i en: inne pierwsze segmenty (np. /llms.txt) dawały 200 z pustą stroną (soft 404).
+  if (!(locales as readonly string[]).includes(lang)) notFound()
 
   return (
     <html lang={lang} className="scroll-smooth" style={{ backgroundColor: "#050505" }} suppressHydrationWarning>

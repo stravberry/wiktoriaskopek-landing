@@ -297,14 +297,8 @@ body:has(.mf-page) { font-family: var(--font-mf), system-ui, sans-serif; }
   .mf-lift, .mf-lift:hover { transition: none; transform: none; }
 }
 
-/* MontageFrames, 0f (kierunek Apple, marka wiktoriaskopek.pl): tokeny, większa i ciaśniejsza typografia, rytm jasne / ciemne. */
-.mf-page {
-  --mf-dark: #0b0b0c;
-  --mf-dark-ink: #f5f5f7;
-  --mf-dark-ink-2: #a1a1a6;
-  --mf-dark-surface: #1c1c1e;
-  --mf-device: #1d1d1f;
-}
+/* MontageFrames, 0f (kierunek Apple, marka wiktoriaskopek.pl): większa i ciaśniejsza typografia, rytm jasne / ciemne.
+   Tokeny (kolory, typografia, odstępy, ruch) są w app/mf-tokens.css (design system, kopia dla panelu w Shared/montageframes-produkt/design-system). */
 html:has(.mf-page), body:has(.mf-page) { overflow-x: clip; }
 .mf-display { font-size: clamp(3.25rem, 7.2vw, 6rem); font-weight: 800; line-height: 0.94; letter-spacing: -0.045em; text-wrap: balance; overflow-wrap: break-word; min-width: 0; }
 .mf-h2 { font-size: clamp(2.4rem, 5.4vw, 4.75rem); line-height: 0.98; letter-spacing: -0.04em; }

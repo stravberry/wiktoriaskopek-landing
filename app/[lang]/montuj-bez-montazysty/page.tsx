@@ -5,6 +5,8 @@ import { MF_BASE_PATH, MF_PRODUCTS, MF_REQUIREMENTS, SELLER } from "@/lib/mf/con
 import { MF_FAQ, MF_FEATURES, MF_QUALITY_CHECKS, MF_SHOWCASE, MF_STEPS, MF_STYLES, TODO, stylesLabel } from "@/lib/mf/content"
 import { PanelShots, ShowcaseBlock } from "@/components/mf/showcase"
 import { StyleGallery } from "@/components/mf/style-gallery"
+import { PaperVariants, SimpleCaptions } from "@/components/mf/simple-captions"
+import { shopTestLocked } from "@/lib/mf/core"
 import { LazyVideo } from "@/components/mf/lazy-video"
 import { Section, WithTodo } from "@/components/mf/ui"
 import { BuyButton, BuyDialog, BuyForm, BuyRow, GuaranteeLine, KonsultacjaLink, StickyBuyBar } from "@/components/mf/buy"
@@ -15,7 +17,7 @@ import { ClientLogos } from "@/components/mf/clients"
 import { LayerStack, PanelTilt, PhoneSpin } from "@/components/mf/apple"
 
 const URL = `https://www.wiktoriaskopek.pl${MF_BASE_PATH}`
-const TITLE = "Montuj swoje filmy i rolki w AI! Bez montażysty | MontageFrames"
+const TITLE = "Montuj filmy i rolki w AI bez montażysty | MontageFrames"
 const DESC = `Montuj rolki i filmy w AI bez montażysty: MontageFrames dla Claude Code, ${stylesLabel()}, kreator marki, krytyk jakości i panel. ${MF_PRODUCTS.paczka.priceLabel} jednorazowo.`
 const OG_IMAGE = { url: "/mf/montageframes-promo-16x9.jpg", width: 1920, height: 1080, alt: "MontageFrames: montaż rolek w Claude Code" }
 
@@ -49,7 +51,8 @@ export default function MontujBezMontazysty() {
           name: x.name,
           price: (x.amountGrosze / 100).toFixed(2),
           priceCurrency: "PLN",
-          availability: "https://schema.org/InStock",
+          // Tryb testowy na produkcji: zakup jeszcze niemożliwy, więc nie „InStock” (zgodność danych z tym, co widzi klient).
+          availability: shopTestLocked(process.env) ? "https://schema.org/PreOrder" : "https://schema.org/InStock",
           url: `${URL}#zamowienie`,
           seller,
         })),
@@ -161,6 +164,14 @@ export default function MontujBezMontazysty() {
           label="Sześć stylów na tym samym nagraniu: Słowo po słowie, Luksusowy dokument, Elegancki premium, Adnotacje odręczne, Mem / Gen Z, Pytania i odpowiedzi"
         />
         <StyleGallery styles={MF_STYLES} />
+      </Section>
+
+      {/* 0k: proste napisy (1/2/3 słowa, 5 animacji) i Paper w 5 wariantach */}
+      <Section id="proste-napisy" title="Proste napisy, bez ozdobników" lead="1, 2 albo 3 słowa naraz. Animację wybierasz sam: bez animacji, pop, fade, wjazd w górę albo maszyna do pisania.">
+        <SimpleCaptions />
+        <h3 className="mt-20 text-[clamp(1.6rem,3vw,2.25rem)] font-bold tracking-[-0.03em] md:mt-28">Paper w pięciu wariantach</h3>
+        <p className="mf-lead mt-3 max-w-[52ch]">Kolaż, zeszyt, wycinanki, gazeta i karton. Faktury i krawędzie są generowane w programie.</p>
+        <div className="mt-10"><PaperVariants /></div>
       </Section>
 
       <BuyRow source="after_styles" trialHref={TRIAL} />
