@@ -109,11 +109,52 @@ export const CHAPTERS: Chapter[] = [
     ],
   },
   {
-    slug: "aktualizacje-i-pomoc",
-    title: "10. Aktualizacje i pomoc",
-    lead: "Nowe style i poprawki dostajesz jedną komendą.",
+    // Treść: Coding Builder, Shared/montageframes-produkt/poradnik/aktualizacje.md (wydanie-6-hyperframes, 26.11.2026).
+    slug: "aktualizacje",
+    title: "10. Aktualizacje programu i silnika",
+    lead: "Program aktualizujesz jedną komendą. Silnik HyperFrames zostaje w wersji sprawdzonej przez nas, chyba że wybierzesz najnowszą.",
     blocks: [
-      { p: "Wpisz /aktualizacja. Program pobierze nową wersję i zostawi Twoją markę bez zmian. Wersja ZIP: pobierz nowy plik z konta." },
+      { p: "MontageFrames składa się z programu (to, co pobierasz z GitHuba) i silnika renderowania HyperFrames. Program aktualizujesz jednym poleceniem; silnik możesz zostawić w wersji sprawdzonej przez nas albo przejść na najnowszą." },
+      { p: "Jak sprawdzić wersję:" },
+      { list: [
+        "W Claude Code wpisz /aktualizacja. Claude pokaże wersję programu, silnika HyperFrames (obecną, zalecaną i najnowszą) oraz stan skilli.",
+        "W panelu: Ustawienia → Aktualizacje.",
+        "W Terminalu, w folderze programu:",
+      ] },
+      { code: "node scripts/mf/update.mjs status" },
+      { p: "Jak zaktualizować program:" },
+      { list: [
+        "W Claude Code: /aktualizacja.",
+        "W panelu: Ustawienia → Aktualizacje → „Zaktualizuj program”.",
+      ] },
+      { p: "Program pobiera nowe wydanie z GitHuba razem z wersją silnika, którą sprawdziliśmy na pełnym zestawie testów. Twoje rolki, profil marki, preferencje i gotowe filmy zostają bez zmian. Po aktualizacji uruchom panel ponownie (/panel). Masz wersję ZIP? Pobierz nowy plik z konta." },
+      { p: "Jak zaktualizować silnik HyperFrames do najnowszej wersji. Rób to tylko, jeśli potrzebujesz nowości z HyperFrames, której nie ma jeszcze w naszym wydaniu:" },
+      { list: [
+        "W panelu: Ustawienia → Aktualizacje → Silnik i skille → „Silnik: najnowsza wersja”.",
+        "Albo w Claude Code: „zaktualizuj silnik HyperFrames do najnowszej wersji”.",
+      ] },
+      { p: "Co się wtedy dzieje:" },
+      { list: [
+        "Program pokazuje obecną i najnowszą wersję i ostrzega, że najnowsza nie była przez nas testowana.",
+        "Robi kopię ustawień zależności (package.json, package-lock.json) w .updates/engine-backup/.",
+        "Instaluje nową wersję i uruchamia samotest: nagranie demo, transkrypcja, krytyk jakości i render MP4 (1–2 minuty).",
+        "Jeśli coś nie działa, sam wraca do poprzedniej wersji i mówi, co się stało.",
+      ] },
+      { p: "Skille HyperFrames (instrukcje dla Claude do animacji) aktualizujesz tak samo: „Zaktualizuj skille”. Program robi kopię w .updates/skills-backup/ i przy błędzie przywraca poprzednie." },
+      { p: "Jak wrócić:" },
+      { list: [
+        "Silnik: Ustawienia → Aktualizacje → „Wróć do wersji zalecanej” albo polecenie poniżej.",
+        "Skille: „Przywróć poprzednie skille” albo polecenie poniżej.",
+        "Kolejna zwykła aktualizacja programu też przywraca zalecaną wersję silnika.",
+      ] },
+      { code: "node scripts/mf/update.mjs engine-recommended\nnode scripts/mf/update.mjs skills-restore" },
+    ],
+  },
+  {
+    slug: "pomoc",
+    title: "11. Pomoc",
+    lead: "Lista komend i kontakt, gdy coś nie działa.",
+    blocks: [
       { p: "Komenda /pomoc pokazuje listę komend. Problem z instalacją? Napisz na wskopek.all@gmail.com i dołącz wynik /stan." },
     ],
   },
