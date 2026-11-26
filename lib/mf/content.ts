@@ -225,12 +225,12 @@ export const MF_CASES: CaseStudy[] = [
 /** Pas „Z MontageFrames montują już” (zlecenie Wiktorii, 26.11): loga z oficjalnych stron firm, tylko kolor i rozmiar zmienione na stronie.
  *  Pliki w public/mf/klienci/, źródła: montageframes-produkt/sklep-landing/pokaz/runda2/loga/ZRODLA.md.
  *  ratio = szerokość / wysokość pliku; wysokość na stronie liczymy tak, żeby loga miały podobną powierzchnię (równa waga optyczna). */
-export type MfClient = { name: string; logo?: { src: string; ratio: number }; site?: string }
+export type MfClient = { name: string; logo?: { src: string; ratio: number; optical?: number }; site?: string }
 export const MF_CLIENTS: MfClient[] = [
-  { name: "GlowUp Nutrition (Paweł Węglarz)", logo: { src: "/mf/klienci/glowup-nutrition.webp", ratio: 581 / 160 }, site: "https://nutriglowup.pl" },
+  { name: "GlowUp Nutrition (Paweł Węglarz)", logo: { src: "/mf/klienci/glowup-nutrition.webp", ratio: 581 / 160, optical: 0.88 }, site: "https://nutriglowup.pl" },
   { name: "Vital Hormone, centrum medyczne", logo: { src: "/mf/klienci/vital-hormone.webp", ratio: 692 / 160 }, site: "https://vital-hormone.pl" },
   { name: "DKW Group", logo: { src: "/mf/klienci/dkw-group.webp", ratio: 388 / 160 }, site: "https://dkwgroup.net/pl" },
-  { name: "WebDKW", logo: { src: "/mf/klienci/webdkw.svg", ratio: 159.15 / 27.3 }, site: "https://webdkw.net" },
+  { name: "WebDKW", logo: { src: "/mf/klienci/webdkw.svg", ratio: 159.15 / 27.3, optical: 0.85 }, site: "https://webdkw.net" },
   { name: "PodcastKatowice.pl", logo: { src: "/mf/klienci/podcast-katowice.webp", ratio: 933 / 160 }, site: "https://podcastkatowice.pl" },
   // Bez strony z logo: znak tekstowy w tym samym stylu.
   { name: "Kacper Bisanz" },

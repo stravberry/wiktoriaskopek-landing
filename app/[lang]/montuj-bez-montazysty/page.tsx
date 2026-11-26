@@ -81,7 +81,7 @@ export default function MontujBezMontazysty() {
         </div>
         <GuaranteeLine className="mt-5" />
         <p className="mx-auto mt-3 max-w-[56ch] text-[15px] leading-[1.6] text-[var(--h-ink-2)]">
-          Wolisz razem z Wiktorią? <KonsultacjaLink>Z konsultacją 1:1 i instalacją: {k.priceLabel}</KonsultacjaLink>.
+          Wolisz razem z Wiktorią? <span className="whitespace-nowrap"><KonsultacjaLink>Z konsultacją 1:1 i instalacją: {k.priceLabel}</KonsultacjaLink></span>.
         </p>
         <div className="mt-14 md:mt-20">
           <PhoneSpin src="/mf/style/dynamiczny-zakreslacz.mp4" poster="/mf/style/dynamiczny-zakreslacz.jpg" label="Rolka zmontowana w MontageFrames, styl Dynamiczny zakreślacz" />

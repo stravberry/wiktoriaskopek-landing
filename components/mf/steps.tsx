@@ -158,7 +158,7 @@ export function StepByStep({ steps }: { steps: Step[] }) {
         <span aria-hidden className="absolute bottom-0 left-[19px] top-0 w-[2px] bg-[var(--h-surface-hover)]" />
         <motion.span aria-hidden style={{ scaleY: reduce ? 1 : progress }} className="absolute bottom-0 left-[19px] top-0 w-[2px] origin-top bg-[var(--h-accent)]" />
         {steps.map((s, i) => (
-          <li key={s.title} data-step={i} className="relative lg:flex lg:min-h-[62vh] lg:flex-col lg:justify-center">
+          <li key={s.title} data-step={i} className="relative lg:flex lg:min-h-[48vh] lg:flex-col lg:justify-center">
             <span
               aria-hidden
               className={`absolute -left-14 top-0 grid size-10 place-items-center rounded-full text-[15px] font-bold transition-colors duration-300 lg:top-1/2 lg:-translate-y-1/2 ${
