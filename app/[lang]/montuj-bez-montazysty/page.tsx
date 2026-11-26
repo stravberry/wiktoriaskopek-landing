@@ -95,11 +95,19 @@ export default function MontujBezMontazysty() {
       {/* Ciemna scena: film promo na całą szerokość kontenera */}
       <Section id="promo" title="Mówisz. Claude montuje." tone="dark" center lead="Napisy, animacje, cięcia i kolory Twojej marki. Bez osi czasu i bez klatkowania.">
         <ScrollScale>
+          {/* Telefon: pionowa wersja (9:16) z nagrań panelu na telefonie; od 640 px pozioma. */}
           <LazyVideo
-            className="aspect-video w-full rounded-[24px] bg-[#050505] object-cover"
+            className="mx-auto aspect-[9/16] w-full max-w-[420px] rounded-[24px] bg-[#050505] object-cover sm:hidden"
+            src="/mf/montageframes-promo-9x16.mp4"
+            poster="/mf/montageframes-promo-9x16-poster.jpg"
+            label="Film: MontageFrames w 25 sekund (wersja na telefon)"
+            controls
+          />
+          <LazyVideo
+            className="hidden aspect-video w-full rounded-[24px] bg-[#050505] object-cover sm:block"
             src="/mf/montageframes-promo-16x9.mp4"
             poster="/mf/montageframes-promo-poster.jpg"
-            label="Film: MontageFrames w 20 sekund"
+            label="Film: MontageFrames w 25 sekund"
             controls
           />
         </ScrollScale>
@@ -142,7 +150,7 @@ export default function MontujBezMontazysty() {
 
       {/* Ciemna scena: duże zbliżenie na panel (3D: zrzut prostuje się przy przewijaniu) */}
       <Section id="panel" title="Każde słowo pod ręką." tone="dark" center lead="Poprawiasz w rozmowie z Claude Code albo w panelu w przeglądarce. Oba sposoby działają na tym samym projekcie.">
-        <PanelTilt src="/mf/panel-0l/03-edytor-slowo.jpg" alt="Panel: edytor rolki, wybrane słowo z opcjami wyróżnienia, lista słów i oś czasu" />
+        <PanelTilt src="/mf/panel-final/04-edycja-slowa.jpg" alt="Panel: edytor rolki, wybrane słowo z opcjami wyróżnienia, lista słów i oś czasu" />
         <div className="mx-auto mt-16 grid max-w-[920px] gap-10 text-left md:mt-24 md:grid-cols-2">
           <Reveal>
             <h3 className="text-[24px] font-semibold">W rozmowie</h3>
