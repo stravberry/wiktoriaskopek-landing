@@ -6,6 +6,7 @@ import { TRIAL_API, TRIAL_CONSENT_TEXT, TRIAL_CONSENT_VERSION, TRIAL_FONTS, TRIA
 import { TRIAL_FONT_FAMILY } from "@/lib/mf/trial-fonts"
 import { TrialApp, TrialExample, TrialStart } from "@/components/mf/trial-app"
 import { BuyDialog } from "@/components/mf/buy"
+import { EMAIL_WORD } from "@/lib/typo"
 
 export const dynamic = "force-dynamic"
 export const metadata: Metadata = {
@@ -49,7 +50,7 @@ export default async function Proba() {
         <div className="grid items-start gap-10 lg:grid-cols-[minmax(0,1fr)_300px] lg:gap-16">
           <div>
             <h1 className="mf-h2 max-w-[18ch]">Zrób swoją pierwszą rolkę za darmo</h1>
-            <p className="mf-lead mt-4 max-w-[48ch]">Zobacz MontageFrames na swoim nagraniu. Bez karty, wystarczy e-mail.</p>
+            <p className="mf-lead mt-4 max-w-[48ch]">Zobacz MontageFrames na swoim nagraniu. Bez karty, wystarczy {EMAIL_WORD}.</p>
             <div className="mt-6 max-w-[560px]">
               <TrialStart />
             </div>

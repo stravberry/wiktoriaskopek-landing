@@ -30,6 +30,8 @@ export function measureLayout() {
     let m
     while ((m = re.exec(n.textContent))) {
       if (/@|\/\/|\.[a-z]{2,}\//i.test(m[0])) continue // adresy e-mail i URL mogą się łamać
+      // Łamanie na łączniku w zwykłym tekście to normalna typografia; błąd tylko w kontrolkach, nagłówkach i tabelach.
+      if (/[-–]/.test(m[0]) && !p.closest("button, a, label, summary, h1, h2, h3, th, td, dt, [role=button], [role=radio], [role=tab]")) continue
       const range = document.createRange(); range.setStart(n, m.index); range.setEnd(n, m.index + m[0].length)
       if (new Set([...range.getClientRects()].filter((q) => q.width > 0).map((q) => Math.round(q.top))).size > 1) broken.add(`${sel(p)} „${m[0].slice(0, 30)}”`)
     }

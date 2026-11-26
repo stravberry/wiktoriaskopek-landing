@@ -1,7 +1,7 @@
 import type { Metadata } from "next"
 import Image from "next/image"
 import Link from "next/link"
-import { nobr } from "@/lib/typo"
+import { EMAIL_WORD, nobr } from "@/lib/typo"
 import { MF_BASE_PATH, MF_PRODUCTS, MF_REQUIREMENTS, SELLER } from "@/lib/mf/config"
 import { MF_FAQ, MF_FEATURES, MF_QUALITY_CHECKS, MF_SHOWCASE, MF_STEPS, MF_STYLES, TODO, stylesLabel } from "@/lib/mf/content"
 import { PanelShots, ShowcaseBlock } from "@/components/mf/showcase"
@@ -347,7 +347,7 @@ export default function MontujBezMontazysty() {
           <BuyForm />
         </div>
         <p className="mt-6 max-w-[90ch] text-[15px] leading-[1.6] text-[var(--h-ink-2)]">
-          Sprzedawca: {SELLER.name}, {nobr(SELLER.address)}, {SELLER.form}, e-mail {SELLER.email}, tel. {SELLER.phone}. Ceny końcowe, sprzedawca nie jest czynnym podatnikiem
+          Sprzedawca: {SELLER.name}, {nobr(SELLER.address)}, {SELLER.form}, {EMAIL_WORD} {SELLER.email}, tel. {SELLER.phone}. Ceny końcowe, sprzedawca nie jest czynnym podatnikiem
           VAT. <Link className="underline" href={`${MF_BASE_PATH}/regulamin`}>Regulamin sprzedaży</Link> · <Link className="underline" href="/pl/polityka-prywatnosci">Polityka prywatności</Link>
         </p>
       </Section>
