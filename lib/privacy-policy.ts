@@ -2,7 +2,7 @@
 // Wersja: POLICY_VERSION w lib/mf/config.ts (zapisywana w dzienniku zgód). Nie jest poradą prawną.
 import { SELLER } from "./mf/config.ts"
 
-export const PRIVACY_UPDATED = "26 listopada 2026 (wersja polityka-2026-11-26-2: darmowa próba MontageFrames, dziennik zdarzeń sprzedaży, źródło wejścia)"
+export const PRIVACY_UPDATED = "26 listopada 2026 (wersja polityka-2026-11-26-3: ochrona formularzy przed botami Cloudflare Turnstile)"
 
 export const PRIVACY_SECTIONS: { title: string; items: string[] }[] = [
   {
@@ -21,6 +21,7 @@ export const PRIVACY_SECTIONS: { title: string; items: string[] }[] = [
       "Zgody na cookies: losowy identyfikator zgody, data, wybór kategorii, wersja banera i polityki, język i adres podstrony. Bez adresu IP i bez odcisku przeglądarki (lit. c w zw. z art. 7 ust. 1 RODO).",
       "Darmowa próba MontageFrames: e-mail, ustawienia marki (nazwa, kolory, font, styl, opcjonalnie logo, ton i odbiorcy), nagranie, które wgrywasz, i gotowa rolka próbna ze znakiem wodnym, a także treść i czas zgody na przetworzenie nagrania — żeby zmontować próbną rolkę (lit. b, a dla nagrania z Twoim wizerunkiem i głosem także Twoja zgoda, lit. a). Wgrywasz nagranie tylko z sobą albo z osobami, które się na to zgodziły. Montaż próby wykonuje program MontageFrames na komputerze administratora, a transkrypcja działa lokalnie, bez zewnętrznych usług AI.",
       "Dziennik zdarzeń sprzedaży po stronie serwera (np. kliknięcie „Kup”, rozpoczęcie płatności, zakup, etapy próby): bez plików cookies i bez identyfikatora urządzenia, a dla zalogowanych ze skrótem (hash) adresu e-mail — żeby mierzyć działanie sklepu i próby (lit. f). Zapisujemy też źródło wejścia z adresu strony (parametry utm_ i fbclid): w pamięci karty przeglądarki (sessionStorage, znika po zamknięciu karty), przy próbie i przy zamówieniu, żeby wiedzieć, z której kampanii przyszedł zakup (lit. f).",
+      "Ochrona formularzy przed botami (formularz kontaktowy, zapis na darmową próbę, formularz odstąpienia): Cloudflare Turnstile sprawdza, czy formularz wysyła człowiek. Przetwarza przy tym adres IP i techniczne cechy przeglądarki i urządzenia, a nam przekazuje tylko wynik sprawdzenia — żeby chronić formularze przed spamem i nadużyciami (lit. f). Bez tego sprawdzenia formularza nie da się wysłać.",
       "Statystyki odwiedzin (Vercel Analytics) — tylko po Twojej zgodzie (lit. a). Marketing e-mail — tylko po osobnej zgodzie przy zamówieniu albo przy zapisie na próbę (lit. a).",
     ],
   },
@@ -28,6 +29,7 @@ export const PRIVACY_SECTIONS: { title: string; items: string[] }[] = [
     title: "3. Pliki cookies i podobne technologie",
     items: [
       "Niezbędne (bez zgody): ws_consent — zapamiętuje Twój wybór, 6 miesięcy; mf_session — logowanie do konta MontageFrames, httpOnly, 30 dni.",
+      "Niezbędne zabezpieczenie formularzy (bez zgody): Cloudflare Turnstile uruchamia się tylko na stronach z formularzem (kontakt, darmowa próba, odstąpienie) i odczytuje techniczne dane przeglądarki potrzebne do sprawdzenia, czy to nie bot. Nie służy do śledzenia ani reklam.",
       "Statystyki (po zgodzie): Vercel Analytics — zbiorcze statystyki odwiedzin bez plików cookies, dostawca Vercel Inc.",
       "Treści zewnętrzne (po zgodzie lub kliknięciu „Pokaż kalendarz”): kalendarz Cal.com, który może zapisywać własne pliki i odczytywać dane przeglądarki, dostawca Cal.com, Inc.",
       "Marketing: dziś nie używamy narzędzi reklamowych (np. Piksela Meta ani Google Ads). Jeśli je dodamy, poprosimy o zgodę ponownie.",
@@ -38,7 +40,7 @@ export const PRIVACY_SECTIONS: { title: string; items: string[] }[] = [
   {
     title: "4. Odbiorcy danych",
     items: [
-      "Vercel Inc. (hosting strony, statystyki po zgodzie), Stripe Payments Europe Ltd. (płatności), Resend / Plus Five Five, Inc. (wysyłka maili), Supabase, Inc. (baza zamówień oraz pliki darmowej próby, serwery w UE — Frankfurt), GitHub, Inc. (dostęp do repozytorium programu, jeśli podasz login GitHub), Cal.com, Inc. (kalendarz, po zgodzie).",
+      "Vercel Inc. (hosting strony, statystyki po zgodzie), Stripe Payments Europe Ltd. (płatności), Resend / Plus Five Five, Inc. (wysyłka maili), Supabase, Inc. (baza zamówień oraz pliki darmowej próby, serwery w UE — Frankfurt), GitHub, Inc. (dostęp do repozytorium programu, jeśli podasz login GitHub), Cal.com, Inc. (kalendarz, po zgodzie), Cloudflare, Inc. (ochrona formularzy przed botami: Turnstile).",
       "Część dostawców ma siedzibę w USA. Dane trafiają tam na podstawie decyzji Komisji Europejskiej o odpowiednim stopniu ochrony (EU-US Data Privacy Framework) albo standardowych klauzul umownych.",
       "Dane możemy przekazać organom państwa, gdy wymaga tego prawo.",
     ],
