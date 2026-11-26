@@ -3,6 +3,7 @@ import Link from "next/link"
 import type { Metadata } from "next"
 import type { Locale } from "@/lib/translations"
 import { PRIVACY_SECTIONS, PRIVACY_UPDATED } from "@/lib/privacy-policy"
+import { nobr } from "@/lib/typo"
 
 export const metadata: Metadata = {
   title: "Polityka Prywatności | Wiktoria Skopek",
@@ -68,7 +69,7 @@ export default async function PolitykaPrywatnosci({
               <h2 className="font-display text-2xl md:text-3xl text-white tracking-wide mb-4 uppercase">{sec.title}</h2>
               <div className="space-y-4">
                 {sec.items.map((t) => (
-                  <p key={t} className="text-white/65 text-base md:text-lg leading-relaxed">{t}</p>
+                  <p key={t} className="text-white/65 text-base md:text-lg leading-relaxed">{nobr(t)}</p>
                 ))}
               </div>
             </section>

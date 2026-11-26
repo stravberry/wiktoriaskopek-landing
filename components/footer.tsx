@@ -54,14 +54,14 @@ export default function Footer({ lang = "pl" }: { lang?: Locale }) {
               Twój partner strategiczny w budowaniu autorytetu wideo. Łączymy produkcję premium z psychologią sprzedaży.
             </p>
 
-            <div className="space-y-4">
-              <a href="mailto:wskopek.all@gmail.com" className="group flex items-center gap-3 w-fit">
+            <div className="space-y-1">
+              <a href="mailto:wskopek.all@gmail.com" className="group flex min-h-11 items-center gap-3 w-fit">
                 <div className="w-8 h-8 rounded-full border border-white/5 flex items-center justify-center group-hover:border-accent/30 group-hover:bg-accent/5 transition-[border-color,background-color] duration-500">
                   <Mail className="w-3.5 h-3.5 text-white/40 group-hover:text-accent transition-colors duration-500" />
                 </div>
                 <span className="font-sans text-sm text-white/40 group-hover:text-white transition-colors duration-500 tracking-tight font-medium">wskopek.all@gmail.com</span>
               </a>
-              <a href="tel:+48537168645" className="group flex items-center gap-3 w-fit">
+              <a href="tel:+48537168645" className="group flex min-h-11 items-center gap-3 w-fit">
                 <div className="w-8 h-8 rounded-full border border-white/5 flex items-center justify-center group-hover:border-accent/30 group-hover:bg-accent/5 transition-[border-color,background-color] duration-500">
                   <Phone className="w-3.5 h-3.5 text-white/40 group-hover:text-accent transition-colors duration-500" />
                 </div>
@@ -73,7 +73,7 @@ export default function Footer({ lang = "pl" }: { lang?: Locale }) {
           {/* Navigation Column */}
           <div className="lg:col-span-3">
             <h3 className="font-display text-xs tracking-[.2em] text-accent/60 uppercase mb-8 font-bold">Nawigacja</h3>
-            <ul className="space-y-4">
+            <ul className="space-y-1">
               {navLinks.map((item) => (
                 <li key={item.name}>
                   {item.external ? (
@@ -81,7 +81,7 @@ export default function Footer({ lang = "pl" }: { lang?: Locale }) {
                       href={item.href}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="group flex items-center gap-2 font-sans text-sm text-white/30 hover:text-white transition-colors duration-500 font-medium"
+                      className="group flex min-h-11 items-center gap-2 font-sans text-sm text-white/30 hover:text-white transition-colors duration-500 font-medium"
                     >
                       <span className="w-0 group-hover:w-1.5 h-px bg-accent/50 transition-[width,opacity] duration-500 opacity-0 group-hover:opacity-100" />
                       {item.name}
@@ -89,7 +89,7 @@ export default function Footer({ lang = "pl" }: { lang?: Locale }) {
                   ) : (
                     <Link
                       href={item.href}
-                      className="group flex items-center gap-2 font-sans text-sm text-white/30 hover:text-white transition-colors duration-500 font-medium"
+                      className="group flex min-h-11 items-center gap-2 font-sans text-sm text-white/30 hover:text-white transition-colors duration-500 font-medium"
                     >
                       <span className="w-0 group-hover:w-1.5 h-px bg-accent/50 transition-[width,opacity] duration-500 opacity-0 group-hover:opacity-100" />
                       {item.name}
@@ -118,26 +118,26 @@ export default function Footer({ lang = "pl" }: { lang?: Locale }) {
               ))}
             </div>
 
-            <div className="pt-8 border-t border-white/5 space-y-4">
+            <div className="pt-8 border-t border-white/5">
               <Link
                 href={`/${lang}/polityka-prywatnosci`}
-                className="block font-sans text-[10px] uppercase tracking-widest text-white/20 hover:text-white transition-colors duration-500 font-bold"
+                className="flex min-h-11 items-center font-sans text-[10px] uppercase tracking-widest text-white/20 hover:text-white transition-colors duration-500 font-bold"
               >
                 Polityka Prywatności
               </Link>
               <Link
                 href={`/${lang}/regulamin`}
-                className="block font-sans text-[10px] uppercase tracking-widest text-white/20 hover:text-white transition-colors duration-500 font-bold"
+                className="flex min-h-11 items-center font-sans text-[10px] uppercase tracking-widest text-white/20 hover:text-white transition-colors duration-500 font-bold"
               >
                 Regulamin
               </Link>
-              <Link href="/pl/montuj-bez-montazysty/regulamin" className="block font-sans text-[10px] uppercase tracking-widest text-white/20 hover:text-white transition-colors duration-500 font-bold">
+              <Link href="/pl/montuj-bez-montazysty/regulamin" className="flex min-h-11 items-center font-sans text-[10px] uppercase tracking-widest text-white/20 hover:text-white transition-colors duration-500 font-bold">
                 Regulamin sprzedaży MontageFrames
               </Link>
-              <Link href="/pl/odstapienie" className="block font-sans text-[10px] uppercase tracking-widest text-white/20 hover:text-white transition-colors duration-500 font-bold">
+              <Link href="/pl/odstapienie" className="flex min-h-11 items-center font-sans text-[10px] uppercase tracking-widest text-white/20 hover:text-white transition-colors duration-500 font-bold">
                 Odstąp od umowy
               </Link>
-              <button type="button" onClick={openConsentSettings} className="block font-sans text-[10px] uppercase tracking-widest text-white/20 hover:text-white transition-colors duration-500 font-bold text-left">
+              <button type="button" onClick={openConsentSettings} className="flex min-h-11 items-center font-sans text-[10px] uppercase tracking-widest text-white/20 hover:text-white transition-colors duration-500 font-bold text-left">
                 Ustawienia cookies
               </button>
             </div>

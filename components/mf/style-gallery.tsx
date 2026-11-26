@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useRef, useState } from "react"
 import { useReducedMotion } from "framer-motion"
 import type { MfStyle, MfStyleUse } from "@/lib/mf/content"
+import { nobr } from "@/lib/typo"
 
 // Galeria stylów (landing i próba): karta = poster, a podgląd w ruchu dopiero po najechaniu (mysz)
 // albo gdy karta jest na środku ekranu (dotyk). Wideo montujemy tylko dla aktywnej karty, więc reszta nic nie pobiera.
@@ -77,7 +78,7 @@ function StyleCard({ s, selected, onSelect, active, setActive }: {
       <p className="mt-3 text-[17px] font-semibold leading-[1.25]">{s.name}</p>
       <p className="mt-1 text-[15px] leading-[1.45] text-[var(--h-ink-2)]">{s.forWhom}</p>
       <ul className="mt-2 flex flex-wrap gap-1.5 text-[14px] text-[#4a4a4a]" aria-label="Cechy stylu">
-        <li className="rounded-full bg-[var(--h-surface)] px-2.5 py-1">{s.motion.split(",")[0]}</li>
+        <li className="rounded-full bg-[var(--h-surface)] px-2.5 py-1">{nobr(s.motion.split(",")[0])}</li>
         <li className="rounded-full bg-[var(--h-surface)] px-2.5 py-1">tempo {s.tempo}</li>
         {s.use[0] && <li className="rounded-full bg-[var(--h-surface)] px-2.5 py-1">{USE_LABEL[s.use[0]]}</li>}
       </ul>

@@ -3,6 +3,7 @@ import { MF_PANEL_SHOTS, type MfShowcase } from "@/lib/mf/content"
 import { LazyVideo } from "@/components/mf/lazy-video"
 import { Reveal } from "@/components/mf/motion"
 import { PanelClip } from "@/components/mf/apple"
+import { nobr } from "@/lib/typo"
 
 /** Jedna funkcja = jedna sekcja z własnym filmem (i zrzutem panelu, jeśli jest). */
 export function ShowcaseBlock({ f, flip, dark = false }: { f: MfShowcase; flip: boolean; dark?: boolean }) {
@@ -11,7 +12,7 @@ export function ShowcaseBlock({ f, flip, dark = false }: { f: MfShowcase; flip: 
       <div className={`mf-wrap grid items-center gap-10 md:gap-16 ${!f.video ? "" : f.video.aspect === "16/9" ? "lg:grid-cols-[minmax(0,1fr)_minmax(0,1.3fr)]" : "md:grid-cols-[minmax(0,1fr)_320px]"}`}>
         <Reveal className={flip && f.video ? "md:order-2" : ""}>
           <h3 id={`${f.id}-title`} className="text-[clamp(2rem,4.2vw,3.5rem)] font-extrabold leading-[1] tracking-[-0.04em] [text-wrap:balance]">{f.title}</h3>
-          <p className="mf-lead mt-4 max-w-[46ch]">{f.lead}</p>
+          <p className="mf-lead mt-4 max-w-[46ch]">{nobr(f.lead)}</p>
           <ul className="mt-6 flex max-w-[56ch] list-disc flex-col gap-3 pl-5 leading-[1.6]">
             {f.points.map((x) => <li key={x}>{x}</li>)}
           </ul>

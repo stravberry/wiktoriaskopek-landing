@@ -52,7 +52,7 @@ export default async function Konto({ searchParams }: { searchParams: Promise<{ 
           <p className="mt-2 text-[16px] text-[var(--h-ink-2)]">{email}</p>
         </div>
         <form action="/api/mf/logout" method="post">
-          <button className="rounded-full bg-[var(--h-surface)] px-5 py-2.5 text-[15px] font-semibold hover:bg-[var(--h-surface-hover)]">Wyloguj</button>
+          <button className="inline-flex min-h-11 items-center rounded-full bg-[var(--h-surface)] px-5 text-[15px] font-semibold hover:bg-[var(--h-surface-hover)]">Wyloguj</button>
         </form>
       </div>
 

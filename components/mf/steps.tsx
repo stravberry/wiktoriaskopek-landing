@@ -4,6 +4,7 @@ import Image from "next/image"
 import { useEffect, useRef, useState } from "react"
 import { AnimatePresence, motion, useReducedMotion, useScroll, useSpring } from "framer-motion"
 import { LazyVideo } from "@/components/mf/lazy-video"
+import { nobr } from "@/lib/typo"
 
 // „Jak to działa krok po kroku” (00-PLAN 0d, pkt 10): każdy krok ma zrzut, rolkę z programu albo animowaną makietę ekranu.
 // Makiety (zakup, zaproszenie, instalacja) to ilustracje przebiegu, nie zrzuty ekranu.
@@ -169,7 +170,7 @@ export function StepByStep({ steps }: { steps: Step[] }) {
             </span>
             <div className={`transition-opacity duration-300 ${i === active ? "lg:opacity-100" : "lg:opacity-[0.65]"}`}>
               <h3 className="text-[24px] font-semibold leading-[1.2] tracking-[-0.015em]">{s.title}</h3>
-              <p className="mt-3 max-w-[46ch] leading-[1.6]">{s.text}</p>
+              <p className="mt-3 max-w-[46ch] leading-[1.6]">{nobr(s.text)}</p>
             </div>
             <div className="mt-6 lg:hidden">
               <StepMedia m={s.media} />

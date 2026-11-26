@@ -3,6 +3,7 @@
 import { Turnstile } from "@/components/turnstile"
 import { getUtm } from "@/lib/mf/utm-client"
 import { useCallback, useEffect, useRef, useState } from "react"
+import { nobr } from "@/lib/typo"
 import Link from "next/link"
 import { Loader2, Upload } from "lucide-react"
 import { MF_BASE_PATH, MF_PRODUCTS } from "@/lib/mf/config"
@@ -37,8 +38,8 @@ type Limits = { videoMaxBytes: number; videoMinSeconds: number; videoMaxSeconds:
 
 const field = "min-h-12 w-full rounded-2xl bg-[var(--h-bg)] px-4 text-[16px] outline-none focus-visible:ring-2 focus-visible:ring-[var(--h-accent)]"
 const primary =
-  "mf-press inline-flex min-h-14 items-center justify-center gap-3 rounded-full bg-[var(--h-accent)] px-7 text-[17px] font-bold text-[#111111] disabled:opacity-60"
-const card = "rounded-[28px] bg-[var(--h-surface)] p-6 md:p-9"
+  "mf-press inline-flex min-h-14 max-w-full items-center justify-center gap-3 rounded-full bg-[var(--h-accent)] px-7 py-3 text-center text-[17px] font-bold leading-tight text-[#111111] [text-wrap:balance] disabled:opacity-60"
+const card = "min-w-0 rounded-[28px] bg-[var(--h-surface)] p-5 min-[360px]:p-6 md:p-9"
 
 // Szacunek czasu (pomiary 26.11: 14,5 s nagrania → 150–204 s razem z kolejką). Zastępuje go etaSeconds z API, gdy jest.
 const AVG_RENDER = 180
@@ -184,7 +185,7 @@ function Stepper({ step, maxStep, onGo }: { step: number; maxStep: number; onGo:
   const labels = ["Marka", "Styl", "Nagranie", "Montaż", "Rolka"]
   const locked = maxStep >= 3
   return (
-    <ol className="flex flex-wrap gap-2" aria-label="Kroki próby">
+    <ol className="flex flex-wrap gap-1.5 sm:gap-2" aria-label="Kroki próby">
       {labels.map((l, i) => {
         const done = i < step
         const current = i === step
@@ -194,17 +195,18 @@ function Stepper({ step, maxStep, onGo }: { step: number; maxStep: number; onGo:
             <span className={`grid size-7 place-items-center rounded-full text-[14px] font-bold ${current ? "bg-[var(--h-accent)] text-[#111111]" : done ? "bg-[var(--h-ink)] text-[var(--h-bg)]" : "bg-[var(--h-bg)] text-[var(--h-ink-2)]"}`}>
               {done ? <CheckIcon /> : i + 1}
             </span>
-            <span className={current ? "font-semibold" : "text-[var(--h-ink-2)]"}>{l}</span>
+            {/* Na telefonie same numery: nazwę kroku podaje wiersz „Krok N z 5 · …” pod spodem. */}
+            <span className={`${current ? "font-semibold" : "text-[var(--h-ink-2)]"} sr-only sm:not-sr-only`}>{l}</span>
           </>
         )
         return (
           <li key={l} aria-current={current ? "step" : undefined}>
             {canGo ? (
-              <button type="button" onClick={() => onGo(i)} className="mf-press flex min-h-11 items-center gap-2 rounded-full bg-[var(--h-surface)] py-1 pl-1.5 pr-4 text-[15px] hover:bg-[var(--h-surface-hover)]">
+              <button type="button" onClick={() => onGo(i)} aria-label={`Wróć do kroku ${i + 1}: ${l}`} className="mf-press flex min-h-11 min-w-11 items-center justify-center gap-2 rounded-full bg-[var(--h-surface)] p-1.5 text-[15px] hover:bg-[var(--h-surface-hover)] sm:justify-start sm:pr-4">
                 {inner}
               </button>
             ) : (
-              <span className={`flex min-h-11 items-center gap-2 rounded-full py-1 pl-1.5 pr-4 text-[15px] ${current ? "bg-[var(--h-surface)]" : ""}`}>{inner}</span>
+              <span className={`flex min-h-11 min-w-11 items-center justify-center gap-2 rounded-full p-1.5 text-[15px] sm:justify-start sm:pr-4 ${current ? "bg-[var(--h-surface)]" : ""}`}>{inner}</span>
             )}
           </li>
         )
@@ -418,17 +420,18 @@ function BrandStep({ brand, setBrand, fonts, fontFamily, styleName, logo, setLog
       <div className={card}>
         <h2 className="text-[24px] font-semibold">Twoja marka</h2>
         <p className="mt-2 text-[17px] text-[var(--h-ink-2)]">Kolory i font trafią do napisów. Po zakupie przeniesiesz je do programu.</p>
-        <div className="mt-6 grid gap-5 sm:grid-cols-2">
+        <div className="mt-6 grid gap-5 sm:grid-cols-2 [&>*]:min-w-0">
           <label className="flex flex-col gap-2 text-[15px] font-semibold sm:col-span-2">
             Nazwa marki
             <input required maxLength={80} value={brand.name} onChange={set("name")} placeholder="np. Studio Ania" className={`${field} font-normal`} />
           </label>
-          <div className="grid grid-cols-3 gap-3 sm:col-span-2">
+          {/* Trzy kolory obok siebie dopiero od 640 px; na telefonie każdy w swoim wierszu (etykieta po lewej, próbka po prawej). */}
+          <div className="grid grid-cols-1 gap-3 sm:col-span-2 sm:grid-cols-3">
             {([["accent", "Kolor akcentu"], ["text", "Kolor napisów"], ["background", "Kolor tła kart"]] as const).map(([k, l]) => (
-              <label key={k} className="flex flex-col gap-2 text-[15px] font-semibold">
+              <label key={k} className="flex min-w-0 items-center justify-between gap-3 text-[15px] font-semibold sm:flex-col sm:items-stretch sm:justify-start sm:gap-2">
                 {l}
-                <span className="flex items-center gap-2 rounded-2xl bg-[var(--h-bg)] p-1.5 pr-3">
-                  <input type="color" value={brand[k]} onChange={(e) => setBrand((b) => ({ ...b, [k]: e.target.value.toUpperCase() }))} className="h-9 w-10 cursor-pointer rounded-xl border-0 bg-transparent p-0" />
+                <span className="flex shrink-0 items-center gap-2 rounded-2xl bg-[var(--h-bg)] p-1.5 pr-3">
+                  <input type="color" value={brand[k]} onChange={(e) => setBrand((b) => ({ ...b, [k]: e.target.value.toUpperCase() }))} className="h-11 w-11 cursor-pointer rounded-xl border-0 bg-transparent p-0" />
                   <span className="text-[14px] font-normal tabular-nums text-[var(--h-ink-2)]">{brand[k]}</span>
                 </span>
               </label>
@@ -440,12 +443,17 @@ function BrandStep({ brand, setBrand, fonts, fontFamily, styleName, logo, setLog
               {fonts.map((f) => <option key={f}>{f}</option>)}
             </select>
           </label>
-          <label className="flex flex-col gap-2 text-[15px] font-semibold">
-            Logo (opcjonalnie)
-            <input type="file" accept="image/png,image/jpeg,image/webp" onChange={(e) => setLogo(e.target.files?.[0] ?? null)} className="min-h-12 text-[15px] font-normal file:mr-3 file:min-h-11 file:rounded-full file:border-0 file:bg-[var(--h-bg)] file:px-4 file:font-semibold" />
-          </label>
+          <div className="flex flex-col gap-2 text-[15px] font-semibold">
+            <span id="logo-label">Logo (opcjonalnie)</span>
+            {/* Własny przycisk zamiast natywnego pola: natywne ucina „Nie wybrano pliku” na wąskim ekranie. */}
+            <label className="flex min-h-12 min-w-0 cursor-pointer flex-wrap items-center gap-x-3 gap-y-1 focus-within:outline focus-within:outline-2 focus-within:outline-[var(--h-accent)]">
+              <span className="mf-press inline-flex min-h-11 items-center rounded-full bg-[var(--h-bg)] px-4">{logo ? "Zmień logo" : "Wybierz logo"}</span>
+              <span className="min-w-0 break-all text-[15px] font-normal text-[var(--h-ink-2)]">{logo ? logo.name : "PNG, JPG albo WEBP do 5 MB"}</span>
+              <input type="file" accept="image/png,image/jpeg,image/webp" aria-labelledby="logo-label" onChange={(e) => setLogo(e.target.files?.[0] ?? null)} className="sr-only" />
+            </label>
+          </div>
           <details className="sm:col-span-2">
-            <summary className="cursor-pointer text-[15px] font-semibold underline underline-offset-4">Ton, odbiorcy i słowa marki (opcjonalnie)</summary>
+            <summary className="flex min-h-11 cursor-pointer items-center text-[15px] font-semibold underline underline-offset-4">Ton, odbiorcy i słowa marki (opcjonalnie)</summary>
             <div className="mt-4 grid gap-4 sm:grid-cols-2">
               <label className="flex flex-col gap-2 text-[15px] font-semibold">
                 Ton
@@ -464,7 +472,7 @@ function BrandStep({ brand, setBrand, fonts, fontFamily, styleName, logo, setLog
           </details>
         </div>
         {error && <p role="alert" className="mt-5 rounded-2xl bg-[var(--h-accent)]/15 p-4 text-[15px] font-semibold">{error}</p>}
-        <button type="submit" className={`${primary} mt-7`}>Dalej: wybierz styl</button>
+        <button type="submit" className={`${primary} mt-7 w-full sm:w-auto`}>Dalej: wybierz styl</button>
       </div>
       <div className="mx-auto w-full max-w-[300px] lg:sticky lg:top-6">
         <BrandPreview brand={brand} fontFamily={fontFamily} styleName={styleName} />
@@ -500,7 +508,7 @@ function StyleStep({ styles, brand, fontFamily, onPick, onBack, onNext }: {
       </div>
       <StyleGallery styles={styles} selected={brand.style} onSelect={onPick} initialCount={10} />
       {error && <p role="alert" className="rounded-2xl bg-[var(--h-accent)]/15 p-4 text-[15px] font-semibold">{error}</p>}
-      <div className="sticky bottom-3 z-10 mx-auto flex w-fit max-w-full flex-wrap items-center justify-center gap-4 rounded-full bg-[var(--h-bg)]/95 p-2 pr-5 shadow-[0_8px_30px_-12px_rgba(0,0,0,0.35)] backdrop-blur">
+      <div className="sticky bottom-[max(0.75rem,env(safe-area-inset-bottom))] z-10 mx-auto flex w-full max-w-full flex-wrap items-center justify-center gap-x-4 gap-y-1 rounded-[28px] bg-[var(--h-bg)]/95 p-2 shadow-[0_8px_30px_-12px_rgba(0,0,0,0.35)] backdrop-blur sm:w-fit sm:rounded-full sm:pr-5">
         <button
           type="button"
           disabled={busy}
@@ -514,12 +522,13 @@ function StyleStep({ styles, brand, fontFamily, onPick, onBack, onNext }: {
               setBusy(false)
             }
           }}
-          className={primary}
+          className={`${primary} w-full sm:w-auto`}
         >
           {busy && <Loader2 className="size-5 animate-spin" />}
           {busy ? "Zapisuję…" : `Dalej z „${current?.name}”`}
         </button>
-        <button type="button" onClick={onBack} className="px-3 text-[15px] font-semibold underline underline-offset-4">Wróć do marki</button>
+        {/* Na telefonie powrót jest w pasku kroków (krok 1), żeby pasek na dole miał jeden przycisk. */}
+        <button type="button" onClick={onBack} className="hidden min-h-11 px-3 text-[15px] font-semibold underline underline-offset-4 sm:inline-flex sm:items-center">Wróć do marki</button>
       </div>
     </div>
   )
@@ -640,11 +649,11 @@ function VideoStep({ api, auth, limits, consentText, consentVersion, onBack, onS
         )}
         {error && <p role="alert" className="mt-5 rounded-2xl bg-[var(--h-accent)]/15 p-4 text-[15px] font-semibold">{error}</p>}
         <div className="mt-7 flex flex-wrap items-center gap-5">
-          <button type="submit" disabled={progress !== null} className={primary}>
+          <button type="submit" disabled={progress !== null} className={`${primary} w-full sm:w-auto`}>
             {progress !== null && <Loader2 className="size-5 animate-spin" />}
             {progress !== null ? "Wysyłam…" : "Zmontuj moją rolkę"}
           </button>
-          <button type="button" onClick={onBack} className="text-[15px] font-semibold underline underline-offset-4">Zmień styl</button>
+          <button type="button" onClick={onBack} className="min-h-11 px-1 text-[15px] font-semibold underline underline-offset-4">Zmień styl</button>
         </div>
       </div>
       <aside className="rounded-[28px] bg-[var(--h-surface)] p-6">
@@ -654,7 +663,7 @@ function VideoStep({ api, auth, limits, consentText, consentVersion, onBack, onS
             "Telefon pionowo, na wysokości oczu.",
             "Mów do kamery: z Twojego głosu powstaną napisy.",
             "Cicho w tle, bez muzyki.",
-            `Od ${limits.videoMinSeconds} do ${limits.videoMaxSeconds} sekund, najlepiej 20–40 s.`,
+            nobr(`Od ${limits.videoMinSeconds} do ${limits.videoMaxSeconds} sekund, najlepiej 20–40 s.`),
             "Nagraj w 1080p: plik będzie mniejszy niż w 4K.",
           ].map((t) => (
             <li key={t} className="flex gap-2.5">
@@ -727,7 +736,7 @@ function RenderStep({ status, start, mailWhenReady, onRetry }: { status: Status 
       </ol>
       <p className="mt-6 rounded-2xl bg-[var(--h-bg)] p-4 text-[15px] leading-[1.5]">
         {mailWhenReady
-          ? "Możesz zamknąć kartę: link do gotowej rolki wyślemy na Twój e-mail. Znajdziesz ją też na koncie."
+          ? nobr("Możesz zamknąć kartę: link do gotowej rolki wyślemy na Twój e-mail. Znajdziesz ją też na koncie.")
           : "Możesz zamknąć kartę. Gotową rolkę znajdziesz na koncie (zaloguj się swoim adresem e-mail)."}
       </p>
     </div>
@@ -744,7 +753,7 @@ function DoneStep({ status, hasOrder }: { status: Status; hasOrder: boolean }) {
       <div>
         <video src={status.previewUrl} controls playsInline autoPlay muted className="aspect-[9/16] w-full rounded-[28px] bg-[#1d1d1f]" aria-label="Twoja rolka z próby" />
         {status.outputUrl && (
-          <a href={status.outputUrl} onClick={() => logFunnel("trial_downloaded")} className="mf-press mt-4 flex min-h-12 items-center justify-center rounded-full bg-[var(--h-surface)] text-[17px] font-semibold hover:bg-[var(--h-surface-hover)]">
+          <a href={status.outputUrl} onClick={() => logFunnel("trial_downloaded")} className="mf-press mt-4 flex min-h-12 items-center justify-center rounded-[24px] bg-[var(--h-surface)] px-5 py-3 text-center text-[17px] font-semibold [text-wrap:balance] hover:bg-[var(--h-surface-hover)]">
             Pobierz rolkę (MP4, ze znakiem wodnym)
           </a>
         )}
@@ -775,7 +784,7 @@ function DoneStep({ status, hasOrder }: { status: Status; hasOrder: boolean }) {
               Kup pełną wersję za {MF_PRODUCTS.paczka.priceLabel}
             </button>
             <p className="mt-3 text-[15px] text-[var(--h-ink-2)]">Jednorazowo, bez abonamentu.</p>
-            <button type="button" onClick={() => openBuy("konsultacja", "trial_preview")} className="mt-3 text-[15px] font-semibold underline underline-offset-4">
+            <button type="button" onClick={() => openBuy("konsultacja", "trial_preview")} className="mt-1 min-h-11 text-left text-[15px] font-semibold underline underline-offset-4">
               Wolę zainstalować z Wiktorią: {MF_PRODUCTS.konsultacja.priceLabel}
             </button>
           </div>
@@ -788,6 +797,41 @@ function DoneStep({ status, hasOrder }: { status: Status; hasOrder: boolean }) {
           </div>
         )}
       </div>
+    </div>
+  )
+}
+
+/** Podgląd układu wszystkich kroków próby na przykładowych danych (strona /dev/proba-ui, test overflow w CI). Bez wywołań API. */
+export function TrialPreview({ styles, fonts, fontFamilies, limits, consentText, consentVersion }: {
+  styles: MfStyle[]
+  fonts: string[]
+  fontFamilies: Record<string, string>
+  limits: Limits
+  consentText: string
+  consentVersion: string
+}) {
+  const [brand, setBrand] = useState<Brand>({ name: "Studio Ania Kowalska", style: "proste-2-slowa", font: fonts.includes("Montserrat") ? "Montserrat" : fonts[0], accent: "#FF6A13", text: "#FFFFFF", background: "#111111", tone: "", audience: "", terms: "" })
+  const [start] = useState(() => ({ at: Date.now() - 40_000, eta: 300 }))
+  const styleName = styles.find((s) => s.slug === brand.style)?.name
+  const rendering: Status = { status: "processing", stageKey: "captions", stage: "Napisy", progress: 42, etaSeconds: 200, queuePosition: 0 }
+  const done: Status = { status: "done", progress: 100, previewUrl: "/mf/proba-przyklad.mp4", outputUrl: "/mf/proba-przyklad.mp4", brandExportUrl: "#", expiresAt: "2026-12-03T12:00:00Z" }
+  const noop = () => {}
+  const steps: [string, number, React.ReactNode][] = [
+    ["marka", 0, <BrandStep key="m" brand={brand} setBrand={setBrand} fonts={fonts} fontFamily={fontFamilies[brand.font]} styleName={styleName} logo={null} setLogo={noop} logoMax={limits.logoMaxBytes} onNext={noop} />],
+    ["styl", 1, <StyleStep key="s" styles={styles} brand={brand} fontFamily={fontFamilies[brand.font]} onPick={(slug) => setBrand((b) => ({ ...b, style: slug }))} onBack={noop} onNext={async () => {}} />],
+    ["nagranie", 2, <VideoStep key="n" api="" auth={{ trialId: "podglad", token: "podglad" }} limits={limits} consentText={consentText} consentVersion={consentVersion} onBack={noop} onSubmitted={noop} />],
+    ["montaz", 3, <RenderStep key="r" status={rendering} start={start} mailWhenReady onRetry={noop} />],
+    ["rolka", 4, <DoneStep key="d" status={done} hasOrder={false} />],
+  ]
+  return (
+    <div className="flex flex-col gap-24">
+      <section data-step="zapis"><TrialStart /></section>
+      {steps.map(([id, i, node]) => (
+        <section key={id} data-step={id} className="flex flex-col gap-6">
+          <Stepper step={i} maxStep={i} onGo={noop} />
+          {node}
+        </section>
+      ))}
     </div>
   )
 }
