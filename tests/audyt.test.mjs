@@ -1,7 +1,7 @@
 // node --test: darmowy audyt Instagrama (lib/audyt/core.ts): walidacja, segmenty, 10 kryteriów, scalanie odpowiedzi modelu.
 import { test } from "node:test"
 import assert from "node:assert/strict"
-import { computeManualMetrics, computeMetrics, draftReport, mergeAiReport, parseAuditInput, parseHandle, plural, segmentFor, wordsBeforeCta, costUsd } from "../lib/audyt/core.ts"
+import { audytEnabled, computeManualMetrics, computeMetrics, draftReport, mergeAiReport, parseAuditInput, parseHandle, plural, segmentFor, wordsBeforeCta, costUsd } from "../lib/audyt/core.ts"
 import { TEST_HANDLES, testProfile } from "../lib/audyt/fixtures.ts"
 
 const NOW = Date.parse("2026-11-27T12:00:00Z")
@@ -105,4 +105,11 @@ test("odmiana i koszt", () => {
   assert.equal(plural(12, "publikacja", "publikacje", "publikacji"), "publikacji")
   assert.equal(plural(22, "publikacja", "publikacje", "publikacji"), "publikacje")
   assert.equal(costUsd(1_000_000, 0), 0.75)
+})
+
+test("flaga audytu: domyślnie wyłączony, włącza tylko AUDYT_ENABLED=1", () => {
+  assert.equal(audytEnabled({}), false)
+  assert.equal(audytEnabled({ AUDYT_ENABLED: "0" }), false)
+  assert.equal(audytEnabled({ AUDYT_ENABLED: "true" }), false)
+  assert.equal(audytEnabled({ AUDYT_ENABLED: "1" }), true)
 })

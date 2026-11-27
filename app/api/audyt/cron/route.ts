@@ -1,6 +1,7 @@
 import { NextResponse, type NextRequest } from "next/server"
 import { sql } from "@/lib/mf/db"
 import { metaConfigured } from "@/lib/audyt/meta"
+import { audytEnabled } from "@/lib/audyt/core"
 import { cronAllowed, notifyPendingReviews, processOne, retention } from "@/lib/audyt/server"
 import { runSequence } from "@/lib/audyt/sequence"
 
@@ -16,10 +17,11 @@ export async function POST(request: NextRequest) {
   for (let i = 0; i < 3 && Date.now() - t0 < 35_000; i++) {
     const o = await processOne()
     audits.push(o)
-    if (o === "pusto" || o === "czeka_na_meta") break
+    if (o === "pusto" || o === "czeka_na_meta" || o === "wylaczony") break
   }
-  const przeglad = await notifyPendingReviews()
-  const seq = await runSequence(Date.now() - t0 < 45_000 ? 10 : 0)
+  const przeglad = audytEnabled() ? await notifyPendingReviews() : 0
+  // Audyt wyłączony: porady też stoją (limit 0), żeby nic nie wyszło do osób ze zgłoszeń. Retencja działa zawsze (polityka, sekcja 8).
+  const seq = await runSequence(audytEnabled() && Date.now() - t0 < 45_000 ? 10 : 0)
   const ret = await retention()
   return NextResponse.json({ audits, przeglad, seq, ret, ms: Date.now() - t0 })
 }

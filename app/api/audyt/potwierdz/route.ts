@@ -1,5 +1,6 @@
 import { after, NextResponse, type NextRequest } from "next/server"
 import { clientIp, origin, rateLimited } from "@/lib/mf/server"
+import { audytEnabled } from "@/lib/audyt/core"
 import { confirmAudit, processOne } from "@/lib/audyt/server"
 
 export const dynamic = "force-dynamic"
@@ -8,6 +9,8 @@ export const maxDuration = 60
 // POST z przycisku „Potwierdzam” (formularz na /audyt/potwierdz). Po potwierdzeniu analiza rusza od razu (after).
 export async function POST(request: NextRequest) {
   if (rateLimited(`audyt-ok:${clientIp(request.headers)}`, 10, 10 * 60_000)) return NextResponse.redirect(`${origin()}/audyt/gotowe?s=limit`, 303)
+  // Audyt wyłączony: nie potwierdzamy i nie uruchamiamy analizy, zgłoszenie zostaje bez zmian.
+  if (!audytEnabled()) return NextResponse.redirect(`${origin()}/audyt/gotowe?s=wylaczony`, 303)
   const form = await request.formData().catch(() => null)
   const id = await confirmAudit(String(form?.get("t") ?? ""))
   if (!id) return NextResponse.redirect(`${origin()}/audyt/gotowe?s=link`, 303)
