@@ -5,7 +5,6 @@ import { sql } from "@/lib/mf/db"
 import { clientIp, origin, rateLimited } from "@/lib/mf/server"
 
 export const dynamic = "force-dynamic"
-export const preferredRegion = "fra1"
 
 const validToken = (t: string) => t.length >= 30 && t.length <= 100 && /^[A-Za-z0-9_-]+$/.test(t)
 

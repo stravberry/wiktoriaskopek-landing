@@ -4,7 +4,6 @@ import { sql } from "@/lib/mf/db"
 import { origin } from "@/lib/mf/server"
 
 export const dynamic = "force-dynamic"
-export const preferredRegion = "fra1"
 
 const KINDS = new Set(["task_complete", "task_reopen", "sync_now"])
 const BACK = new Set(["/admin/dzien", "/admin/clickup"])
