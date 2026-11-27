@@ -6,7 +6,8 @@ import { cronAllowed, notifyPendingReviews, processOne, retention } from "@/lib/
 import { runSequence } from "@/lib/audyt/sequence"
 
 export const dynamic = "force-dynamic"
-export const maxDuration = 60
+// Audyt v2 (rolki + Gemini) trwa do ok. 2 min; Fluid compute na planie Hobby pozwala do 300 s.
+export const maxDuration = 300
 
 // Wywołuje pg_cron (Supabase) co 10 minut: kolejka audytów (do 3), sekwencja porad, retencja.
 export async function POST(request: NextRequest) {

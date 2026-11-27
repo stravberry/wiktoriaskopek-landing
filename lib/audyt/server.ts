@@ -11,6 +11,8 @@ import { AUDYT, AUDYT_TEXT, audytEnabled, computeManualMetrics, computeMetrics, 
 import { businessDiscovery, metaConfigured } from "./meta"
 import { TEST_HANDLES, testProfile } from "./fixtures"
 import { aiConfigured, polishReport } from "./ai"
+import { geminiConfigured, scrapeConfigured, v2Enabled } from "./v2/config"
+import { runAuditV2 } from "./v2/engine"
 import { AudytConfirmEmail, AudytNoDataEmail, AudytReportEmail, AudytReviewEmail, audytConfirmText, audytNoDataText, audytReportText, type AudytCta } from "@/emails/audyt-email"
 
 const UTM = "utm_source=audyt_ig&utm_medium=email&utm_campaign=audyt_ig"
@@ -177,7 +179,16 @@ export async function processOne(env = process.env): Promise<ProcessOutcome> {
   try {
     let profile: IgProfile | null = null
     let metrics: Metrics
+    // Audyt v2 (AUDYT_V2=1 i oba klucze): liczby z ScrapeCreators + ocena rolek przez Gemini, z limitem kosztu na audyt i miesiąc.
+    let v2: { report: Report; model: string; input: number; output: number; cost: number } | null = null
     if (req.manual) metrics = computeManualMetrics(req.manual)
+    else if (v2Enabled(env) && scrapeConfigured(env) && geminiConfigured(env) && !(req.tester && (TEST_HANDLES as readonly string[]).includes(req.handle))) {
+      const o = await runAuditV2({ handle: req.handle, monthSpentUsd: await monthSpent() }, env)
+      if (!o.ok && (o.reason === "nie_znaleziono" || o.reason === "prywatny" || o.reason === "za_malo_danych")) return await noData(req)
+      if (!o.ok) throw new Error(`v2: ${o.reason}${o.detail ? ` ${o.detail}` : ""}`)
+      metrics = o.metrics
+      v2 = { report: o.report, model: `v2 ${env.AUDYT_GEMINI_MODEL || "gemini-3.6-flash"} + scrapecreators ${o.cost.credits} kr.`, input: o.cost.geminiIn, output: o.cost.geminiOut, cost: o.cost.usd }
+    }
     else if (req.tester && (TEST_HANDLES as readonly string[]).includes(req.handle)) {
       profile = testProfile(req.handle)
       metrics = computeMetrics(profile as IgProfile, "test")
@@ -192,13 +203,14 @@ export async function processOne(env = process.env): Promise<ProcessOutcome> {
       await db`update ws_audit_requests set status = 'potwierdzony', note = 'czeka_na_meta', attempts = greatest(attempts - 1, 0), lease_until = null where id = ${req.id}`
       return "czeka_na_meta"
     }
-    if (!metrics.enough) return await noData(req)
+    if (!metrics.enough && !v2) return await noData(req)
 
-    const draft = draftReport(metrics, req.handle)
+    const draft = v2 ? v2.report : draftReport(metrics, req.handle)
     let report: Report = draft
-    let tokens = { input: 0, output: 0, cost: 0, model: "bez modelu" }
+    let tokens = v2 ? { input: v2.input, output: v2.output, cost: v2.cost, model: v2.model } : { input: 0, output: 0, cost: 0, model: "bez modelu" }
     const cap = Number(env.AUDYT_AI_MONTHLY_USD || AUDYT.aiMonthlyUsd)
-    if (aiConfigured(env) && (await monthSpent()) + 0.05 < cap) {
+    // v2 ma własną redakcję (Gemini, zasady tonu w prompcie i filtr), więc bez drugiego modelu.
+    if (!v2 && aiConfigured(env) && (await monthSpent()) + 0.05 < cap) {
       const ai = await polishReport(draft, metrics, profile, env)
       tokens = { input: ai.inputTokens, output: ai.outputTokens, cost: ai.cost, model: env.AUDYT_MODEL || AUDYT.model }
       if (ai.ok) report = mergeAiReport(draft, ai.json).report
