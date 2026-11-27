@@ -143,6 +143,12 @@ export function fmt(n: number, digits = 0) {
   const v = Number.isFinite(n) ? n : 0
   return v.toLocaleString("pl-PL", { minimumFractionDigits: 0, maximumFractionDigits: digits }).replace(/ /g, " ")
 }
+/** „pojawiła się 1 publikacja”, „pojawiły się 3 publikacje”, „pojawiło się 5 publikacji”. */
+export const postsPhrase = (n: number) =>
+  n === 1 ? "pojawiła się 1 publikacja" : `${plural(n, "", "pojawiły się", "pojawiło się") || "pojawiło się"} ${fmt(n)} ${plural(n, "publikacja", "publikacje", "publikacji")}`
+
+/** Proporcja słowami zamiast „0,38×”: „38%”; powyżej 100% też procentem („150%”). */
+const pctOf = (x: number) => `${fmt(Math.round(x * 100))}%`
 const pct = (x: number) => `${fmt(x * 100, x < 0.1 ? 1 : 0)}%`
 const dateLabel = (iso: string) => new Date(iso).toLocaleDateString("pl-PL", { day: "numeric", month: "long", timeZone: "Europe/Warsaw" })
 const firstWords = (s: string | null | undefined, n = 6) => {
@@ -163,7 +169,10 @@ export type Criterion = {
   status: "dobrze" | "srednio" | "do_poprawy" | "brak"
   /** 0 = dobrze; im więcej, tym dalej od progu „dobrze”. */
   weakness: number
+  /** Rada w trybie rozkazującym (Kierownik, poprawki 27.11: polecenie, nie „warto”). */
   advice: string
+  /** Jedna czynność na ten tydzień, z liczbą. */
+  task?: string
 }
 
 const isReel = (m: IgMedia) => m.media_product_type === "REELS" || (m.media_type === "VIDEO" && m.media_product_type !== "STORY")
@@ -201,13 +210,14 @@ export function computeMetrics(p: IgProfile, source: "meta" | "test", now = Date
 
   // 1. Zasięg rolek poza obserwujących
   const reach = med / followers
-  c.push({ id: 1, label: "Zasięg rolek", value: reach, valueText: `mediana ${fmt(med)} wyświetleń przy ${fmt(followers)} obserwujących (${fmt(reach, 2)}×)`, ...rate(reach, 1, 0.3),
-    advice: `Twoje rolki ogląda mediana ${fmt(med)} osób, a obserwujących masz ${fmt(followers)}. Zacznij każdą rolkę zdaniem o problemie widza, a nie o sobie.` })
+  c.push({ id: 1, label: "Zasięg rolek", value: reach, valueText: `zwykłą rolkę ogląda ${fmt(med)} osób, czyli ${pctOf(reach)} obserwujących`, ...rate(reach, 1, 0.3),
+    advice: `Zwykłą rolkę ogląda ${fmt(med)} osób, czyli ${pctOf(reach)} obserwujących. Zacznij każdą rolkę zdaniem o problemie widza, a nie o sobie.`,
+    task: "Nagraj w tym tygodniu 2 rolki, które w pierwszym zdaniu nazywają problem widza." })
 
   // 2. Regularność: publikacje z 30 dni
   const posts30 = media.filter((m) => now - +new Date(m.timestamp) <= 30 * dayMs).length
   c.push({ id: 2, label: "Regularność", value: posts30, valueText: `${fmt(posts30)} ${plural(posts30, "publikacja", "publikacje", "publikacji")} w ostatnich 30 dniach`, ...rate(posts30, 8, 4),
-    advice: `W ostatnich 30 dniach na profilu ${posts30 === 1 ? "pojawiła się 1 publikacja" : `pojawiło się ${fmt(posts30)} ${plural(posts30, "publikacja", "publikacje", "publikacji")}`}. Ustal stały rytm: 2 rolki w tygodniu, w te same dni.` })
+    advice: `W ostatnich 30 dniach na profilu ${postsPhrase(posts30)}. Ustaw 2 rolki w tygodniu, w te same dni.`, task: "Nagraj w tym tygodniu 4 rolki naraz i zaplanuj je na 2 kolejne tygodnie." })
 
   // 3. Najdłuższa przerwa w 60 dniach (z przerwą od ostatniej publikacji do dziś)
   // Granica 60 dni tylko wtedy, gdy dane sięgają dalej (API zwraca 25 ostatnich publikacji).
@@ -217,37 +227,43 @@ export function computeMetrics(p: IgProfile, source: "meta" | "test", now = Date
   let gap = 0
   for (let i = 1; i < points.length; i++) gap = Math.max(gap, (points[i - 1] - points[i]) / dayMs)
   gap = Math.round(gap)
-  c.push({ id: 3, label: "Przerwy w publikacjach", value: gap, valueText: `najdłuższa przerwa ${fmt(gap)} ${gap === 1 ? "dzień" : "dni"} w ostatnich 60 dniach`, ...rate(gap, 7, 14, false),
-    advice: `Najdłuższa przerwa trwała ${fmt(gap)} ${gap === 1 ? "dzień" : "dni"}. Nagraj 4 rolki naraz, żeby mieć zapas na gorszy tydzień.` })
+  // Okno krótsze niż 60 dni (rzadkie publikacje, limit 25 z API): podajemy faktyczny zakres (Kierownik, F).
+  const span = coversAll || !media.length ? 60 : Math.max(1, Math.round((now - +new Date(media[media.length - 1].timestamp)) / dayMs))
+  c.push({ id: 3, label: "Przerwy w publikacjach", value: gap, valueText: `najdłuższa przerwa ${fmt(gap)} ${gap === 1 ? "dzień" : "dni"} w ostatnich ${fmt(span)} dniach`, ...rate(gap, 7, 14, false),
+    advice: `Najdłuższa przerwa trwała ${fmt(gap)} ${gap === 1 ? "dzień" : "dni"}. Nagraj 4 rolki naraz, żeby mieć zapas na gorszy tydzień.`,
+    task: "Nagraj w tym tygodniu 4 rolki naraz i zaplanuj je na 2 kolejne tygodnie." })
 
   // 4. Udział rolek w 12 ostatnich publikacjach
   const share = last12.length ? last12.filter(isReel).length / last12.length : 0
   c.push({ id: 4, label: "Udział rolek", value: share, valueText: `rolki to ${pct(share)} z ${fmt(last12.length)} ostatnich publikacji`, ...rate(share, 0.5, 0.25),
-    advice: `Rolki to ${pct(share)} Twoich ostatnich publikacji. Zamień co drugi post graficzny na rolkę na ten sam temat.` })
+    advice: `Rolki to ${pct(share)} Twoich ostatnich publikacji. Zamień co drugi post graficzny na rolkę na ten sam temat.`, task: "Zamień w tym tygodniu 2 zaplanowane posty graficzne na rolki o tym samym temacie." })
 
   // 5. Najlepsza rolka i powtarzalność (zawsze w mailu jako pozytyw)
   const bestReel = reels.reduce((a, b) => ((b.view_count as number) > (a.view_count as number) ? b : a))
   const ratio = med > 0 ? (bestReel.view_count as number) / med : 1
   const best = { date: dateLabel(bestReel.timestamp), words: firstWords(bestReel.caption), views: bestReel.view_count as number, ratio, permalink: bestReel.permalink ?? null }
-  const r5 = ratio > 5 ? { status: "do_poprawy" as const, weakness: (ratio - 4) / 4 } : ratio < 1.3 ? { status: "do_poprawy" as const, weakness: (1.5 - ratio) / 1.5 } : ratio <= 4 && ratio >= 1.5 ? { status: "dobrze" as const, weakness: 0 } : { status: "srednio" as const, weakness: 0.1 }
-  c.push({ id: 5, label: "Najlepsza rolka", value: ratio, valueText: `rolka z ${best.date} (${best.words}): ${fmt(best.views)} wyświetleń, ${fmt(ratio, 1)}× więcej niż zwykle`, ...r5,
+  // > 5× (jeden strzał) i < 1,3× (wszystko płasko) to słabości, które biorą udział w wyborze; 1,3–1,5 i 4–5 to „średnio” bez rady.
+  const r5 = ratio > 5 ? { status: "do_poprawy" as const, weakness: (ratio - 4) / 4 } : ratio < 1.3 ? { status: "do_poprawy" as const, weakness: (1.5 - ratio) / 1.5 } : ratio <= 4 && ratio >= 1.5 ? { status: "dobrze" as const, weakness: 0 } : { status: "srednio" as const, weakness: 0 }
+  const above = reels.filter((m) => (m.view_count as number) >= med * 1.5).length
+  c.push({ id: 5, label: ratio < 1.3 ? "Żadna rolka się nie wyróżnia" : "Jeden strzał", value: ratio, valueText: `rolka z ${best.date} (${best.words}): ${fmt(best.views)} wyświetleń, ${fmt(ratio, 1)}× więcej niż zwykle`, ...r5,
     advice: ratio < 1.3
-      ? `Żadna rolka się nie wyróżnia: najlepsza ma tylko ${fmt(ratio, 1)}× więcej wyświetleń niż mediana. Przetestuj 3 różne pierwsze zdania na tym samym temacie.`
-      : `Rolka z ${best.date} miała ${fmt(ratio, 1)}× więcej wyświetleń niż zwykle. Nagraj 3 kolejne na ten sam temat i w tym samym formacie.` })
+      ? `Najlepsza z 6 ostatnich rolek ma tylko ${fmt(ratio, 1)}× więcej wyświetleń niż zwykła. Nagraj 3 wersje tego samego tematu z różnym pierwszym zdaniem.`
+      : `Tylko ${fmt(above)} z ${fmt(reels.length)} rolek ${above === 1 ? "wyszła" : plural(above, "wyszła", "wyszły", "wyszło")} ponad zwykły wynik. Nagraj 3 kolejne na ten sam temat (${best.words}), w tym samym formacie.`,
+    task: ratio < 1.3 ? "Nagraj w tym tygodniu 3 wersje jednej rolki z różnym pierwszym zdaniem." : `Nagraj w tym tygodniu 3 rolki na temat rolki z ${best.date}.` })
 
   // 6. Zaangażowanie: (polubienia + komentarze) / wyświetlenia
   const eng = reels.filter((m) => (m.view_count as number) > 0 && typeof m.like_count === "number").map((m) => ((m.like_count as number) + (m.comments_count ?? 0)) / (m.view_count as number))
   if (eng.length >= 3) {
     const e = median(eng)
     c.push({ id: 6, label: "Reakcje widzów", value: e, valueText: `${pct(e)} widzów reaguje (polubienia i komentarze)`, ...rate(e, 0.04, 0.015),
-      advice: `Na 100 widzów reaguje ${fmt(e * 100, 1)}. Daj widzowi powód do reakcji: konkretną wskazówkę, którą chce zapisać, albo pytanie na końcu.` })
+      advice: `Na 100 widzów reaguje ${fmt(e * 100, 1)}. Daj widzowi powód do reakcji: konkretną wskazówkę, którą chce zapisać, albo pytanie na końcu.`, task: "Zakończ 3 kolejne rolki jedną konkretną wskazówką do zapisania." })
   } else c.push({ id: 6, label: "Reakcje widzów", value: null, valueText: "liczba polubień jest ukryta", status: "brak", weakness: 0, advice: "" })
 
   // 7. Komentarze na 1000 wyświetleń
   const com = reels.filter((m) => (m.view_count as number) > 0).map((m) => ((m.comments_count ?? 0) * 1000) / (m.view_count as number))
   const cm = median(com)
   c.push({ id: 7, label: "Rozmowa pod rolkami", value: cm, valueText: `${fmt(cm, 1)} komentarza na 1000 wyświetleń`, ...rate(cm, 2, 0.5),
-    advice: `Komentarzy jest ${fmt(cm, 1)} na 1000 wyświetleń. Kończ rolkę jednym pytaniem, na które da się odpowiedzieć jednym słowem.` })
+    advice: `Pod rolkami jest ${fmt(cm, 1)} komentarza na 1000 wyświetleń. Kończ każdą rolkę pytaniem, na które da się odpowiedzieć jednym słowem.`, task: "Zakończ 3 kolejne rolki pytaniem, na które da się odpowiedzieć jednym słowem." })
 
   // 8. Kierunek: 3 najnowsze vs 3 wcześniejsze rolki
   if (reels.length >= 6) {
@@ -256,7 +272,8 @@ export function computeMetrics(p: IgProfile, source: "meta" | "test", now = Date
     const dir = older > 0 ? newer / older : 1
     const drop = Math.round((1 - dir) * 100)
     c.push({ id: 8, label: "Kierunek ostatnio", value: dir, valueText: dir >= 1 ? `ostatnie 3 rolki mają o ${fmt(Math.round((dir - 1) * 100))}% więcej wyświetleń niż 3 wcześniejsze` : `ostatnie 3 rolki mają o ${fmt(drop)}% mniej wyświetleń niż 3 wcześniejsze`, ...rate(dir, 0.8, 0.5),
-      advice: `Ostatnie 3 rolki mają o ${fmt(drop)}% mniej wyświetleń niż wcześniejsze. Wróć do formatu z rolki z ${best.date}.` })
+      advice: `Ostatnie 3 rolki mają o ${fmt(drop)}% mniej wyświetleń niż 3 wcześniejsze. Nagraj następną rolkę w formacie rolki z ${best.date}.`,
+      task: `Nagraj w tym tygodniu 2 rolki w formacie rolki z ${best.date}.` })
   } else c.push({ id: 8, label: "Kierunek ostatnio", value: null, valueText: "za mało rolek do porównania", status: "brak", weakness: 0, advice: "" })
 
   // 9. Bio: dla kogo + wezwanie
@@ -266,13 +283,19 @@ export function computeMetrics(p: IgProfile, source: "meta" | "test", now = Date
   const missing = [!hasWho && "co robisz i dla kogo", !hasCta && "co ma zrobić odwiedzający"].filter(Boolean) as string[]
   c.push({ id: 9, label: "Bio", value: (hasWho ? 1 : 0) + (hasCta ? 1 : 0), valueText: missing.length ? `bio nie mówi: ${missing.join(" ani ")}` : "bio mówi, co robisz, i ma wezwanie albo link",
     status: missing.length === 0 ? "dobrze" : "do_poprawy", weakness: missing.length * 0.5,
-    advice: `Bio nie mówi, ${missing.join(" ani ")}. Wzór: „Pomagam [komu] w [czym]. Napisz albo umów się: [link]”.` })
+    // Rada zależy od tego, czego brakuje (Kierownik, A5).
+    advice: !hasWho && !hasCta
+      ? "Bio nie mówi, co robisz i dla kogo, ani co ma zrobić odwiedzający. Wpisz: „Pomagam [komu] w [czym]. Umów się: [link]”."
+      : !hasCta
+        ? "Bio mówi, co robisz, ale nie mówi, co ma zrobić odwiedzający. Dopisz na końcu: „Umów się: [link]”."
+        : "Bio nie mówi, komu pomagasz. Dopisz na początku: „Pomagam [komu] w [czym]”.",
+    task: !hasCta ? "Dopisz dziś na końcu bio jeden krok i link, np. „Umów się: [link]”." : "Dopisz dziś na początku bio jedno zdanie: komu pomagasz i w czym." })
 
   // 10. Wezwanie w podpisach rolek
   const withCta = reels.filter((m) => CAPTION_CTA.test(m.caption ?? "")).length
   const capShare = withCta / reels.length
   c.push({ id: 10, label: "Wezwanie w podpisach", value: capShare, valueText: `${fmt(withCta)} z ${fmt(reels.length)} podpisów mówi widzowi, co zrobić dalej`, ...rate(capShare, 0.5, 0.2),
-    advice: `${withCta === 0 ? `Żaden z ${fmt(reels.length)} ostatnich podpisów nie mówi` : `Tylko ${fmt(withCta)} z ${fmt(reels.length)} podpisów mówi`} widzowi, co ma zrobić dalej. Dopisz jedno zdanie: co ma zrobić po obejrzeniu.` })
+    advice: `${withCta === 0 ? `Żaden z ${fmt(reels.length)} ostatnich podpisów nie mówi` : `Tylko ${fmt(withCta)} z ${fmt(reels.length)} podpisów mówi`} widzowi, co ma zrobić dalej. Dopisz na końcu każdego jedno zdanie, np. „Umów się: link w bio”.`, task: `W ${fmt(reels.length)} kolejnych rolkach dopisz w podpisie jeden krok dla widza.` })
 
   return { source, enough: true, followers, reelsMedianViews: med, best, criteria: c }
 }
@@ -282,12 +305,13 @@ export function computeManualMetrics(m: ManualData): Metrics {
   const reach = m.avgViews / Math.max(1, m.followers)
   const share = m.posts30 ? m.reels30 / m.posts30 : 0
   const c: Criterion[] = [
-    { id: 1, label: "Zasięg rolek", value: reach, valueText: `średnio ${fmt(m.avgViews)} wyświetleń przy ${fmt(m.followers)} obserwujących (${fmt(reach, 2)}×)`, ...rate(reach, 1, 0.3),
-      advice: `Twoje rolki ogląda średnio ${fmt(m.avgViews)} osób, a obserwujących masz ${fmt(m.followers)}. Zacznij każdą rolkę zdaniem o problemie widza, a nie o sobie.` },
+    { id: 1, label: "Zasięg rolek", value: reach, valueText: `rolkę ogląda średnio ${fmt(m.avgViews)} osób, czyli ${pctOf(reach)} obserwujących`, ...rate(reach, 1, 0.3),
+      advice: `Rolkę ogląda średnio ${fmt(m.avgViews)} osób, czyli ${pctOf(reach)} obserwujących. Zacznij każdą rolkę zdaniem o problemie widza, a nie o sobie.`,
+      task: "Nagraj w tym tygodniu 2 rolki, które w pierwszym zdaniu nazywają problem widza." },
     { id: 2, label: "Regularność", value: m.posts30, valueText: `${fmt(m.posts30)} ${plural(m.posts30, "publikacja", "publikacje", "publikacji")} w ostatnich 30 dniach`, ...rate(m.posts30, 8, 4),
-      advice: `W ostatnich 30 dniach na profilu pojawiło się ${fmt(m.posts30)} ${plural(m.posts30, "publikacja", "publikacje", "publikacji")}. Ustal stały rytm: 2 rolki w tygodniu, w te same dni.` },
+      advice: `W ostatnich 30 dniach na profilu ${postsPhrase(m.posts30)}. Ustaw 2 rolki w tygodniu, w te same dni.`, task: "Nagraj w tym tygodniu 4 rolki naraz i zaplanuj je na 2 kolejne tygodnie." },
     { id: 4, label: "Udział rolek", value: share, valueText: `rolki to ${pct(share)} publikacji z 30 dni`, ...rate(share, 0.5, 0.25),
-      advice: `Rolki to ${pct(share)} Twoich publikacji. Zamień co drugi post graficzny na rolkę na ten sam temat.` },
+      advice: `Rolki to ${pct(share)} Twoich publikacji. Zamień co drugi post graficzny na rolkę na ten sam temat.`, task: "Zamień w tym tygodniu 2 zaplanowane posty graficzne na rolki o tym samym temacie." },
   ]
   return { source: "reczne", enough: true, followers: m.followers, reelsMedianViews: m.avgViews, best: null, criteria: c }
 }
@@ -296,37 +320,84 @@ export type Report = {
   ocena: string
   najlepsza: string | null
   obserwacje: { tytul: string; tekst: string }[]
+  /** Jedno zdanie bez numeru: co jest już ustawione (opcjonalnie). */
+  pochwala?: string | null
+  /** Profil bez słabości: „następny poziom”, najlepsza rolka jako kandydatka na reklamę Meta (Kierownik, D). */
+  nastepny?: string | null
   zadanie: string
   uwaga: string
 }
 
-/** 3 najsłabsze (bez kryterium 5) + zawsze najlepsza rolka; zadanie = rada z najsłabszego. */
+const RANK = { do_poprawy: 0, srednio: 1 } as const
+
+/**
+ * Wybór do maila (Kierownik, poprawki 27.11): najpierw „do poprawy”, potem „średnio”, w obrębie statusu wg odległości od progu;
+ * najwyżej 3, bez dopychania „utrzymaj”; kryteria 2 i 3 to jeden punkt „Rytm”; kryterium 5 wchodzi tylko jako słabość (> 5× lub < 1,3×).
+ */
 export function pickObservations(m: Metrics) {
-  const pool = m.criteria.filter((c) => c.id !== 5 && c.status !== "brak")
-  const weakest = [...pool].sort((a, b) => b.weakness - a.weakness || a.id - b.id).slice(0, 3)
-  return { weakest, best: m.criteria.find((c) => c.id === 5) ?? null }
+  const pool = m.criteria.filter((c) => (c.status === "do_poprawy" || c.status === "srednio") && !(c.id === 5 && c.status === "srednio"))
+  const sorted = [...pool].sort((a, b) => RANK[a.status as keyof typeof RANK] - RANK[b.status as keyof typeof RANK] || b.weakness - a.weakness || a.id - b.id)
+  const r2 = sorted.find((c) => c.id === 2), r3 = sorted.find((c) => c.id === 3)
+  const picked: Criterion[] = []
+  for (const c of sorted) {
+    if (c.id === 2 || c.id === 3) {
+      if (picked.some((p) => p.id === 2 || p.id === 3)) continue
+      if (r2 && r3) {
+        picked.push({ ...c, label: "Rytm", advice: `${r3.advice.split(". ")[0]}, a w ostatnich 30 dniach ${postsPhrase(r2.value ?? 0)}. Ustaw 2 rolki w tygodniu, w te same dni.`, task: r3.task })
+        continue
+      }
+      picked.push({ ...c, label: "Rytm" })
+      continue
+    }
+    picked.push(c)
+  }
+  return { weakest: picked.slice(0, 3), best: m.criteria.find((c) => c.id === 5) ?? null }
 }
 
-/** Wersja bez modelu (zapas i wzór dla modelu): zdania z liczbami z tego profilu. */
+/** Wersja bez modelu (zapas i wzór dla modelu): polecenia z liczbami z tego profilu. */
 export function draftReport(m: Metrics, handle: string): Report {
   const { weakest, best } = pickObservations(m)
-  const obserwacje = weakest.map((c) => ({
-    tytul: c.label,
-    tekst: c.weakness > 0 ? c.advice : `${capitalize(c.valueText)}. To dobry wynik, utrzymaj go.`,
-  }))
+  const obserwacje = weakest.map((c) => ({ tytul: c.label, tekst: c.advice }))
   const top = weakest[0]
-  const ocena = m.reelsMedianViews !== null
-    ? `Rolki na @${handle} ogląda ${m.source === "reczne" ? "średnio" : "zwykle"} ${fmt(m.reelsMedianViews)} osób przy ${fmt(m.followers)} obserwujących${top && top.weakness > 0 ? `, a najwięcej zyskasz na poprawie obszaru „${top.label.toLowerCase()}” (${top.valueText}).` : "."}`
-    : `Profil @${handle} ma ${fmt(m.followers)} obserwujących.`
+  const good = m.criteria.filter((c) => c.status === "dobrze" && c.id !== 5)
+  const reach = m.criteria.find((c) => c.id === 1)
+  let najlepsza: string | null = null
+  if (best && m.best) {
+    const tail = best.status === "dobrze" ? " Ten temat i format powtórz." : best.value !== null && best.value > 5 ? ` Pozostałe rolki mają zwykle ${fmt(m.reelsMedianViews ?? 0)}.` : ""
+    najlepsza = `Najlepsza rolka: ${best.valueText}.${tail}`
+  }
+  if (!top) {
+    // Profil bez słabości: inny układ (Kierownik, D).
+    const strongest = [...good].sort((a, b) => (b.value ?? 0) - (a.value ?? 0))[0]
+    return {
+      ocena: `Twój profil spełnia wszystkie ${m.criteria.filter((c) => c.status !== "brak").length} kryteriów, które sprawdzamy. Najmocniejsza liczba: ${strongest ? strongest.valueText : `${fmt(m.followers)} obserwujących`}.`,
+      najlepsza: m.best ? `Najlepsza rolka: ${best?.valueText}. Ten temat i format powtórz.` : najlepsza,
+      obserwacje: [],
+      pochwala: null,
+      nastepny: m.best ? `Rolka z ${m.best.date} zebrała ${fmt(m.best.views)} wyświetleń bez reklamy. To najlepsza kandydatka na reklamę Meta, bo już wiesz, że ten temat zatrzymuje widzów.` : null,
+      zadanie: m.best ? `Nagraj w tym tygodniu 3 rolki na temat rolki z ${m.best.date}.` : "Nagraj w tym tygodniu 3 rolki na temat Twojej najlepszej rolki.",
+      uwaga: AUDYT_TEXT.notSeen,
+    }
+  }
+  const strong = reach && reach !== top && reach.status !== "do_poprawy" ? capitalize(reach.valueText) : m.reelsMedianViews !== null ? `Zwykłą rolkę ogląda ${fmt(m.reelsMedianViews)} osób` : `Masz ${fmt(m.followers)} obserwujących`
+  const ocena = top.id === 5 && m.best && (top.value ?? 0) > 5
+    ? `Rolka z ${m.best.date} miała ${fmt(m.best.views)} wyświetleń, ${fmt(m.best.ratio, 1)} raza więcej niż Twoja zwykła rolka, więc wiesz już, który temat działa.`
+    : `${strong}, ale ${lower(top.advice.split(". ")[0].replace(/\.$/, ""))}.`
+  const rest = good.filter((c) => !weakest.some((w) => w.id === c.id) && !(c.id === 3 && good.some((g) => g.id === 2)))
+  const labels = rest.map((c) => (c.id === 2 ? `rytm (${c.valueText})` : c.label.toLowerCase())).slice(0, 3)
+  const joined = labels.length > 1 ? `${labels.slice(0, -1).join(", ")} i ${labels[labels.length - 1]}` : labels[0]
   return {
     ocena,
-    najlepsza: best ? `Najlepsza rolka: ${best.valueText}.${best.status === "dobrze" ? " Ten temat i format warto powtórzyć." : ""}` : null,
+    najlepsza,
     obserwacje,
-    zadanie: top && top.weakness > 0 ? top.advice.split(". ").slice(1).join(". ") || top.advice : "Utrzymaj obecny rytm i nagraj w tym tygodniu 2 rolki na temat Twojej najlepszej rolki.",
+    pochwala: labels.length ? `${capitalize(joined)} masz już ustawione.` : null,
+    nastepny: null,
+    zadanie: top.task ?? top.advice,
     uwaga: AUDYT_TEXT.notSeen,
   }
 }
 const capitalize = (s: string) => s.charAt(0).toUpperCase() + s.slice(1)
+const lower = (s: string) => (/^[A-ZĄĆĘŁŃÓŚŹŻ][a-ząćęłńóśźż]/.test(s) ? s.charAt(0).toLowerCase() + s.slice(1) : s)
 
 const URL_RE = /(https?:\/\/|www\.)\S+/gi
 /** Tekst od modelu: bez linków i znaczników, przycięty. */
@@ -336,7 +407,9 @@ export const cleanAiText = (s: unknown, max = 420) => (typeof s === "string" ? s
 export function mergeAiReport(draft: Report, ai: unknown): { report: Report; usedAi: boolean } {
   if (!ai || typeof ai !== "object") return { report: draft, usedAi: false }
   const a = ai as { ocena?: unknown; obserwacje?: unknown; zadanie?: unknown }
-  const hasNum = (s: string) => /\d/.test(s)
+  // Zakazane słowa z zasad tonu (Kierownik, B): tekst z nimi zostaje z wersji bez modelu.
+  const banned = /(?<!\p{L})(warto|lepiej|dobrze będzie|może|wygląda stabilnie|przestrzeń do|przy tym układzie)(?!\p{L})|\d+,\d+×/iu
+  const hasNum = (s: string) => /\d/.test(s) && !banned.test(s)
   const ocena = cleanAiText(a.ocena, 300)
   const zadanie = cleanAiText(a.zadanie, 300)
   const obs = Array.isArray(a.obserwacje) ? a.obserwacje : []
@@ -350,14 +423,14 @@ export function mergeAiReport(draft: Report, ai: unknown): { report: Report; use
     if (t && hasNum(t)) { used = true; return { tytul: d.tytul, tekst: t } }
     return d
   })
-  const okOcena = Boolean(ocena && hasNum(ocena))
+  const okOcena = Boolean(ocena && hasNum(ocena) && ocena.split(/\s+/).length <= 25)
   const report: Report = {
     ...draft,
     ocena: okOcena ? ocena : draft.ocena,
     obserwacje,
-    zadanie: zadanie || draft.zadanie,
+    zadanie: zadanie && !banned.test(zadanie) ? zadanie : draft.zadanie,
   }
-  return { report, usedAi: used || okOcena || Boolean(zadanie) }
+  return { report, usedAi: used || okOcena || report.zadanie !== draft.zadanie }
 }
 
 export const costUsd = (inputTokens: number, outputTokens: number) =>
@@ -365,4 +438,4 @@ export const costUsd = (inputTokens: number, outputTokens: number) =>
 
 /** Słowa przed CTA (Kierownik: najwyżej 200). */
 export const wordsBeforeCta = (r: Report) =>
-  [r.ocena, r.najlepsza ?? "", ...r.obserwacje.map((o) => `${o.tytul} ${o.tekst}`), r.zadanie].join(" ").split(/\s+/).filter(Boolean).length
+  [r.ocena, r.najlepsza ?? "", ...r.obserwacje.map((o) => `${o.tytul} ${o.tekst}`), r.pochwala ?? "", r.nastepny ?? "", r.zadanie].join(" ").split(/\s+/).filter(Boolean).length

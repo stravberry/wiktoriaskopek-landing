@@ -50,8 +50,10 @@ export default async function Audyty({ searchParams }: { searchParams: Promise<{
                 <textarea name={`obs${i}`} defaultValue={o.tekst} rows={3} className={field} />
               </label>
             ))}
+            {report.nastepny != null && <label className="flex flex-col gap-1.5 text-[14px] font-semibold">Następny poziom (profil bez słabości)<textarea name="nastepny" defaultValue={report.nastepny ?? ""} rows={2} className={field} /></label>}
+            <label className="flex flex-col gap-1.5 text-[14px] font-semibold">Co już działa (bez numeru, można zostawić puste)<textarea name="pochwala" defaultValue={report.pochwala ?? ""} rows={2} className={field} /></label>
             <label className="flex flex-col gap-1.5 text-[14px] font-semibold">Zadanie na ten tydzień<textarea name="zadanie" defaultValue={report.zadanie} rows={2} className={field} /></label>
-            <p className="text-[14px] text-[var(--mf-ink-2)]">CTA w mailu: „{ctaFor({ id: sel.id, segment: sel.segment, newsletter: false }).label}” · adresat: {sel.email}</p>
+            <p className="text-[14px] text-[var(--mf-ink-2)]">CTA w mailu: „{ctaFor({ id: sel.id, segment: sel.segment, newsletter: false, budget: sel.budget, profileType: sel.profile_type, noWeakness: report.obserwacje.length === 0 }).label}” · adresat: {sel.email}</p>
             {sel.status === "do_akceptacji" && (
               <div className="flex flex-wrap gap-3">
                 <button name="action" value="wyslij" className="min-h-12 rounded-full bg-[var(--mf-accent)] px-6 text-[16px] font-bold text-[var(--mf-on-accent)]">Wyślij audyt</button>
