@@ -5,21 +5,20 @@ import { sql } from "@/lib/mf/db"
 export default async function AdminHome() {
   const email = await requireAdmin()
   const db = sql()
-  const [[o], [t], [w], [f], recent, logins] = await Promise.all([
-    db`select count(*) filter (where status = 'delivered' and session_id not like 'cs_test_%')::int as paid,
+  // Zapytania po kolei: równoległe połączenia przez pooler Supabase wieszały renderowanie strony.
+  const [o] = await db`select count(*) filter (where status = 'delivered' and session_id not like 'cs_test_%')::int as paid,
               coalesce(sum(amount_total) filter (where status = 'delivered' and session_id not like 'cs_test_%'), 0)::bigint as revenue,
               count(*) filter (where status = 'delivered' and session_id not like 'cs_test_%' and created_at > now() - interval '30 days')::int as paid30,
               coalesce(sum(amount_total) filter (where status = 'delivered' and session_id not like 'cs_test_%' and created_at > now() - interval '30 days'), 0)::bigint as revenue30
-       from mf_orders`,
-    db`select count(*)::int as all, count(*) filter (where created_at > now() - interval '7 days')::int as week,
+       from mf_orders`
+  const [t] = await db`select count(*)::int as all, count(*) filter (where created_at > now() - interval '7 days')::int as week,
               count(*) filter (where status = 'done')::int as ok
-       from mf_trials`,
-    db`select count(*)::int as all, count(*) filter (where marketing_consent)::int as consent from mf_waitlist`,
-    db`select coalesce(sum(views), 0)::int as views, coalesce(sum(buy_clicks), 0)::int as buy, coalesce(sum(trial_clicks), 0)::int as trial
-       from mf_funnel_weekly where week > now() - interval '28 days'`,
-    db`select email, product, amount_total, status, created_at from mf_orders order by created_at desc limit 6`,
-    db`select ts, action, ok from adm_audit where action in ('login_ok', 'login_denied', 'auth_denied', 'page_denied') order by ts desc limit 6`,
-  ])
+       from mf_trials`
+  const [w] = await db`select count(*)::int as all, count(*) filter (where marketing_consent)::int as consent from mf_waitlist`
+  const [f] = await db`select coalesce(sum(views), 0)::int as views, coalesce(sum(buy_clicks), 0)::int as buy, coalesce(sum(trial_clicks), 0)::int as trial
+       from mf_funnel_weekly where week > now() - interval '28 days'`
+  const recent = await db`select email, product, amount_total, status, created_at from mf_orders order by created_at desc limit 6`
+  const logins = await db`select ts, action, ok from adm_audit where action in ('login_ok', 'login_denied', 'auth_denied', 'page_denied') order by ts desc limit 6`
   return (
     <AdminShell email={email} active="/admin" title="Pulpit">
       <section aria-label="Sprzedaż" className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
