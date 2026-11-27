@@ -2,14 +2,14 @@ import { NextResponse, type NextRequest } from "next/server"
 import { verifyTurnstile } from "@/lib/turnstile"
 import { parseUtm, testerAllowed } from "@/lib/mf/core"
 import { clientIp, ipHash, rateLimited } from "@/lib/mf/server"
-import { parseAuditInput } from "@/lib/audyt/core"
+import { audytEnabled, parseAuditInput } from "@/lib/audyt/core"
 import { submitAudit } from "@/lib/audyt/server"
 
 export const dynamic = "force-dynamic"
 
 // POST /api/audyt: zgłoszenie darmowego audytu Instagrama. Audyt rusza dopiero po potwierdzeniu adresu.
 export async function POST(request: NextRequest) {
-  if (process.env.AUDYT_ENABLED === "0") return NextResponse.json({ error: "Audyty są chwilowo wstrzymane. Wróć za kilka godzin." }, { status: 503 })
+  if (!audytEnabled()) return NextResponse.json({ error: "Darmowy audyt jest chwilowo wyłączony." }, { status: 503 })
   const h = request.headers
   if (rateLimited(`audyt:${clientIp(h)}`, 5, 10 * 60_000)) return NextResponse.json({ error: "Zbyt wiele prób. Spróbuj za kilka minut." }, { status: 429 })
   const body = await request.json().catch(() => null)

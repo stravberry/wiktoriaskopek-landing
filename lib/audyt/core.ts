@@ -35,6 +35,13 @@ export type AuditInput = {
   manual: ManualData | null
 }
 
+/**
+ * Czy darmowy audyt IG jest włączony: formularz i sekcje na stronie głównej, przyjmowanie zgłoszeń, analiza w kolejce.
+ * 27.11.2026 Wiktoria: „na razie to wyłącz ze strony głównej i ukryj sekcje z tym związane”. Domyślnie WYŁĄCZONY.
+ * Przywrócenie: AUDYT_ENABLED=1 w Vercel (Production) i ponowne wdrożenie. Polityka (sekcja 8) i /admin/audyty działają zawsze.
+ */
+export const audytEnabled = (env: Record<string, string | undefined> = process.env) => env.AUDYT_ENABLED === "1"
+
 export const AUDYT = {
   dailyCap: 15, // nowych zgłoszeń na dobę (darmowy Resend: 100 maili / dobę razem ze sklepem)
   mailDaily: 70, // maili funkcji audytu na dobę; sekwencja czeka, gdy limit się wyczerpie

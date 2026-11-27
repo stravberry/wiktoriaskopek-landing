@@ -7,7 +7,7 @@ import { sql } from "@/lib/mf/db"
 import { normalizedEmail, randomToken, resendConfigured, sha256 } from "@/lib/mf/core"
 import { mailFrom, origin, replyTo, secret } from "@/lib/mf/server"
 import { MF_BASE_PATH } from "@/lib/mf/config"
-import { AUDYT, AUDYT_TEXT, computeManualMetrics, computeMetrics, draftReport, mergeAiReport, type AuditInput, type IgProfile, type ManualData, type Metrics, type Report, segmentFor } from "./core"
+import { AUDYT, AUDYT_TEXT, audytEnabled, computeManualMetrics, computeMetrics, draftReport, mergeAiReport, type AuditInput, type IgProfile, type ManualData, type Metrics, type Report, segmentFor } from "./core"
 import { businessDiscovery, metaConfigured } from "./meta"
 import { TEST_HANDLES, testProfile } from "./fixtures"
 import { aiConfigured, polishReport } from "./ai"
@@ -159,10 +159,12 @@ async function monthSpent() {
   return r.usd as number
 }
 
-export type ProcessOutcome = "pusto" | "do_akceptacji" | "wyslany" | "brak_danych" | "czeka_na_meta" | "blad"
+export type ProcessOutcome = "pusto" | "do_akceptacji" | "wyslany" | "brak_danych" | "czeka_na_meta" | "blad" | "wylaczony"
 
 /** Jeden audyt z kolejki (bezpieczne przy równoległych wywołaniach: blokada wiersza i dzierżawa 3 min). */
 export async function processOne(env = process.env): Promise<ProcessOutcome> {
+  // Audyt wyłączony (audytEnabled): kolejka stoi, nic nie liczymy i nic nie wysyłamy. Zgłoszenia zostają w bazie.
+  if (!audytEnabled(env)) return "wylaczony"
   const db = sql()
   const [req] = (await db`
     update ws_audit_requests set status = 'analiza', lease_until = now() + interval '3 minutes', attempts = attempts + 1

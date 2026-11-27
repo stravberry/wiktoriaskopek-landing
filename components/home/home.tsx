@@ -8,9 +8,12 @@ import { Reveal } from "@/components/mf/motion"
 import { MF_BASE_PATH, MF_PRODUCTS, SELLER } from "@/lib/mf/config"
 import CookieSettingsLink from "@/components/mf/cookie-settings-link"
 import { nobr } from "@/lib/typo"
+import { audytEnabled } from "@/lib/audyt/core"
 
 // Strona główna (plan C, kolejność Kierownika): hero z audytem → liczby → przykładowy audyt → trzy drogi → Wiktoria i studio
 // → rozmowa → pytania → końcowy formularz. Wygląd: design system MontageFrames (tokeny, Fustat, pomarańcz marki).
+// Audyt IG wyłączony (27.11, Wiktoria): bez flagi AUDYT_ENABLED=1 nie ma formularza, przykładu audytu, pytań o audyt
+// ani końcowego formularza; w ich miejscu prowadzimy do rozmowy. Kod audytu zostaje, przywrócenie = flaga + wdrożenie.
 
 // Przykład na FIKCYJNYM profilu (lib/audyt/fixtures.ts, test_salon_ania), wygenerowany silnikiem audytu 27.11.2026.
 const SAMPLE = {
@@ -67,16 +70,21 @@ const LINKS = [
   { label: "Facebook", handle: "stravberryx", href: "https://www.facebook.com/stravberryx/" },
 ]
 
-export const HOME_FAQ = [
-  { q: "Czy audyt jest naprawdę darmowy?", a: "Tak. Bez karty i bez zobowiązań. Dostajesz mail z oceną profilu, najlepszą rolką, 3 obserwacjami z liczbami i jednym zadaniem na ten tydzień. Na końcu jest jedna propozycja współpracy, którą możesz zignorować." },
-  { q: "Skąd bierzecie dane i co z nimi robicie?", a: "Z publicznych danych Twojego konta firmowego lub twórcy przez oficjalne API Meta. Nie logujemy się na Twoje konto i nie widzimy statystyk z panelu. Pobrane dane kasujemy po 7 dniach, a audyt po 30. Szczegóły są w polityce prywatności." },
-  { q: "Mam konto prywatne. Co wtedy?", a: "Przełącz je na konto profesjonalne w aplikacji Instagram (Ustawienia → Typ konta i narzędzia) albo wpisz w formularzu 4 liczby z panelu: obserwujący, średnie wyświetlenia rolki, publikacje i rolki z ostatnich 30 dni." },
-  { q: "Ile czeka się na audyt?", a: "Pierwsze audyty czyta osobiście Wiktoria, zanim wyjdą, więc zwykle do 2 dni roboczych od potwierdzenia adresu." },
+const ALL_FAQ: { q: string; a: string; audyt?: true }[] = [
+  { audyt: true, q: "Czy audyt jest naprawdę darmowy?", a: "Tak. Bez karty i bez zobowiązań. Dostajesz mail z oceną profilu, najlepszą rolką, 3 obserwacjami z liczbami i jednym zadaniem na ten tydzień. Na końcu jest jedna propozycja współpracy, którą możesz zignorować." },
+  { audyt: true, q: "Skąd bierzecie dane i co z nimi robicie?", a: "Z publicznych danych Twojego konta firmowego lub twórcy przez oficjalne API Meta. Nie logujemy się na Twoje konto i nie widzimy statystyk z panelu. Pobrane dane kasujemy po 7 dniach, a audyt po 30. Szczegóły są w polityce prywatności." },
+  { audyt: true, q: "Mam konto prywatne. Co wtedy?", a: "Przełącz je na konto profesjonalne w aplikacji Instagram (Ustawienia → Typ konta i narzędzia) albo wpisz w formularzu 4 liczby z panelu: obserwujący, średnie wyświetlenia rolki, publikacje i rolki z ostatnich 30 dni." },
+  { audyt: true, q: "Ile czeka się na audyt?", a: "Pierwsze audyty czyta osobiście Wiktoria, zanim wyjdą, więc zwykle do 2 dni roboczych od potwierdzenia adresu." },
   { q: "Ile kosztują usługi?", a: `MontageFrames kosztuje ${MF_PRODUCTS.paczka.priceLabel} jednorazowo, a wersja z konsultacją i instalacją ${MF_PRODUCTS.konsultacja.priceLabel}. Nagrania, prowadzenie social mediów i reklamy Meta wyceniamy po krótkiej rozmowie, bo cena zależy od liczby rolek i budżetu reklamowego.` },
   { q: "Dla jakich firm pracujecie?", a: "Głównie dla małych firm usługowych i ekspertów z marką osobistą: salony, gabinety, trenerzy, doradcy, sklepy. Tam, gdzie klienci przychodzą z Instagrama, a rolki mają przyprowadzać zapytania." },
 ]
 
+/** Pytania na stronie i w danych FAQPage: bez pytań o audyt, gdy audyt jest wyłączony. */
+export const homeFaq = (audyt = audytEnabled()) => ALL_FAQ.filter((f) => audyt || !f.audyt).map(({ q, a }) => ({ q, a }))
+
 export default function Home() {
+  const audyt = audytEnabled()
+  const faq = homeFaq(audyt)
   return (
     <div className="home mf-page min-h-dvh bg-[var(--h-bg)] text-[17px] text-[var(--h-ink)] transition-colors duration-300">
       <header className="mf-wrap flex items-center justify-between gap-4 pt-5 md:pt-8">
@@ -90,17 +98,28 @@ export default function Home() {
       </header>
 
       <main>
-        {/* 1. Hero z formularzem audytu */}
-        <section id="audyt" aria-labelledby="home-title" className="mf-wrap scroll-mt-6 pt-10 md:pt-16 lg:grid lg:grid-cols-[minmax(0,1.25fr)_minmax(0,0.75fr)] lg:items-start lg:gap-14">
+        {/* 1. Hero (z formularzem audytu, gdy audyt włączony) */}
+        <section id={audyt ? "audyt" : "start"} aria-labelledby="home-title" className="mf-wrap scroll-mt-6 pt-10 md:pt-16 lg:grid lg:grid-cols-[minmax(0,1.25fr)_minmax(0,0.75fr)] lg:items-start lg:gap-14">
           <div className="min-w-0">
             <h1 id="home-title" className="max-w-[16ch] text-balance text-[clamp(2.6rem,7vw,5.6rem)] font-extrabold leading-[0.96] tracking-[-0.04em]">
               Rolki, które przyprowadzają klientów do Twojej firmy
             </h1>
-            <p className="mf-lead mt-6 max-w-[46ch]">Nagrania, montaż i reklamy Meta dla firm. Zacznij od darmowego audytu Twojego Instagrama: liczby z Twojego profilu i jedno zadanie na ten tydzień.</p>
-            <div className="mt-8 max-w-[760px]">
-              <AuditForm place="hero" />
-            </div>
-            <a href="#uslugi" className="mt-5 inline-flex min-h-11 items-center gap-2 text-[16px] font-semibold underline decoration-[var(--h-accent)] decoration-2 underline-offset-4">
+            {audyt ? (
+              <>
+                <p className="mf-lead mt-6 max-w-[46ch]">Nagrania, montaż i reklamy Meta dla firm. Zacznij od darmowego audytu Twojego Instagrama: liczby z Twojego profilu i jedno zadanie na ten tydzień.</p>
+                <div className="mt-8 max-w-[760px]">
+                  <AuditForm place="hero" />
+                </div>
+              </>
+            ) : (
+              <>
+                <p className="mf-lead mt-6 max-w-[46ch]">Nagrania, montaż i reklamy Meta dla małych firm. Zacznij od 20 minut rozmowy o Twoich rolkach.</p>
+                <a href="#rezerwacja" className="mf-press mt-8 inline-flex min-h-14 items-center justify-center gap-2 rounded-full bg-[var(--h-ink)] px-7 text-[16px] font-bold text-[var(--h-bg)] hover:opacity-90">
+                  Umów rozmowę <ArrowRight className="size-[18px]" strokeWidth={2.25} aria-hidden />
+                </a>
+              </>
+            )}
+            <a href="#uslugi" className="mt-5 flex w-fit min-h-11 items-center gap-2 text-[16px] font-semibold underline decoration-[var(--h-accent)] decoration-2 underline-offset-4">
               Usługi dla firm <ArrowRight className="size-[18px]" strokeWidth={2.25} aria-hidden />
             </a>
           </div>
@@ -123,6 +142,7 @@ export default function Home() {
         <ClientLogos />
 
         {/* 3. Przykładowy audyt */}
+        {audyt && (
         <section id="przyklad" aria-labelledby="przyklad-title" className="mf-wrap mt-28 scroll-mt-6 md:mt-44">
           <div className="grid gap-12 lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)] lg:gap-16">
             <div>
@@ -163,6 +183,7 @@ export default function Home() {
             </Reveal>
           </div>
         </section>
+        )}
 
         {/* 4. Trzy drogi */}
         <section id="uslugi" aria-labelledby="uslugi-title" className="mf-wrap mt-28 scroll-mt-6 md:mt-44">
@@ -227,7 +248,7 @@ export default function Home() {
         <section id="rezerwacja" aria-labelledby="rezerwacja-title" className="mf-wrap mt-28 scroll-mt-6 md:mt-44">
           <h2 id="rezerwacja-title" className="mf-h2 max-w-[16ch]">Porozmawiajmy 20 minut</h2>
           <p className="mf-lead mt-6 max-w-[48ch]">
-            O Twoim audycie, rolkach albo reklamach Meta. Wybierz termin albo zadzwoń:{" "}
+            {audyt ? "O Twoim audycie, rolkach albo reklamach Meta." : "O Twoich rolkach albo reklamach Meta."} Wybierz termin albo zadzwoń:{" "}
             <a href={PHONE_HREF} className="whitespace-nowrap font-semibold text-[var(--h-ink)] underline decoration-[var(--h-accent)] decoration-2 underline-offset-4">{PHONE}</a>
           </p>
           <div className="mt-12"><Booking /></div>
@@ -237,7 +258,7 @@ export default function Home() {
         <section id="faq" aria-labelledby="faq-title" className="mf-wrap mt-28 scroll-mt-6 md:mt-44">
           <h2 id="faq-title" className="mf-h2">Pytania</h2>
           <div className="mt-12 flex max-w-[860px] flex-col gap-2">
-            {HOME_FAQ.map((f) => (
+            {faq.map((f) => (
               <details key={f.q} className="group rounded-[22px] bg-[var(--h-surface)] px-6 open:pb-5">
                 <summary className="flex min-h-16 cursor-pointer list-none items-center justify-between gap-4 text-[18px] font-semibold [&::-webkit-details-marker]:hidden">
                   {f.q}
@@ -249,8 +270,9 @@ export default function Home() {
           </div>
         </section>
 
-        {/* 9. Końcowy formularz */}
+        {/* 9. Końcowy formularz (audyt włączony) albo zaproszenie do rozmowy */}
         <section aria-labelledby="koniec-title" className="mf-wrap mt-28 pb-24 md:mt-44 md:pb-32">
+          {audyt ? (
           <div className="rounded-[36px] bg-[var(--h-accent)] p-7 text-[#111111] md:p-14">
             <h2 id="koniec-title" className="max-w-[18ch] text-[clamp(2.2rem,5vw,4.25rem)] font-extrabold leading-[0.98] tracking-[-0.04em]">Zacznij od darmowego audytu</h2>
             <p className="mt-5 max-w-[46ch] text-[19px] leading-[1.5] text-[#3a1a06]">Profil i e-mail wystarczą na start. Resztę zapytamy w trzech kliknięciach.</p>
@@ -258,6 +280,18 @@ export default function Home() {
               <AuditForm place="end" />
             </div>
           </div>
+          ) : (
+          <div className="rounded-[36px] bg-[var(--h-accent)] p-7 text-[#111111] md:p-14">
+            <h2 id="koniec-title" className="max-w-[18ch] text-[clamp(2.2rem,5vw,4.25rem)] font-extrabold leading-[0.98] tracking-[-0.04em]">Porozmawiajmy o Twoich rolkach</h2>
+            <p className="mt-5 max-w-[46ch] text-[19px] leading-[1.5] text-[#3a1a06]">20 minut, bez zobowiązań. Wybierz termin w kalendarzu albo zadzwoń.</p>
+            <div className="mt-8 flex flex-wrap gap-3">
+              <a href="#rezerwacja" className="mf-press inline-flex min-h-14 items-center justify-center gap-2 rounded-full bg-[#111111] px-7 text-[16px] font-bold text-white hover:opacity-90">
+                Umów rozmowę <ArrowRight className="size-[18px]" strokeWidth={2.25} aria-hidden />
+              </a>
+              <a href={PHONE_HREF} className="mf-press inline-flex min-h-14 items-center justify-center rounded-full border-2 border-[#111111] px-7 text-[16px] font-bold">{PHONE}</a>
+            </div>
+          </div>
+          )}
         </section>
       </main>
       <footer className="bg-[var(--h-surface)] py-12">

@@ -1,6 +1,6 @@
 import { NextResponse, type NextRequest } from "next/server"
 import { clientIp, rateLimited } from "@/lib/mf/server"
-import { parseHandle } from "@/lib/audyt/core"
+import { audytEnabled, parseHandle } from "@/lib/audyt/core"
 import { businessDiscovery, metaConfigured } from "@/lib/audyt/meta"
 import { TEST_HANDLES } from "@/lib/audyt/fixtures"
 
@@ -9,6 +9,7 @@ export const dynamic = "force-dynamic"
 // GET /api/audyt/profil?u=nazwa: czy profil jest firmowy lub twórcy (Business Discovery). Nic nie zapisujemy.
 // „nieznany” = bez aplikacji Meta albo chwilowy błąd: formularz działa dalej, a profil sprawdzimy przy analizie.
 export async function GET(request: NextRequest) {
+  if (!audytEnabled()) return NextResponse.json({ status: "wylaczony" }, { status: 503 })
   if (rateLimited(`audyt-profil:${clientIp(request.headers)}`, 20, 10 * 60_000)) return NextResponse.json({ status: "nieznany" }, { status: 429 })
   const handle = parseHandle(request.nextUrl.searchParams.get("u"))
   if (!handle) return NextResponse.json({ status: "zla_nazwa" }, { status: 400 })
