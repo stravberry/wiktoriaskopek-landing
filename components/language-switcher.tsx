@@ -2,24 +2,17 @@
 
 import { usePathname, useRouter } from "next/navigation"
 import { locales, type Locale } from "@/lib/translations"
+import { localeHref } from "@/lib/routes"
 
 export default function LanguageSwitcher({ currentLocale }: { currentLocale: Locale }) {
   const pathname = usePathname()
   const router = useRouter()
 
   const switchLocale = (newLocale: Locale) => {
-    // Remove current locale from path and add new one
+    // Polski bez prefiksu, angielski pod /en (lib/routes.ts).
     const segments = pathname.split("/").filter(Boolean)
-
-    // Check if first segment is a locale
-    if (locales.includes(segments[0] as Locale)) {
-      segments[0] = newLocale
-    } else {
-      segments.unshift(newLocale)
-    }
-
-    const newPath = `/${segments.join("/")}`
-    router.push(newPath)
+    if (locales.includes(segments[0] as Locale)) segments.shift()
+    router.push(localeHref(newLocale, "/" + segments.join("/")))
   }
 
   return (

@@ -8,5 +8,5 @@ export default defineConfig({
   workers: process.env.CI ? 2 : 4,
   reporter: process.env.CI ? "github" : "list",
   use: { baseURL: process.env.LAYOUT_BASE_URL || "http://localhost:3100", browserName: "chromium", launchOptions: process.env.PW_CHROMIUM ? { executablePath: process.env.PW_CHROMIUM } : {} },
-  webServer: process.env.LAYOUT_BASE_URL ? undefined : { command: "npx next start -p 3100", url: "http://localhost:3100/pl", timeout: 120_000, reuseExistingServer: true },
+  webServer: process.env.LAYOUT_BASE_URL ? undefined : { command: "npx next start -p 3100", url: "http://localhost:3100/", timeout: 120_000, reuseExistingServer: true },
 })

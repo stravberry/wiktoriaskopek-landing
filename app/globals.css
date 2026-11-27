@@ -268,7 +268,7 @@ html[data-home-theme="dark"]:has(.home) { background-color: #0b0b0c; }
   .home-tile, .home-tile-arrow { transition: none; }
 }
 
-/* MontageFrames (/pl/montuj-bez-montazysty): jedna siatka, pięć rozmiarów pisma, ruch tylko transform/opacity */
+/* MontageFrames (/montuj-bez-montazysty): jedna siatka, pięć rozmiarów pisma, ruch tylko transform/opacity */
 .page-transition:has(.mf-page) { animation: none; }
 body:has(.mf-page) { font-family: var(--font-mf), system-ui, sans-serif; }
 .mf-wrap { max-width: 1240px; margin-inline: auto; padding-inline: clamp(20px, 4vw, 40px); }

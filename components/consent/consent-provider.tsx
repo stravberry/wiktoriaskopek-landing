@@ -9,6 +9,7 @@ import { usePathname } from "next/navigation"
 import { Analytics } from "@vercel/analytics/next"
 import { track } from "@vercel/analytics"
 import { BANNER_VERSION } from "@/lib/mf/config"
+import { localeHref } from "@/lib/routes"
 
 export type ConsentState = { id: string; v: string; analytics: boolean; marketing: boolean; external: boolean; t: number }
 type Action = "accept_all" | "reject_all" | "custom" | "withdraw"
@@ -61,7 +62,7 @@ export default function ConsentProvider({ children, lang = "pl" }: { children: R
   const [settingsOpen, setSettingsOpen] = useState(false)
   const [draft, setDraft] = useState({ analytics: false, marketing: false, external: false })
   const pathname = usePathname()
-  const noFooter = pathname === `/${lang}` // strona główna nie ma stopki: link do ustawień musi być stale dostępny
+  const noFooter = pathname === localeHref(lang, "/") // strona główna nie ma stopki: link do ustawień musi być stale dostępny
 
   useEffect(() => {
     const s = read()
@@ -131,7 +132,7 @@ export default function ConsentProvider({ children, lang = "pl" }: { children: R
             <strong id="consent-title" className="text-[#1d1d1f]">Wiktoria Skopek: pliki cookies.</strong> Niezbędne pliki zapewniają działanie strony i zakupów. Za zgodą
             włączymy statystyki (Vercel Analytics) i kalendarz rezerwacji (Cal.com). Zgodę zmienisz lub cofniesz w „Ustawieniach cookies” w stopce, a zapisywanie
             plików ograniczysz też w przeglądarce. Strona działa także po odrzuceniu.{" "}
-            <Link href="/pl/polityka-prywatnosci" className="underline">Polityka prywatności</Link> ·{" "}
+            <Link href="/polityka-prywatnosci" className="underline">Polityka prywatności</Link> ·{" "}
             <button type="button" className="font-semibold underline" onClick={() => { setDraft(none); setSettingsOpen(true) }}>Ustawienia</button>
           </p>
           <div className="mt-3 grid grid-cols-2 gap-2">

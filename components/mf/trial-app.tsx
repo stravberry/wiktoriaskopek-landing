@@ -174,7 +174,7 @@ export function TrialStart() {
       </button>
       <p className="mt-3 text-[15px] leading-[1.5] text-[var(--h-ink-2)]">
         Bez karty i bez hasła. <Link className="underline" href={`${MF_BASE_PATH}/regulamin#proba`}>Zasady próby</Link> ·{" "}
-        <Link className="underline" href="/pl/polityka-prywatnosci#proba">Prywatność</Link>
+        <Link className="underline" href="/polityka-prywatnosci#proba">Prywatność</Link>
       </p>
     </form>
   )
@@ -657,7 +657,7 @@ function VideoStep({ api, auth, limits, consentText, consentVersion, onBack, onS
           <input type="checkbox" checked={consent} onChange={(e) => setConsent(e.target.checked)} className="mt-0.5 size-6 shrink-0 accent-[var(--h-accent)]" />
           <span>
             {consentText}{" "}
-            <Link className="underline" href="/pl/polityka-prywatnosci#proba" target="_blank">Prywatność</Link>
+            <Link className="underline" href="/polityka-prywatnosci#proba" target="_blank">Prywatność</Link>
             <span className="text-[var(--h-accent-ink)]"> (wymagane)</span>
           </span>
         </label>

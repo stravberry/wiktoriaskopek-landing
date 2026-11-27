@@ -137,7 +137,7 @@ export function BuyForm({ initialProduct = "paczka", compact = false }: { initia
       <div className={`flex flex-col ${compact ? "mt-4 gap-2" : "mt-5 gap-4"}`}>
         <Consent checked={terms} set={setTerms} required small={compact}>
           Akceptuję <Link className="underline" href={`${MF_BASE_PATH}/regulamin`} target="_blank">Regulamin sprzedaży MontageFrames</Link> i zapoznałem/-am się z{" "}
-          <Link className="underline" href="/pl/polityka-prywatnosci" target="_blank">Polityką prywatności</Link>.
+          <Link className="underline" href="/polityka-prywatnosci" target="_blank">Polityką prywatności</Link>.
         </Consent>
         <Consent checked={digital} set={setDigital} required small={compact}>{MF_TEXT.digital}</Consent>
         {product === "konsultacja" && (

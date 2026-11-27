@@ -46,12 +46,12 @@ export default async function MfLayout({ children, params }: { children: React.R
             </p>
             <ul className="flex flex-col [&_a]:inline-flex [&_a]:min-h-11 [&_a]:items-center [&_button]:min-h-11">
               <li><Link className="underline" href={`${MF_BASE_PATH}/regulamin`}>Regulamin sprzedaży</Link></li>
-              <li><Link className="underline" href="/pl/polityka-prywatnosci">Polityka prywatności</Link></li>
-              <li><Link className="underline" href="/pl/odstapienie">Odstąp od umowy</Link></li>
+              <li><Link className="underline" href="/polityka-prywatnosci">Polityka prywatności</Link></li>
+              <li><Link className="underline" href="/odstapienie">Odstąp od umowy</Link></li>
               <li><CookieSettingsLink /></li>
             </ul>
             <ul className="flex flex-col [&_a]:inline-flex [&_a]:min-h-11 [&_a]:items-center">
-              <li><Link className="underline" href="/pl">wiktoriaskopek.pl</Link></li>
+              <li><Link className="underline" href="/">wiktoriaskopek.pl</Link></li>
               <li><a className="underline" href="https://www.instagram.com/wiktoriaskopek/" target="_blank" rel="noopener noreferrer">Instagram</a></li>
               <li><a className="underline" href="https://podcastkatowice.pl" target="_blank" rel="noopener noreferrer">Studio podcastkatowice.pl</a></li>
             </ul>

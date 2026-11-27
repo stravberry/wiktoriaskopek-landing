@@ -4,10 +4,12 @@ import { test, expect } from "@playwright/test"
 import { measureLayout } from "./measure.mjs"
 
 const PAGES = [
-  "/pl/montuj-bez-montazysty",
-  "/pl/montuj-bez-montazysty/dev/proba-ui",
-  "/pl/montuj-bez-montazysty/regulamin",
-  "/pl/odstapienie",
+  "/montuj-bez-montazysty",
+  "/montuj-bez-montazysty/dev/proba-ui",
+  "/montuj-bez-montazysty/regulamin",
+  "/odstapienie",
+  "/polityka-prywatnosci",
+  "/regulamin",
 ]
 const WIDTHS = [320, 360, 390, 430, 768, 1280]
 

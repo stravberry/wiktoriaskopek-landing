@@ -5,23 +5,26 @@ import { usePathname } from "next/navigation"
 import { Mail, Phone, Instagram, Youtube } from "lucide-react"
 import { type Locale } from "@/lib/translations"
 import { openConsentSettings } from "@/components/consent/consent-provider"
+import { localeHref } from "@/lib/routes"
 
 export default function Footer({ lang = "pl" }: { lang?: Locale }) {
   // Nowa strona główna jest na razie samodzielna, bez stopki
   const pathname = usePathname()
-  if (pathname === `/${lang}`) return null
+  const home = localeHref(lang, "/")
+  if (pathname === home) return null
   // Strona produktu MontageFrames ma własne zamknięcie (app/[lang]/montuj-bez-montazysty/layout.tsx)
-  if (pathname?.startsWith(`/${lang}/montuj-bez-montazysty`) || pathname?.startsWith(`/${lang}/dev/`)) return null
+  if (pathname?.startsWith("/montuj-bez-montazysty") || pathname?.includes("/dev/")) return null
+  // Dokumenty prawne mają własną jasną stopkę (components/mf/legal-page.tsx).
+  if (["/polityka-prywatnosci", "/regulamin", "/odstapienie"].includes(pathname ?? "")) return null
 
   const currentYear = new Date().getFullYear()
 
   const navLinks = [
-    { name: "Strona główna", href: `/${lang}` },
-    { name: "Portfolio", href: `/${lang}/portfolio` },
-    { name: "Blog", href: `/${lang}/blog` },
-    { name: "MontageFrames: montuj bez montażysty", href: "/pl/montuj-bez-montazysty" },
+    { name: "Strona główna", href: home },
+    { name: "Konsultacje", href: localeHref(lang, "/konsultacje") },
+    { name: "MontageFrames: montuj bez montażysty", href: "/montuj-bez-montazysty" },
     { name: "Studio (podcastkatowice.pl)", href: "https://podcastkatowice.pl", external: true },
-    { name: "Kontakt", href: `/${lang}#contact` },
+    { name: "Kontakt", href: `${home}#rezerwacja` },
   ]
 
   const socials = [
@@ -120,21 +123,21 @@ export default function Footer({ lang = "pl" }: { lang?: Locale }) {
 
             <div className="pt-8 border-t border-white/5">
               <Link
-                href={`/${lang}/polityka-prywatnosci`}
+                href="/polityka-prywatnosci"
                 className="flex min-h-11 items-center font-sans text-[10px] uppercase tracking-widest text-white/20 hover:text-white transition-colors duration-500 font-bold"
               >
                 Polityka Prywatności
               </Link>
               <Link
-                href={`/${lang}/regulamin`}
+                href="/regulamin"
                 className="flex min-h-11 items-center font-sans text-[10px] uppercase tracking-widest text-white/20 hover:text-white transition-colors duration-500 font-bold"
               >
                 Regulamin
               </Link>
-              <Link href="/pl/montuj-bez-montazysty/regulamin" className="flex min-h-11 items-center font-sans text-[10px] uppercase tracking-widest text-white/20 hover:text-white transition-colors duration-500 font-bold">
+              <Link href="/montuj-bez-montazysty/regulamin" className="flex min-h-11 items-center font-sans text-[10px] uppercase tracking-widest text-white/20 hover:text-white transition-colors duration-500 font-bold">
                 Regulamin sprzedaży MontageFrames
               </Link>
-              <Link href="/pl/odstapienie" className="flex min-h-11 items-center font-sans text-[10px] uppercase tracking-widest text-white/20 hover:text-white transition-colors duration-500 font-bold">
+              <Link href="/odstapienie" className="flex min-h-11 items-center font-sans text-[10px] uppercase tracking-widest text-white/20 hover:text-white transition-colors duration-500 font-bold">
                 Odstąp od umowy
               </Link>
               <button type="button" onClick={openConsentSettings} className="flex min-h-11 items-center font-sans text-[10px] uppercase tracking-widest text-white/20 hover:text-white transition-colors duration-500 font-bold text-left">

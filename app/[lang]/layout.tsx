@@ -8,6 +8,7 @@ import ConsentProvider from "@/components/consent/consent-provider"
 import Footer from "@/components/footer"
 import { locales, type Locale } from "@/lib/translations"
 import ScrollToTop from "@/components/scroll-to-top"
+import { localeHref } from "@/lib/routes"
 
 const bebasNeue = Bebas_Neue({ 
   weight: "400", 
@@ -37,7 +38,7 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: Loc
     openGraph: {
       title,
       description,
-      url: `${baseUrl}/${lang}`,
+      url: `${baseUrl}${localeHref(lang, "/")}`,
       siteName: "Wiktoria Skopek",
       locale: lang === "pl" ? "pl_PL" : "en_US",
       type: "website",

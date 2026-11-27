@@ -5,7 +5,7 @@ export default function robots(): MetadataRoute.Robots {
     rules: {
       userAgent: "*",
       allow: "/",
-      disallow: ["/api/", "/_next/", "/static/", "/pl/montuj-bez-montazysty/konto", "/pl/montuj-bez-montazysty/poradnik", "/pl/montuj-bez-montazysty/dziekujemy"],
+      disallow: ["/api/", "/_next/", "/static/", "/admin", "/montuj-bez-montazysty/konto", "/montuj-bez-montazysty/poradnik", "/montuj-bez-montazysty/dziekujemy", "/montuj-bez-montazysty/dev/"],
     },
     sitemap: "https://www.wiktoriaskopek.pl/sitemap.xml",
   }

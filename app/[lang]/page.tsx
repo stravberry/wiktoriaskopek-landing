@@ -2,6 +2,7 @@ import { Fustat } from "next/font/google"
 import type { Metadata } from "next"
 import { pageAlternates } from "@/lib/seo"
 import HomeBooking from "@/components/home-booking"
+import { localeHref } from "@/lib/routes"
 
 const fustat = Fustat({ subsets: ["latin", "latin-ext"], display: "swap" })
 
@@ -16,7 +17,7 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
   return {
     title,
     description,
-    openGraph: { title, description, url: `${base}/${lang}` },
+    openGraph: { title, description, url: `${base}${localeHref(lang, "/")}` },
     alternates: pageAlternates(""),
   }
 }
