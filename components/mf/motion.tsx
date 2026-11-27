@@ -48,7 +48,7 @@ export function ScrollProgress() {
   const x = reduce ? scrollYProgress : spring
   return (
     <>
-      <motion.div aria-hidden style={{ scaleX: x }} className="fixed inset-x-0 top-0 z-[80] h-[3px] origin-left bg-[var(--h-accent)]" />
+      <motion.div aria-hidden style={{ scaleX: x }} className="pointer-events-none fixed inset-x-0 top-0 z-[80] h-[3px] origin-left bg-[var(--h-accent)]" />
       <ScrollKitten progress={x} reduce={!!reduce} />
     </>
   )
