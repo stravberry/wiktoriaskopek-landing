@@ -7,9 +7,10 @@ import { sql } from "@/lib/mf/db"
 import { clientIp, mailFrom, origin } from "@/lib/mf/server"
 import { ADMIN_SESSION_SECONDS, ADMIN_TOKEN_SECONDS, adminCookieName, createAdminCookie, sameOrigin, verifyAdminSession } from "./core.ts"
 
+/** Na produkcji tylko osobny ADMIN_SECRET; zapasowy MF_SECRET (z inną domeną podpisu) wyłącznie poza produkcją. */
 export const adminSecret = () => {
-  const s = process.env.ADMIN_SECRET || process.env.MF_SECRET
-  if (!s || s.length < 32) throw new Error("ADMIN_SECRET (albo MF_SECRET) musi mieć 32+ znaki")
+  const s = process.env.ADMIN_SECRET || (process.env.VERCEL_ENV === "production" ? undefined : process.env.MF_SECRET)
+  if (!s || s.length < 32) throw new Error("ADMIN_SECRET musi mieć 32+ znaki")
   return s
 }
 
