@@ -286,7 +286,7 @@ export default function MontujBezMontazysty() {
               <li>robisz duże produkcje reklamowe z budżetem na montażystę,</li>
               <li>oczekujesz, że AI nagra film za Ciebie,</li>
               <li>nie masz komputera z min. 15 GB wolnego miejsca,</li>
-              <li>chcesz, żeby ktoś montował za Ciebie. Wtedy <Link className="underline" href="/pl#rezerwacja">napisz do Wiktorii o montaż w usłudze</Link>.</li>
+              <li>chcesz, żeby ktoś montował za Ciebie. Wtedy <Link className="underline" href="/#rezerwacja">napisz do Wiktorii o montaż w usłudze</Link>.</li>
             </ul>
             <h3 className="mt-10 text-[24px] font-semibold">Dla Ciebie, jeśli</h3>
             <ul className="mt-5 flex list-disc flex-col gap-3 pl-5 leading-[1.6]">
@@ -356,7 +356,7 @@ export default function MontujBezMontazysty() {
         </div>
         <p className="mt-6 max-w-[90ch] text-[15px] leading-[1.6] text-[var(--h-ink-2)]">
           Sprzedawca: {SELLER.name}, {nobr(SELLER.address)}, {SELLER.form}, {EMAIL_WORD} {SELLER.email}, tel. {SELLER.phone}. Ceny końcowe, sprzedawca nie jest czynnym podatnikiem
-          VAT. <Link className="underline" href={`${MF_BASE_PATH}/regulamin`}>Regulamin sprzedaży</Link> · <Link className="underline" href="/pl/polityka-prywatnosci">Polityka prywatności</Link>
+          VAT. <Link className="underline" href={`${MF_BASE_PATH}/regulamin`}>Regulamin sprzedaży</Link> · <Link className="underline" href="/polityka-prywatnosci">Polityka prywatności</Link>
         </p>
       </Section>
       <BuyDialog />

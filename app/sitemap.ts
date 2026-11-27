@@ -1,53 +1,14 @@
 import type { MetadataRoute } from "next"
+import { SITE } from "../lib/seo.ts"
 
+// Tylko polskie adresy w katalogu głównym (porządki 27.11). /en ma dziś tę samą treść i canonical na polski adres.
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = "https://www.wiktoriaskopek.pl"
-  
-  // Base localized routes
-  // Tylko /pl: /en ma dziś tę samą polską treść (canonical wskazuje /pl), patrz lib/seo.ts.
-  const routes = (["pl"] as const).flatMap((lang) => [
-    {
-      url: `${baseUrl}/${lang}`,
-      lastModified: new Date(),
-      changeFrequency: "weekly" as const,
-      priority: 1,
-    },
-    {
-      url: `${baseUrl}/${lang}/konsultacje`,
-      lastModified: new Date(),
-      changeFrequency: "monthly" as const,
-      priority: 0.9,
-    },
-    {
-      url: `${baseUrl}/${lang}/portfolio`,
-      lastModified: new Date(),
-      changeFrequency: "monthly" as const,
-      priority: 0.8,
-    },
-    {
-      url: `${baseUrl}/${lang}/techno`,
-      lastModified: new Date(),
-      changeFrequency: "monthly" as const,
-      priority: 0.7,
-    },
-    {
-      url: `${baseUrl}/${lang}/youtube`,
-      lastModified: new Date(),
-      changeFrequency: "monthly" as const,
-      priority: 0.7,
-    },
-    {
-       url: `${baseUrl}/${lang}/transmisje-live`,
-       lastModified: new Date(),
-       changeFrequency: "monthly" as const,
-       priority: 0.7,
-    }
-  ])
-
+  const now = new Date()
   return [
-    ...routes,
-    { url: `${baseUrl}/pl/montuj-bez-montazysty`, lastModified: new Date(), changeFrequency: "weekly" as const, priority: 0.9 },
-    { url: `${baseUrl}/pl/montuj-bez-montazysty/regulamin`, lastModified: new Date(), changeFrequency: "yearly" as const, priority: 0.3 },
-    { url: `${baseUrl}/pl/polityka-prywatnosci`, lastModified: new Date(), changeFrequency: "yearly" as const, priority: 0.2 },
+    { url: SITE, lastModified: now, changeFrequency: "weekly", priority: 1 },
+    { url: `${SITE}/montuj-bez-montazysty`, lastModified: now, changeFrequency: "weekly", priority: 0.9 },
+    { url: `${SITE}/konsultacje`, lastModified: now, changeFrequency: "monthly", priority: 0.8 },
+    { url: `${SITE}/montuj-bez-montazysty/regulamin`, lastModified: now, changeFrequency: "yearly", priority: 0.3 },
+    { url: `${SITE}/polityka-prywatnosci`, lastModified: now, changeFrequency: "yearly", priority: 0.2 },
   ]
 }

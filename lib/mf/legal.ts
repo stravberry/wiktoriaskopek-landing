@@ -100,7 +100,7 @@ export const TERMS_SECTIONS: LegalSection[] = [
   },
   {
     title: "§12. Dane osobowe",
-    items: ["Zasady przetwarzania danych opisuje Polityka prywatności na wiktoriaskopek.pl/pl/polityka-prywatnosci."],
+    items: ["Zasady przetwarzania danych opisuje Polityka prywatności na wiktoriaskopek.pl/polityka-prywatnosci."],
   },
   {
     title: "§14. Darmowa wersja próbna",

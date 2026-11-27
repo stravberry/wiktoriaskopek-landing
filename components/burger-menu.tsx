@@ -8,6 +8,7 @@ import Link from "next/link"
 import { useRouter } from "next/navigation"
 import type { Locale } from "@/lib/translations"
 import LanguageSwitcher from "./language-switcher"
+import { localeHref } from "@/lib/routes"
 
 interface BurgerMenuProps {
   lang: Locale
@@ -22,15 +23,9 @@ export default function BurgerMenu({ lang, variant = "main" }: BurgerMenuProps) 
   const isEnglish = lang === "en"
 
   const navItems = [
-    { href: `/${lang}`, label: isEnglish ? "HOME" : "START" },
-    { href: `/${lang}/portfolio`, label: "PORTFOLIO" },
-    { href: `/${lang}/podcasty`, label: isEnglish ? "PODCASTS" : "PODCASTY" },
-    { href: `/${lang}/youtube`, label: "YOUTUBE" },
-    { href: `/${lang}/kursy-online`, label: isEnglish ? "COURSES" : "KURSY" },
-    { href: `/${lang}/transmisje-live`, label: "LIVE" },
-    { href: `/${lang}/blog`, label: "BLOG" },
-    { href: `/${lang}/konsultacje`, label: isEnglish ? "CONSULTING" : "KONSULTACJE" },
-    { href: `/${lang}/linki`, label: isEnglish ? "LINKS" : "LINKI" },
+    { href: localeHref(lang, "/"), label: isEnglish ? "HOME" : "START" },
+    { href: "/montuj-bez-montazysty", label: "MONTAGEFRAMES" },
+    { href: localeHref(lang, "/konsultacje"), label: isEnglish ? "CONSULTING" : "KONSULTACJE" },
   ]
 
   useEffect(() => {

@@ -2,7 +2,7 @@
 // Zmiana ceny = zmiana `priceLabel` tutaj ORAZ ceny w Stripe (kwotę pobiera Stripe, nie ten plik).
 // Bez importów aliasów, żeby `node --test` mógł to czytać bezpośrednio.
 
-export const MF_BASE_PATH = "/pl/montuj-bez-montazysty"
+export const MF_BASE_PATH = "/montuj-bez-montazysty"
 
 export type MfProductId = "paczka" | "konsultacja"
 

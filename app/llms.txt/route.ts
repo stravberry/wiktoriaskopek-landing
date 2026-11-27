@@ -21,8 +21,8 @@ export function GET() {
 
 ## Strona główna
 - ${base}/pl (PL), ${base}/en (EN)
-- Konsultacje: ${base}/pl/konsultacje
-- Polityka prywatności: ${base}/pl/polityka-prywatnosci
+- Konsultacje: ${base}/konsultacje
+- Polityka prywatności: ${base}/polityka-prywatnosci
 `
   return new Response(text, { headers: { "Content-Type": "text/plain; charset=utf-8" } })
 }

@@ -25,7 +25,7 @@ export function accessEmailText(p: MfAccessEmailProps) {
     `Twój klucz licencyjny: ${p.licenseKey}`,
     `Wejdź na konto (link działa raz, 72 h): ${p.loginUrl}`,
     `Później logujesz się tu: ${p.accountUrl}`,
-    `Poradnik online (po zalogowaniu): ${p.origin}/pl/montuj-bez-montazysty/poradnik`,
+    `Poradnik online (po zalogowaniu): ${p.origin}/montuj-bez-montazysty/poradnik`,
     "",
     p.githubInvited
       ? `Dostęp do paczki: wysłaliśmy zaproszenie GitHub dla @${p.githubLogin}. Zaakceptuj je: https://github.com/DKWGroup/MontageFrames-dist/invitations\nPotem w Terminalu: git clone https://github.com/DKWGroup/MontageFrames-dist.git, cd MontageFrames-dist, claude, a w Claude Code wpisz /start.`
@@ -43,7 +43,7 @@ export function accessEmailText(p: MfAccessEmailProps) {
     p.serviceStart ? `Żądanie dotyczące konsultacji: „${MF_TEXT.serviceStart}”` : "",
     "",
     `Sprzedawca: ${SELLER.name}, ${SELLER.address}, ${SELLER.email}, ${SELLER.phone}. Forma: ${SELLER.form}.`,
-    `Odstąpienie od umowy (np. konsultacji): ${p.origin}/pl/odstapienie`,
+    `Odstąpienie od umowy (np. konsultacji): ${p.origin}/odstapienie`,
   ]
     .filter((l, i, a) => l !== "" || a[i - 1] !== "")
     .join("\n")
@@ -75,7 +75,7 @@ export default function MfAccessEmail(p: MfAccessEmailProps) {
               Link działa raz przez 72 godziny. Później zaloguj się na <Link href={p.accountUrl}>{p.accountUrl}</Link>.
             </Text>
             <Text style={{ fontSize: 15 }}>
-              Poradnik online (po zalogowaniu): <Link href={`${p.origin}/pl/montuj-bez-montazysty/poradnik`}>{`${p.origin}/pl/montuj-bez-montazysty/poradnik`}</Link>
+              Poradnik online (po zalogowaniu): <Link href={`${p.origin}/montuj-bez-montazysty/poradnik`}>{`${p.origin}/montuj-bez-montazysty/poradnik`}</Link>
             </Text>
 
             <Hr />
@@ -109,7 +109,7 @@ export default function MfAccessEmail(p: MfAccessEmailProps) {
             </Text>
             <Text style={{ fontSize: 12, color: muted, lineHeight: "1.5" }}>
               Sprzedawca: {SELLER.name}, {SELLER.address}, {SELLER.email}, {SELLER.phone}. Forma: {SELLER.form}. Odstąpienie od umowy:{" "}
-              <Link href={`${p.origin}/pl/odstapienie`}>{`${p.origin}/pl/odstapienie`}</Link>
+              <Link href={`${p.origin}/odstapienie`}>{`${p.origin}/odstapienie`}</Link>
             </Text>
           </Section>
         </Container>
