@@ -13,6 +13,8 @@ const FILTERS = [
   ["tydzien", "Ten tydzień"],
   ["bez-terminu", "Bez terminu"],
 ] as const
+// Statusy zakończone w przestrzeniach Wiktorii (ClickUp oddaje je mimo include_closed=false).
+const DONE = ["complete", "completed", "closed", "done", "rejected", "zakończone", "zrobione"]
 const date = (d: Date | null) => (d ? new Date(d).toLocaleString("pl-PL", { timeZone: TZ, day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" }) : "—")
 
 export default async function ClickUp({ searchParams }: { searchParams: Promise<{ f?: string; bloki?: string; s?: string }> }) {
@@ -23,13 +25,15 @@ export default async function ClickUp({ searchParams }: { searchParams: Promise<
   const db = sql()
   // Bloki „Dostępność Wiktorii” to wpisy kalendarzowe z automatyzacji, domyślnie ukryte.
   const rows = await db`select id, team, name, status, due, starts_at, list_name, folder_name, url, priority, due < now() as late from ws_clickup
-     where (${blocks} or coalesce(list_name, '') <> 'Dostępność Wiktorii')
+     where lower(coalesce(status, '')) <> all(${db.array(DONE)})
+       and (${blocks} or coalesce(list_name, '') <> 'Dostępność Wiktorii')
        and (${f} <> 'po-terminie' or due < now())
        and (${f} <> 'tydzien' or (due >= date_trunc('week', now() at time zone ${TZ}) at time zone ${TZ} and due < (date_trunc('week', now() at time zone ${TZ}) + interval '7 days') at time zone ${TZ}))
        and (${f} <> 'bez-terminu' or due is null)
      order by due nulls last, name limit 500`
   const [c] = await db`select count(*) filter (where due < now() and coalesce(list_name, '') <> 'Dostępność Wiktorii')::int as late,
-       count(*) filter (where coalesce(list_name, '') <> 'Dostępność Wiktorii')::int as all, count(*) filter (where list_name = 'Dostępność Wiktorii')::int as blocks from ws_clickup`
+       count(*) filter (where coalesce(list_name, '') <> 'Dostępność Wiktorii')::int as all, count(*) filter (where list_name = 'Dostępność Wiktorii')::int as blocks
+     from ws_clickup where lower(coalesce(status, '')) <> all(${db.array(DONE)})`
   const sync = await db`select source, last_ok, last_error, last_error_at, items, coalesce(last_ok < now() - interval '45 minutes', true) as stale from ws_sync where source = 'clickup'`
   const [p] = await db`select count(*)::int as n from ws_commands where kind = 'sync_now' and status in ('pending', 'running')`
   const href = (nf: string, nb = blocks) => `/admin/clickup?${new URLSearchParams({ ...(nf ? { f: nf } : {}), ...(nb ? { bloki: "1" } : {}) })}`
