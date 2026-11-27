@@ -62,7 +62,8 @@ export default function ConsentProvider({ children, lang = "pl" }: { children: R
   const [settingsOpen, setSettingsOpen] = useState(false)
   const [draft, setDraft] = useState({ analytics: false, marketing: false, external: false })
   const pathname = usePathname()
-  const noFooter = pathname === localeHref(lang, "/") // strona główna nie ma stopki: link do ustawień musi być stale dostępny
+  // Strona główna ma od 27.11 własną stopkę z linkiem „Ustawienia cookies” (components/home/home.tsx), więc pływający przycisk nie jest potrzebny.
+  const noFooter = false && pathname === localeHref(lang, "/")
 
   useEffect(() => {
     const s = read()

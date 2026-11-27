@@ -6,6 +6,7 @@ const NAV = [
   ["/admin/crm", "CRM"],
   ["/admin/sprzedaz", "Sprzedaż"],
   ["/admin/newsletter", "Newsletter"],
+  ["/admin/audyty", "Audyty IG"],
 ] as const
 
 export const zl = (grosze: number) => `${(grosze / 100).toLocaleString("pl-PL", { minimumFractionDigits: 2, maximumFractionDigits: 2 })} zł`
