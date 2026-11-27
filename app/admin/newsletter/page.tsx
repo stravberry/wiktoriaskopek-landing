@@ -7,12 +7,11 @@ import { sql } from "@/lib/mf/db"
 export default async function Newsletter() {
   const email = await requireAdmin()
   const db = sql()
-  const [[s], list] = await Promise.all([
-    db`select (select count(*) from mf_waitlist)::int as waitlist,
+  // Zapytania po kolei: równoległe połączenia przez pooler Supabase wieszały renderowanie strony.
+  const [s] = await db`select (select count(*) from mf_waitlist)::int as waitlist,
               (select count(*) from mf_waitlist where marketing_consent)::int as waitlist_ok,
-              (select count(distinct lower(email)) from mf_trials where marketing_consent)::int as trial_ok`,
-    db`select lower(email) as email, marketing_consent, created_at from mf_waitlist order by created_at desc limit 300`,
-  ])
+              (select count(distinct lower(email)) from mf_trials where marketing_consent)::int as trial_ok`
+  const list = await db`select lower(email) as email, marketing_consent, created_at from mf_waitlist order by created_at desc limit 300`
   return (
     <AdminShell email={email} active="/admin/newsletter" title="Newsletter">
       <section className="mb-4 grid gap-4 sm:grid-cols-3">
