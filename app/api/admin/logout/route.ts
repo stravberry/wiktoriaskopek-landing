@@ -5,7 +5,6 @@ import { sql } from "@/lib/mf/db"
 import { origin } from "@/lib/mf/server"
 
 export const dynamic = "force-dynamic"
-export const preferredRegion = "fra1"
 
 // POST /api/admin/logout: podbija wersję sesji w bazie (unieważnia też skopiowane ciasteczka) i kasuje ciasteczko.
 export async function POST(request: NextRequest) {
