@@ -195,7 +195,7 @@ function rate(value: number, good: number, bad: number, higherBetter = true) {
 }
 
 export type Metrics = {
-  source: "meta" | "reczne" | "test"
+  source: "meta" | "reczne" | "test" | "scrape"
   enough: boolean
   followers: number
   reelsMedianViews: number | null
@@ -204,7 +204,7 @@ export type Metrics = {
 }
 
 /** 10 kryteriów z danych Business Discovery (okno: 12 ostatnich publikacji, 6 ostatnich rolek). */
-export function computeMetrics(p: IgProfile, source: "meta" | "test", now = Date.now()): Metrics {
+export function computeMetrics(p: IgProfile, source: "meta" | "test" | "scrape", now = Date.now()): Metrics {
   const media = [...p.media].filter((m) => m.timestamp).sort((a, b) => +new Date(b.timestamp) - +new Date(a.timestamp))
   const last12 = media.slice(0, 12)
   const reels = media.filter(isReel).filter((m) => typeof m.view_count === "number").slice(0, 6)

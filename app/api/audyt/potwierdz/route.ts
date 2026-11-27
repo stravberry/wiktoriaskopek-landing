@@ -4,7 +4,8 @@ import { audytEnabled } from "@/lib/audyt/core"
 import { confirmAudit, processOne } from "@/lib/audyt/server"
 
 export const dynamic = "force-dynamic"
-export const maxDuration = 60
+// Audyt v2 (rolki + Gemini) trwa do ok. 2 min; Fluid compute na planie Hobby pozwala do 300 s.
+export const maxDuration = 300
 
 // POST z przycisku „Potwierdzam” (formularz na /audyt/potwierdz). Po potwierdzeniu analiza rusza od razu (after).
 export async function POST(request: NextRequest) {
