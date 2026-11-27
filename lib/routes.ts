@@ -11,6 +11,10 @@ export const REMOVED_ROUTES: Record<string, string> = {
   podcasty: "/",
   youtube: "/",
   "transmisje-live": "/",
+  live: "/", // skrót, pod którym bywała podstrona z transmisjami
+  kursy: "/montuj-bez-montazysty",
+  podcast: "/",
+  kontakt: "/",
   techno: "/",
   "stara-strona": "/",
   "old-mainpage": "/",

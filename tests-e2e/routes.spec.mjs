@@ -20,6 +20,11 @@ const REDIRECTS = {
 }
 const OK = ["/", "/montuj-bez-montazysty", "/montuj-bez-montazysty/regulamin", "/polityka-prywatnosci", "/regulamin", "/odstapienie", "/konsultacje", "/en", "/sitemap.xml", "/robots.txt", "/llms.txt"]
 
+// Wszystkie usunięte podstrony w obu wariantach: jeden 301 prosto na stronę docelową (bez łańcucha), cel 200.
+const REMOVED = ["blog", "portfolio", "linki", "podcasty", "youtube", "transmisje-live", "live", "techno", "stara-strona", "old-mainpage", "formaty-eksperckie", "kursy-online"]
+const TARGET = { "formaty-eksperckie": "/konsultacje", "kursy-online": "/montuj-bez-montazysty" }
+for (const slug of REMOVED) for (const pre of ["", "/pl"]) REDIRECTS[`${pre}/${slug}`] = TARGET[slug] ?? "/"
+
 for (const [from, to] of Object.entries(REDIRECTS)) {
   test(`301 ${from} → ${to}`, async ({ request }) => {
     const r = await request.get(from, { maxRedirects: 0 })

@@ -33,3 +33,12 @@ test("/en, /api, /admin i pliki przechodzą bez zmian", () => {
   for (const p of ["/en", "/en/konsultacje", "/api/mf/checkout", "/admin", "/admin/crm", "/_next/static/x.js", "/llms.txt", "/mf/kotek/kotek-bieg.webp"])
     assert.deepEqual(r(p), { type: "next" }, p)
 })
+
+test("każda usunięta podstrona: bez prefiksu, z /pl i głębiej → jeden 301 prosto na cel", async () => {
+  const { REMOVED_ROUTES } = await import("../lib/routes.ts")
+  for (const [slug, target] of Object.entries(REMOVED_ROUTES)) {
+    for (const p of [`/${slug}`, `/pl/${slug}`, `/${slug}/cos`, `/pl/${slug}/cos`]) assert.deepEqual(r(p), { type: "redirect", to: target }, p)
+    assert.equal(resolveRoute(target).type, "rewrite", `cel ${target} jest stroną (nie kolejne przekierowanie)`)
+  }
+  assert.deepEqual(r("/pl/live"), { type: "redirect", to: "/" })
+})
