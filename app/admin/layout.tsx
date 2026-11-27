@@ -8,7 +8,7 @@ const fustat = Fustat({ subsets: ["latin", "latin-ext"], display: "swap", variab
 export const metadata: Metadata = {
   title: "Panel · wiktoriaskopek.pl",
   robots: { index: false, follow: false, nocache: true, googleBot: { index: false, follow: false } },
-  referrer: "no-referrer",
+  referrer: "same-origin",
 }
 
 export const dynamic = "force-dynamic"

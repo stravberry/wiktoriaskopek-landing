@@ -5,7 +5,7 @@ import { redirect } from "next/navigation"
 import { Resend } from "resend"
 import { sql } from "@/lib/mf/db"
 import { clientIp, mailFrom, origin } from "@/lib/mf/server"
-import { ADMIN_COOKIE, ADMIN_SESSION_SECONDS, ADMIN_TOKEN_SECONDS, createAdminCookie, sameOrigin, verifyAdminCookie } from "./core.ts"
+import { ADMIN_SESSION_SECONDS, ADMIN_TOKEN_SECONDS, adminCookieName, createAdminCookie, sameOrigin, verifyAdminSession } from "./core.ts"
 
 export const adminSecret = () => {
   const s = process.env.ADMIN_SECRET || process.env.MF_SECRET
@@ -31,32 +31,40 @@ export function allowedOrigins() {
 }
 export const csrfOk = (h: Headers) => sameOrigin(h.get("origin"), allowedOrigins())
 
+/** Dziennik tylko do dopisywania. Wpisy odmowne mają globalny limit (200 na godzinę), żeby anonim nie zapełnił bazy. */
 export async function audit(action: string, actor: string | null, ok: boolean, detail: Record<string, unknown> = {}, h?: Headers) {
   try {
-    await sql()`insert into adm_audit (actor, action, ok, ip_hash, detail) values (${actor}, ${action}, ${ok}, ${h ? ipHashOf(h) : null}, ${sql().json(detail as never)})`
+    const db = sql()
+    if (!ok) {
+      const [{ n }] = await db`select count(*)::int as n from adm_audit where not ok and ts > now() - interval '1 hour'`
+      if (n >= 200) return
+    }
+    await db`insert into adm_audit (actor, action, ok, ip_hash, detail) values (${actor}, ${action}, ${ok}, ${h ? ipHashOf(h) : null}, ${db.json(detail as never)})`
   } catch (e) {
     console.error("[admin] audit:", e instanceof Error ? e.message : e)
   }
 }
 
-/** Rola admin w bazie (druga bramka obok allowlisty). */
-export async function hasAdminRole(email: string) {
-  const [row] = await sql()`select 1 from adm_users where email = ${email.toLowerCase()} and role = 'admin'`
-  return !!row
+/** Wersja sesji admina z bazy (rola admin) albo null: druga bramka obok allowlisty. */
+export async function adminVersion(email: string) {
+  const [row] = await sql()`select session_version from adm_users where email = ${email.toLowerCase()} and role = 'admin'`
+  return row ? (row.session_version as number) : null
 }
+export const hasAdminRole = async (email: string) => (await adminVersion(email)) !== null
 
-/** E-mail zalogowanego admina albo null (podpis, ważność, allowlista i rola w bazie przy każdym żądaniu). */
+/** E-mail zalogowanego admina albo null (podpis, ważność, allowlista, rola i wersja sesji przy każdym żądaniu). */
 export async function currentAdmin() {
   const jar = await cookies()
-  const email = verifyAdminCookie(jar.get(ADMIN_COOKIE)?.value, adminSecret())
-  return email && (await hasAdminRole(email)) ? email : null
+  const s = verifyAdminSession(jar.get(adminCookieName())?.value, adminSecret())
+  if (!s) return null
+  return (await adminVersion(s.email)) === s.version ? s.email : null
 }
 
-/** Strony panelu: bez sesji admina → logowanie. */
+/** Strony panelu: bez sesji admina → logowanie. Do dziennika trafia tylko nieważne ciasteczko, nie każde wejście. */
 export async function requireAdmin() {
   const email = await currentAdmin()
   if (!email) {
-    await audit("page_denied", null, false, {}, await headers())
+    if ((await cookies()).get(adminCookieName())) await audit("page_denied", null, false, {}, await headers())
     redirect("/admin/login")
   }
   return email
@@ -69,7 +77,7 @@ export const adminCookieOptions = {
   path: "/",
   maxAge: ADMIN_SESSION_SECONDS,
 }
-export const adminCookieValue = (email: string) => createAdminCookie(email, adminSecret())
+export const adminCookieValue = (email: string, version: number) => createAdminCookie(email, adminSecret(), Date.now(), ADMIN_SESSION_SECONDS, version)
 
 let resendClient: Resend | null = null
 export async function sendAdminLoginMail(email: string, url: string) {
