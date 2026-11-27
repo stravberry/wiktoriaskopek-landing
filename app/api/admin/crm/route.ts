@@ -4,6 +4,7 @@ import { sql } from "@/lib/mf/db"
 import { origin } from "@/lib/mf/server"
 
 export const dynamic = "force-dynamic"
+export const preferredRegion = "fra1"
 
 const STAGES = new Set(["lead", "oferta", "aktywny", "wstrzymany", "zakonczony"])
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/

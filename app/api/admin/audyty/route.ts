@@ -6,6 +6,7 @@ import { AUDYT_TEXT, cleanAiText, type Report } from "@/lib/audyt/core"
 import { rejectAudit, sendReport } from "@/lib/audyt/server"
 
 export const dynamic = "force-dynamic"
+export const preferredRegion = "fra1"
 
 // Akceptacja audytu przez admina: wyślij / zapisz poprawki / odrzuć. Sesja admina + CSRF + dziennik.
 export async function POST(request: NextRequest) {

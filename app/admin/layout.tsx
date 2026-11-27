@@ -13,6 +13,8 @@ export const metadata: Metadata = {
 }
 
 export const dynamic = "force-dynamic"
+// Funkcje panelu obok bazy (Supabase eu-central-1 = Frankfurt). Domyślny iad1 dokładał ~100 ms do każdego zapytania.
+export const preferredRegion = "fra1"
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   return (

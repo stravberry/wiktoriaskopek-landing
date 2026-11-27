@@ -5,6 +5,7 @@ import { sql } from "@/lib/mf/db"
 import { clientIp, origin, rateLimited } from "@/lib/mf/server"
 
 export const dynamic = "force-dynamic"
+export const preferredRegion = "fra1"
 
 const SAME = { ok: true, message: "Jeśli ten adres ma dostęp do panelu, wysłaliśmy na niego link do logowania." }
 
