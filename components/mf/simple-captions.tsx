@@ -42,7 +42,7 @@ export function SimpleCaptions() {
   const animLabel = ANIMS.find((a) => a.id === anim)?.label ?? ""
   return (
     <div className="grid items-start gap-10 md:grid-cols-[minmax(0,1fr)_minmax(0,360px)] md:gap-16">
-      <div className="flex flex-col gap-8 md:sticky md:top-24">
+      <div className="flex flex-col gap-8 lg:sticky lg:top-24">
         <div>
           <p className="mb-3 text-[15px] font-semibold text-[var(--h-ink-2)]">Ile słów naraz</p>
           <Pills label="Ile słów naraz" items={WORDS} value={words} onChange={setWords} />

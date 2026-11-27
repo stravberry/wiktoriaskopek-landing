@@ -73,6 +73,8 @@ test("odpowiedź modelu: bez liczb i z linkami nie przechodzi, tytuł nie jest p
   assert.ok(!good.report.ocena.includes("http"))
   assert.equal(good.report.obserwacje[0].tekst, "przerwa 17 dni to za dużo.")
   assert.equal(mergeAiReport(d, null).usedAi, false)
+  const bio = { ...d, obserwacje: [{ tytul: "Bio", tekst: "x 1" }] }
+  assert.equal(mergeAiReport(bio, { obserwacje: [{ tekst: "Bio nie mówi, co zrobić, choć masz 2400 obserwujących." }] }).report.obserwacje[0].tekst, "Bio nie mówi, co zrobić, choć masz 2400 obserwujących.")
 })
 
 test("odmiana i koszt", () => {
