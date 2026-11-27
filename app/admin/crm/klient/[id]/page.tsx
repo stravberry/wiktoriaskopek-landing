@@ -16,7 +16,7 @@ export default async function Klient({ params, searchParams }: { params: Promise
   const email = await requireAdmin()
   const { id } = await params
   const q = await searchParams
-  if (!/^[0-9a-f-]{36}$/.test(id)) notFound()
+  if (!/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/.test(id)) notFound()
   const db = sql()
   // Zapytania po kolei (PR #48).
   const [c] = await db`select * from ws_clients where id = ${id}`

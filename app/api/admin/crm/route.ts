@@ -6,7 +6,7 @@ import { origin } from "@/lib/mf/server"
 export const dynamic = "force-dynamic"
 
 const STAGES = new Set(["lead", "oferta", "aktywny", "wstrzymany", "zakonczony"])
-const UUID = /^[0-9a-f-]{36}$/
+const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/
 const text = (v: FormDataEntryValue | null, max: number) => {
   const s = String(v ?? "").replace(/[\u0000-\u0008\u000b\u000c\u000e-\u001f]/g, "").trim().slice(0, max)
   return s || null
