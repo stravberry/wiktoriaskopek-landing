@@ -4,6 +4,8 @@ import { test, expect } from "@playwright/test"
 import { measureLayout } from "./measure.mjs"
 
 const PAGES = [
+  "/",
+  "/audyt/gotowe",
   "/montuj-bez-montazysty",
   "/montuj-bez-montazysty/dev/proba-ui",
   "/montuj-bez-montazysty/regulamin",

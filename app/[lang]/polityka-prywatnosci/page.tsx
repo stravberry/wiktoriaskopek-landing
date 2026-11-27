@@ -11,8 +11,8 @@ export const metadata: Metadata = {
   alternates: pageAlternates("/polityka-prywatnosci"),
 }
 
-// Kotwice używane w linkach: #proba (sekcja 2, z darmowej próby), #cookies (sekcja 3).
-const idFor = (title: string) => (title.startsWith("2.") ? "proba" : title.startsWith("3.") ? "cookies" : sectionId(title))
+// Kotwice używane w linkach: #proba (sekcja 2, z darmowej próby), #cookies (sekcja 3), #audyt (sekcja 8, audyt Instagrama).
+const idFor = (title: string) => (title.startsWith("2.") ? "proba" : title.startsWith("3.") ? "cookies" : title.startsWith("8.") ? "audyt" : sectionId(title))
 
 export default function PolitykaPrywatnosci() {
   return (

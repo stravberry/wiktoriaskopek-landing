@@ -206,7 +206,7 @@ html {
   background-color: #050505;
 }
 
-/* Nowa strona główna (components/home-booking.tsx): biel + pomarańcz, tryb ciemny przez html[data-home-theme] */
+/* Strona główna (components/home/home.tsx): biel + pomarańcz, tryb ciemny przez html[data-home-theme] */
 .home {
   --h-bg: #ffffff;
   --h-ink: #1d1d1f;
