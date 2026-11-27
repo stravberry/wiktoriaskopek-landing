@@ -50,9 +50,30 @@ test("10 kryteriów na fikcyjnych profilach: wartości i wybór 3 najsłabszych"
   const r = draftReport(salon, "test_salon_ania")
   assert.equal(r.obserwacje.length, 3)
   assert.equal(r.obserwacje[0].tytul, "Wezwanie w podpisach")
+  assert.deepEqual(r.obserwacje.map((o) => o.tytul), ["Wezwanie w podpisach", "Bio", "Rozmowa pod rolkami"])
   assert.ok(r.obserwacje.every((o) => o.tytul === "Bio" || /\d/.test(o.tekst))) // bio to ocena tak/nie, bez liczby
   assert.ok(wordsBeforeCta(r) <= 200)
   for (const h of TEST_HANDLES) assert.equal(computeMetrics(testProfile(h, NOW), "test", NOW).enough, true)
+})
+
+test("wybór wg Kierownika: najpierw do poprawy, rytm jako jeden punkt, bez dopychania, jeden strzał jako słabość", () => {
+  const t = (h) => draftReport(computeMetrics(testProfile(h, NOW), "test", NOW), h)
+  assert.deepEqual(t("test_fizjo_marek").obserwacje.map((o) => o.tytul), ["Rytm", "Bio", "Kierunek ostatnio"])
+  assert.match(t("test_fizjo_marek").obserwacje[0].tekst, /17 dni, a w ostatnich 30 dniach pojawiły się 3 publikacje/)
+  const coach = t("test_coach_ola")
+  assert.deepEqual(coach.obserwacje.map((o) => o.tytul), ["Jeden strzał", "Zasięg rolek"])
+  assert.match(coach.zadanie, /^Nagraj w tym tygodniu 3 rolki na temat rolki z /)
+  assert.ok(!/utrzymaj/i.test(JSON.stringify(coach)))
+  assert.match(t("test_salon_ania").obserwacje.find((o) => o.tytul === "Bio").tekst, /^Bio mówi, co robisz, ale nie mówi/)
+  assert.match(t("test_salon_ania").ocena, /85% obserwujących/)
+  // Profil bez słabości: układ „następny poziom” (Kierownik, D)
+  const p = testProfile("test_coach_ola", NOW)
+  p.followers_count = 3000
+  p.media = p.media.map((m) => (m.view_count === 52000 ? { ...m, view_count: 8000, like_count: 400, comments_count: 30 } : m))
+  const d = draftReport(computeMetrics(p, "test", NOW), "x")
+  assert.equal(d.obserwacje.length, 0)
+  assert.match(d.ocena, /^Twój profil spełnia wszystkie/)
+  assert.match(d.nastepny, /kandydatka na reklamę Meta/)
 })
 
 test("za mało rolek = brak audytu; ścieżka ręczna liczy 3 kryteria", () => {
@@ -66,7 +87,8 @@ test("za mało rolek = brak audytu; ścieżka ręczna liczy 3 kryteria", () => {
 
 test("odpowiedź modelu: bez liczb i z linkami nie przechodzi, tytuł nie jest powtarzany", () => {
   const d = draftReport(computeMetrics(testProfile("test_fizjo_marek", NOW), "test", NOW), "test_fizjo_marek")
-  const bad = mergeAiReport(d, { ocena: "Publikuj wartościowe treści.", obserwacje: [{ tekst: "Bądź autentyczny." }], zadanie: "" })
+  const bad = mergeAiReport(d, { ocena: "Publikuj wartościowe treści.", obserwacje: [{ tekst: "Warto nagrywać 2 rolki." }], zadanie: "Może nagraj coś." })
+  assert.equal(bad.report.zadanie, d.zadanie)
   assert.equal(bad.report.ocena, d.ocena)
   assert.equal(bad.report.obserwacje[0].tekst, d.obserwacje[0].tekst)
   const good = mergeAiReport(d, { ocena: "Masz 3 publikacje w 30 dni, zobacz https://zly.link", obserwacje: [{ tekst: `${d.obserwacje[0].tytul}: przerwa 17 dni to za dużo.` }], zadanie: "Nagraj 4 rolki." })

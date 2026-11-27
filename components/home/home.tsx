@@ -15,14 +15,14 @@ import { nobr } from "@/lib/typo"
 // Przykład na FIKCYJNYM profilu (lib/audyt/fixtures.ts, test_salon_ania), wygenerowany silnikiem audytu 27.11.2026.
 const SAMPLE = {
   handle: "salon.ania (przykład)",
-  ocena: "Przy 2400 obserwujących rolki ogląda zwykle 2050 osób, więc oglądalność jest stabilna, a najwięcej tracisz na końcówkach: 0 z 6 podpisów mówi widzowi, co zrobić dalej.",
-  najlepsza: "Najlepsza rolka: „3 błędy przy demakijażu, które robisz…”, 6100 wyświetleń, 3× więcej niż zwykle. Ten temat i format warto powtórzyć.",
+  ocena: "Zwykłą rolkę ogląda 2050 osób, czyli 85% obserwujących, ale żaden z 6 ostatnich podpisów nie mówi widzowi, co ma zrobić dalej.",
+  najlepsza: "Najlepsza rolka: „3 błędy przy demakijażu, które robisz…”, 6100 wyświetleń, 3× więcej niż zwykle. Ten temat i format powtórz.",
   obserwacje: [
-    { tytul: "Wezwanie w podpisach", tekst: "Żaden z 6 ostatnich podpisów nie mówi, co zrobić po obejrzeniu. Dopisz jedno zdanie: zapisz termin, napisz „brwi” w wiadomości." },
-    { tytul: "Rozmowa pod rolkami", tekst: "Masz 0,7 komentarza na 1000 wyświetleń. Kończ rolkę pytaniem, na które da się odpowiedzieć jednym słowem." },
-    { tytul: "Bio", tekst: "Bio mówi, co robisz, ale nie mówi, co ma zrobić odwiedzający. Dodaj link do rezerwacji i jedno wezwanie." },
+    { tytul: "Wezwanie w podpisach", tekst: "0 z 6 podpisów ma wezwanie. Dopisz na końcu każdego jedno zdanie, np. „Umów wizytę: link w bio”." },
+    { tytul: "Rozmowa pod rolkami", tekst: "Pod rolkami jest 0,7 komentarza na 1000 wyświetleń. Kończ każdą rolkę pytaniem, na które da się odpowiedzieć jednym słowem." },
+    { tytul: "Bio", tekst: "Bio mówi, co robisz, ale nie mówi, co ma zrobić odwiedzający. Dopisz na końcu: „Umów wizytę: [link]”." },
   ],
-  zadanie: "W tym tygodniu popraw bio i dopisz wezwanie do 6 ostatnich podpisów rolek.",
+  zadanie: "W 6 kolejnych rolkach dopisz w podpisie jeden krok dla widza.",
 }
 
 const WAYS = [

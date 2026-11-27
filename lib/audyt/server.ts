@@ -145,8 +145,10 @@ type Req = {
   id: string; email: string; handle: string; segment: "rozmowa" | "mf" | "porady"; manual: ManualData | null; tester: boolean; newsletter: boolean
 }
 
-export function ctaFor(req: Pick<Req, "id" | "segment" | "newsletter">): AudytCta {
-  if (req.segment === "rozmowa") return { lead: "Chcesz przejść przez ten audyt razem i ułożyć plan rolek oraz reklam Meta dla Twojej firmy?", label: "Umów 20 min rozmowy o audycie", url: `${origin()}/?${UTM}#rezerwacja` }
+export function ctaFor(req: Pick<Req, "id" | "segment" | "newsletter"> & { budget?: string; profileType?: string; noWeakness?: boolean }): AudytCta {
+  // Profil bez słabości + firma z budżetem = kandydat na reklamy Meta, niezależnie od tego, kto robi rolki (Kierownik, D5).
+  const bigBudget = req.budget === "1-5k" || req.budget === "5k+"
+  if (req.segment === "rozmowa" || (req.noWeakness && bigBudget && req.profileType !== "prywatny")) return { lead: "Chcesz przejść przez ten audyt razem i ułożyć plan rolek oraz reklam Meta dla Twojej firmy?", label: "Umów 20 min rozmowy o audycie", url: `${origin()}/?${UTM}#rezerwacja` }
   if (req.segment === "mf") return { lead: "Sam(a) montujesz rolki? MontageFrames montuje je w Twoim stylu: 238 zł jednorazowo albo 589 zł z instalacją razem z Wiktorią.", label: "Zobacz MontageFrames", url: `${origin()}${MF_BASE_PATH}?${UTM}` }
   if (req.newsletter) return { lead: "Pierwsza porada przyjdzie za 2 dni. Masz pytanie do audytu? Odpisz na tego maila.", label: "Zobacz, co robi Wiktoria", url: `${origin()}/?${UTM}` }
   return { lead: "Chcesz co tydzień jedną konkretną poradę o rolkach dla firmy?", label: "Zapisz się na porady", url: poradyLink(req.id) }
@@ -262,13 +264,13 @@ async function noData(req: Req): Promise<ProcessOutcome> {
 export async function sendReport(id: string, reviewer: string | null, edited?: Report) {
   const db = sql()
   const [r] = await db`
-    select q.id, q.email, q.handle, q.segment, q.newsletter, q.status, p.report, p.report_edited
+    select q.id, q.email, q.handle, q.segment, q.newsletter, q.status, q.budget, q.profile_type, p.report, p.report_edited
     from ws_audit_requests q join ws_audit_reports p on p.request_id = q.id where q.id = ${id}`
   if (!r || r.status !== "do_akceptacji") return false
   if (edited) await db`update ws_audit_reports set report_edited = ${db.json(edited as never)} where request_id = ${id}`
   const report = (edited ?? r.report_edited ?? r.report) as Report
   const [nl] = await db`select 1 from ws_newsletter where email = ${String(r.email).toLowerCase()} and confirmed_at is not null and unsubscribed_at is null`
-  const cta = ctaFor({ id: r.id, segment: r.segment, newsletter: Boolean(nl) })
+  const cta = ctaFor({ id: r.id, segment: r.segment, newsletter: Boolean(nl), budget: r.budget, profileType: r.profile_type, noWeakness: report.obserwacje.length === 0 })
   const unsub = nl ? unsubUrl(r.email) : null
   await sendAudytMail({ key: `audyt-raport/${id}`, kind: "audyt", to: r.email, subject: `Twój audyt Instagrama: @${r.handle}`, react: AudytReportEmail({ handle: r.handle, report, cta, unsubscribeUrl: unsub }), text: audytReportText(r.handle, report, cta, unsub) })
   await db`update ws_audit_requests set status = 'wyslany', sent_at = now(), reviewed_at = ${reviewer ? db`now()` : null} where id = ${id}`

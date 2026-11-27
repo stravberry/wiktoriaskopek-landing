@@ -51,6 +51,8 @@ export function AudytReportEmail({ handle, report, cta, unsubscribeUrl }: { hand
           <Text style={p}>{o.tekst}</Text>
         </Section>
       ))}
+      {report.nastepny && <Text style={{ ...p, margin: "16px 0 0" }}>{report.nastepny}</Text>}
+      {report.pochwala && <Text style={{ ...p, color: "#5c5c62", margin: "16px 0 0" }}>{report.pochwala}</Text>}
       <Text style={{ ...p, fontWeight: 700, margin: "20px 0 4px" }}>Zadanie na ten tydzień</Text>
       <Text style={p}>{report.zadanie}</Text>
       <Hr style={{ borderColor: "#e8e8ed", margin: "20px 0" }} />
@@ -71,6 +73,8 @@ export const audytReportText = (handle: string, r: Report, cta: AudytCta, unsubs
     r.ocena,
     r.najlepsza ?? "",
     ...r.obserwacje.flatMap((o, i) => ["", `${i + 1}. ${o.tytul}`, o.tekst]),
+    r.nastepny ? `\n${r.nastepny}` : "",
+    r.pochwala ? `\n${r.pochwala}` : "",
     "",
     "Zadanie na ten tydzień:",
     r.zadanie,

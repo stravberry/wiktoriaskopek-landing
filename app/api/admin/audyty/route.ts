@@ -37,7 +37,9 @@ export async function POST(request: NextRequest) {
     zadanie: cleanAiText(f.get("zadanie"), 400),
     uwaga: AUDYT_TEXT.notSeen,
   }
-  if (!edited.ocena || !edited.zadanie || obserwacje.length === 0) return back("blad")
+  edited.pochwala = cleanAiText(f.get("pochwala"), 400) || null
+  edited.nastepny = cleanAiText(f.get("nastepny"), 400) || null
+  if (!edited.ocena || !edited.zadanie || (obserwacje.length === 0 && !edited.nastepny)) return back("blad")
   if (action === "zapisz") {
     await sql()`update ws_audit_reports set report_edited = ${sql().json(edited as never)} where request_id = ${id}`
     await audit("audyt_poprawiony", admin, true, { id }, h)

@@ -138,9 +138,10 @@ export function AuditForm({ place }: { place: "hero" | "end" }) {
   const errId = `${uid}-err`
   return (
     <div className="rounded-[28px] bg-[var(--h-surface)] p-3 md:p-4">
-      <form onSubmit={next} noValidate aria-describedby={error && step === 1 ? errId : undefined} className="grid gap-3 md:grid-cols-[1fr_1fr_auto]">
-        <label className="relative">
-          <span className="sr-only">Profil na Instagramie</span>
+      <form onSubmit={next} noValidate aria-describedby={error && step === 1 ? errId : undefined} className="grid gap-3 md:grid-cols-[1fr_1fr_auto] md:items-end">
+        <label className="flex flex-col gap-1.5">
+          <span className="px-1 text-[13px] font-semibold text-[var(--h-ink-2)]">Profil na Instagramie</span>
+          <span className="relative">
           <span aria-hidden className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-[16px] font-semibold text-[var(--h-ink-2)]">@</span>
           <input
             value={handle}
@@ -148,10 +149,11 @@ export function AuditForm({ place }: { place: "hero" | "end" }) {
             name="instagram" autoComplete="off" autoCapitalize="none" spellCheck={false} inputMode="url" maxLength={80}
             placeholder="twoja.firma" className={`${field} pl-9`}
           />
+          </span>
         </label>
-        <label>
-          <span className="sr-only">Twój e-mail</span>
-          <input value={email} onChange={(e) => setEmail(e.target.value)} type="email" name="email" autoComplete="email" maxLength={254} placeholder="Twój e-mail" className={field} />
+        <label className="flex flex-col gap-1.5">
+          <span className="px-1 text-[13px] font-semibold text-[var(--h-ink-2)]">Twój e-mail</span>
+          <input value={email} onChange={(e) => setEmail(e.target.value)} type="email" name="email" autoComplete="email" maxLength={254} placeholder="ania@twojafirma.pl" className={field} />
         </label>
         {step === 1 && (
           <button className="mf-press inline-flex min-h-14 items-center justify-center gap-2 rounded-full bg-[var(--h-accent)] px-7 text-[17px] font-bold text-[#111111] hover:brightness-95">
@@ -193,16 +195,17 @@ export function AuditForm({ place }: { place: "hero" | "end" }) {
             )}
 
             <div className="flex flex-col gap-3">
-              <label className="flex cursor-pointer items-start gap-3 text-[15px] leading-[1.5]">
+              <label className="flex min-h-11 cursor-pointer items-start gap-3 py-1 text-[14px] leading-[21px]">
                 <input type="checkbox" checked={owner} onChange={(e) => setOwner(e.target.checked)} className="mt-0.5 size-6 shrink-0 accent-[var(--h-accent)]" />
                 <span><strong>{AUDYT_TEXT.owner}</strong> <span className="text-[var(--h-ink-2)]">(wymagane)</span></span>
               </label>
-              <label className="flex cursor-pointer items-start gap-3 text-[15px] leading-[1.5] text-[var(--h-ink-2)]">
+              <label className="flex min-h-11 cursor-pointer items-start gap-3 py-1 text-[14px] leading-[21px] text-[var(--h-ink-2)]">
                 <input type="checkbox" checked={newsletter} onChange={(e) => setNewsletter(e.target.checked)} className="mt-0.5 size-6 shrink-0 accent-[var(--h-accent)]" />
                 <span>{AUDYT_TEXT.newsletter}</span>
               </label>
             </div>
 
+            <div className="-mt-2 flex flex-col gap-3 [&>div:empty]:hidden">
             <Turnstile action="audyt" onToken={setToken} resetKey={resetKey} />
             {error && <p id={errId} role="alert" className="text-[15px] font-semibold text-[var(--mf-danger)]">{error}</p>}
             <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
@@ -210,9 +213,10 @@ export function AuditForm({ place }: { place: "hero" | "end" }) {
                 {busy ? <Loader2 className="size-5 animate-spin" aria-hidden /> : null}
                 {busy ? "Wysyłam…" : "Wyślij zgłoszenie"}
               </button>
-              <p className="text-[13px] leading-[1.5] text-[var(--h-ink-2)]">
+              <p className="text-[14px] leading-[20px] text-[var(--h-ink-2)]">
                 Potem kliknij link w mailu. Dane profilu kasujemy po 7 dniach, audyt po 30. <Link href="/polityka-prywatnosci#audyt" className="underline">Polityka prywatności</Link>
               </p>
+            </div>
             </div>
           </form>
         </div>
