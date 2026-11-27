@@ -31,13 +31,10 @@ export async function POST(request: NextRequest) {
     const [t] = await db`select id, list_id from ws_tasks where id = ${taskId}`
     if (!t) return go("blad")
     payload = { task_id: t.id, list_id: t.list_id }
-    const [dup] = await db`select 1 from ws_commands where kind = ${kind} and payload->>'task_id' = ${t.id} and status in ('pending', 'running')`
-    if (dup) return go("w-toku")
-  } else {
-    const [dup] = await db`select 1 from ws_commands where kind = 'sync_now' and status in ('pending', 'running')`
-    if (dup) return go("w-toku")
   }
-  await db`insert into ws_commands (kind, payload, created_by) values (${kind}, ${db.json(payload)}, ${admin})`
-  await audit(`most_${kind}`, admin, true, payload, h)
+  // Jedno aktywne polecenie danego rodzaju na zadanie (indeks ws_commands_active_uidx); duplikat po prostu „w toku”.
+  const added = await db`insert into ws_commands (kind, payload, created_by) values (${kind}, ${db.json(payload)}, ${admin})
+     on conflict (kind, (coalesce(payload->>'task_id', ''))) where status in ('pending', 'running') do nothing returning id`
+  if (added.length) await audit(`most_${kind}`, admin, true, payload, h)
   return go("w-toku")
 }
