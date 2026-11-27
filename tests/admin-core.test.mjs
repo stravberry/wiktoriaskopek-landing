@@ -1,7 +1,7 @@
 // Panel admina: allowlista, podpis i ważność sesji, CSRF (Origin).
 import test from "node:test"
 import assert from "node:assert/strict"
-import { adminEmails, createAdminCookie, isAdminEmail, sameOrigin, verifyAdminCookie } from "../lib/admin/core.ts"
+import { adminCookieName, adminEmails, createAdminCookie, isAdminEmail, sameOrigin, verifyAdminCookie, verifyAdminSession } from "../lib/admin/core.ts"
 
 const S = "x".repeat(40)
 const env = { ADMIN_EMAILS: "wskopek.all@gmail.com" }
@@ -36,4 +36,15 @@ test("CSRF: tylko ten sam serwis", () => {
   assert.equal(sameOrigin("https://evil.example", ok), false)
   assert.equal(sameOrigin(null, ok), false)
   assert.equal(sameOrigin("null", ok), false)
+})
+
+test("wersja sesji: ciasteczko niesie wersję, którą serwer porównuje z bazą (wylogowanie ją podbija)", () => {
+  const now = Date.now()
+  assert.deepEqual(verifyAdminSession(createAdminCookie("wskopek.all@gmail.com", S, now, 3600, 7), S, env, now), { email: "wskopek.all@gmail.com", version: 7 })
+  assert.equal(verifyAdminSession(createAdminCookie("wskopek.all@gmail.com", S, now, 3600, 7), S, env, now).version === 8, false)
+})
+
+test("nazwa ciasteczka: __Host- na produkcji", () => {
+  assert.equal(adminCookieName({ NODE_ENV: "production" }), "__Host-adm_session")
+  assert.equal(adminCookieName({ NODE_ENV: "development" }), "adm_session")
 })
