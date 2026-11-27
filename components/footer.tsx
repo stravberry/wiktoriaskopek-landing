@@ -9,7 +9,8 @@ import { localeHref } from "@/lib/routes"
 
 export default function Footer({ lang = "pl" }: { lang?: Locale }) {
   // Nowa strona główna jest na razie samodzielna, bez stopki
-  const pathname = usePathname()
+  // Na serwerze usePathname widzi adres po rewrite (/pl/…), w przeglądarce adres bez /pl: porównujemy bez przedrostka.
+  const pathname = usePathname()?.replace(/^\/pl(?=\/|$)/, "") || "/"
   const home = localeHref(lang, "/")
   if (pathname === home) return null
   // Strona produktu MontageFrames ma własne zamknięcie (app/[lang]/montuj-bez-montazysty/layout.tsx)

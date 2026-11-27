@@ -214,18 +214,40 @@ export async function processOne(env = process.env): Promise<ProcessOutcome> {
       await sendReport(req.id, null)
       return "wyslany"
     }
-    const [{ n }] = await db`select count(*)::int as n from ws_audit_requests where status = 'do_akceptacji'`
-    await sendAudytMail({
-      key: `audyt-przeglad/${req.id}`, kind: "przeglad", to: env.AUDYT_REVIEW_EMAIL || replyTo(), subject: `Audyt @${req.handle} czeka na akceptację`,
-      react: AudytReviewEmail({ handle: req.handle, url: `${origin()}/admin/audyty?id=${req.id}`, segment: req.segment, count: n }),
-      text: `Audyt @${req.handle} czeka na akceptację (segment: ${req.segment}). Panel: ${origin()}/admin/audyty?id=${req.id}`,
-    }).catch((e) => console.error("[audyt] review mail:", e instanceof Error ? e.message : e))
+    await notifyReview(req)
     return "do_akceptacji"
   } catch (e) {
     console.error("[audyt] process:", e instanceof Error ? e.message : e)
     await db`update ws_audit_requests set status = case when attempts >= 3 then 'blad' else 'potwierdzony' end, lease_until = null, note = ${String(e instanceof Error ? e.message : e).slice(0, 200)} where id = ${req.id}`
     return "blad"
   }
+}
+
+/** Mail do Wiktorii „audyt czeka na akceptację”. Błąd zapisujemy w note; cron ponawia (notifyPendingReviews). */
+async function notifyReview(req: Pick<Req, "id" | "handle" | "segment">, env = process.env) {
+  const db = sql()
+  const [{ n }] = await db`select count(*)::int as n from ws_audit_requests where status = 'do_akceptacji'`
+  try {
+    await sendAudytMail({
+      key: `audyt-przeglad/${req.id}`, kind: "przeglad", to: env.AUDYT_REVIEW_EMAIL || replyTo(), subject: `Audyt @${req.handle} czeka na akceptację`,
+      react: AudytReviewEmail({ handle: req.handle, url: `${origin()}/admin/audyty?id=${req.id}`, segment: req.segment, count: n }),
+      text: `Audyt @${req.handle} czeka na akceptację (segment: ${req.segment}). Panel: ${origin()}/admin/audyty?id=${req.id}`,
+    })
+  } catch (e) {
+    const msg = e instanceof Error ? e.message : String(e)
+    console.error("[audyt] review mail:", msg)
+    await db`update ws_audit_requests set note = ${`mail_przeglad: ${msg}`.slice(0, 200)} where id = ${req.id}`
+  }
+}
+
+/** Cron: maile „czeka na akceptację”, które nie wyszły (np. błąd Resend). */
+export async function notifyPendingReviews(limit = 5) {
+  const rows = await sql()`
+    select id, handle, segment from ws_audit_requests q
+    where status = 'do_akceptacji' and not exists (select 1 from ws_mail_log m where m.idempotency_key = 'audyt-przeglad/' || q.id::text)
+    order by analysed_at limit ${limit}`
+  for (const r of rows) await notifyReview(r as unknown as Pick<Req, "id" | "handle" | "segment">)
+  return rows.length
 }
 
 async function noData(req: Req): Promise<ProcessOutcome> {

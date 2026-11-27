@@ -1,7 +1,7 @@
 import { NextResponse, type NextRequest } from "next/server"
 import { sql } from "@/lib/mf/db"
 import { metaConfigured } from "@/lib/audyt/meta"
-import { cronAllowed, processOne, retention } from "@/lib/audyt/server"
+import { cronAllowed, notifyPendingReviews, processOne, retention } from "@/lib/audyt/server"
 import { runSequence } from "@/lib/audyt/sequence"
 
 export const dynamic = "force-dynamic"
@@ -18,7 +18,8 @@ export async function POST(request: NextRequest) {
     audits.push(o)
     if (o === "pusto" || o === "czeka_na_meta") break
   }
+  const przeglad = await notifyPendingReviews()
   const seq = await runSequence(Date.now() - t0 < 45_000 ? 10 : 0)
   const ret = await retention()
-  return NextResponse.json({ audits, seq, ret, ms: Date.now() - t0 })
+  return NextResponse.json({ audits, przeglad, seq, ret, ms: Date.now() - t0 })
 }
