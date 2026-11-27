@@ -3,6 +3,8 @@ import type React from "react"
 
 const NAV = [
   ["/admin", "Pulpit"],
+  ["/admin/dzien", "Dzień"],
+  ["/admin/clickup", "ClickUp"],
   ["/admin/crm", "CRM"],
   ["/admin/sprzedaz", "Sprzedaż"],
   ["/admin/newsletter", "Newsletter"],
