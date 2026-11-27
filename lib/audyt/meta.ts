@@ -15,7 +15,7 @@ const FIELDS = "username,name,biography,website,followers_count,media_count,medi
 export async function businessDiscovery(handle: string, env: Env = process.env, fetchImpl: typeof fetch = fetch): Promise<DiscoveryResult> {
   if (!metaConfigured(env)) return { ok: false, reason: "wylaczone" }
   if (!HANDLE_RE.test(handle)) return { ok: false, reason: "nie_znaleziono" }
-  const version = env.META_GRAPH_VERSION || "v23.0"
+  const version = env.META_GRAPH_VERSION || "v27.0"
   const url = new URL(`https://graph.facebook.com/${version}/${encodeURIComponent(env.META_IG_USER_ID as string)}`)
   url.searchParams.set("fields", `business_discovery.username(${handle}){${FIELDS}}`)
   try {
