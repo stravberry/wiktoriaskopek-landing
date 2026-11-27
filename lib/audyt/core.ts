@@ -344,7 +344,9 @@ export function mergeAiReport(draft: Report, ai: unknown): { report: Report; use
   const obserwacje = draft.obserwacje.map((d, i) => {
     const o = obs[i] as { tekst?: unknown } | undefined
     const raw = cleanAiText(o?.tekst)
-    const t = raw.toLowerCase().startsWith(d.tytul.toLowerCase()) ? raw.slice(d.tytul.length).replace(/^\s*[:–-]\s*/, "") : raw
+    // Tytuł zdejmujemy tylko jako nagłówek („Bio: …”), nie gdy jest podmiotem zdania („Bio nie mówi…”).
+    const rest = raw.slice(d.tytul.length)
+    const t = raw.toLowerCase().startsWith(d.tytul.toLowerCase()) && /^\s*[:–-]/.test(rest) ? rest.replace(/^\s*[:–-]\s*/, "") : raw
     if (t && hasNum(t)) { used = true; return { tytul: d.tytul, tekst: t } }
     return d
   })
