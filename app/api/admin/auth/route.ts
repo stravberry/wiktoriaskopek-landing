@@ -1,6 +1,6 @@
 import { NextResponse, type NextRequest } from "next/server"
 import { ADMIN_COOKIE, isAdminEmail } from "@/lib/admin/core"
-import { adminCookieOptions, adminCookieValue, audit, sha256 } from "@/lib/admin/server"
+import { adminCookieOptions, adminCookieValue, audit, hasAdminRole, sha256 } from "@/lib/admin/server"
 import { sql } from "@/lib/mf/db"
 import { origin } from "@/lib/mf/server"
 
@@ -15,7 +15,7 @@ export async function GET(request: NextRequest) {
     update adm_login_tokens set used_at = now()
     where token_hash = ${sha256(token)} and used_at is null and expires_at > now()
     returning email`
-  if (!row || !isAdminEmail(row.email as string)) {
+  if (!row || !isAdminEmail(row.email as string) || !(await hasAdminRole(row.email as string))) {
     await audit("auth_denied", null, false, {}, request.headers)
     return fail
   }

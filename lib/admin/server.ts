@@ -39,10 +39,17 @@ export async function audit(action: string, actor: string | null, ok: boolean, d
   }
 }
 
-/** E-mail zalogowanego admina albo null (podpis, ważność i allowlista sprawdzane przy każdym żądaniu). */
+/** Rola admin w bazie (druga bramka obok allowlisty). */
+export async function hasAdminRole(email: string) {
+  const [row] = await sql()`select 1 from adm_users where email = ${email.toLowerCase()} and role = 'admin'`
+  return !!row
+}
+
+/** E-mail zalogowanego admina albo null (podpis, ważność, allowlista i rola w bazie przy każdym żądaniu). */
 export async function currentAdmin() {
   const jar = await cookies()
-  return verifyAdminCookie(jar.get(ADMIN_COOKIE)?.value, adminSecret())
+  const email = verifyAdminCookie(jar.get(ADMIN_COOKIE)?.value, adminSecret())
+  return email && (await hasAdminRole(email)) ? email : null
 }
 
 /** Strony panelu: bez sesji admina → logowanie. */

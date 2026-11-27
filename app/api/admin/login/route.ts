@@ -1,6 +1,6 @@
 import { NextResponse, type NextRequest } from "next/server"
 import { ADMIN_TOKEN_SECONDS, isAdminEmail, validEmail } from "@/lib/admin/core"
-import { audit, csrfOk, ipHashOf, newToken, sendAdminLoginMail, sha256 } from "@/lib/admin/server"
+import { audit, csrfOk, hasAdminRole, ipHashOf, newToken, sendAdminLoginMail, sha256 } from "@/lib/admin/server"
 import { sql } from "@/lib/mf/db"
 import { clientIp, origin, rateLimited } from "@/lib/mf/server"
 
@@ -23,7 +23,7 @@ export async function POST(request: NextRequest) {
   if (!validEmail(email)) return NextResponse.json({ error: "Podaj prawidłowy adres e-mail" }, { status: 400 })
 
   const db = sql()
-  if (!isAdminEmail(email)) {
+  if (!isAdminEmail(email) || !(await hasAdminRole(email))) {
     await audit("login_denied", null, false, { reason: "not_allowlisted" }, h)
     return NextResponse.json(SAME)
   }
