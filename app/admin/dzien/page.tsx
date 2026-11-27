@@ -47,7 +47,7 @@ export default async function Dzien({ searchParams }: { searchParams: Promise<{ 
   return (
     <AdminShell email={email} active="/admin/dzien" title="Dzień">
       <Notice s={q.s} />
-      <SyncBar rows={sync as never} sources={["calendar", "tasks"]} back="/admin/dzien" pending={pending.some((p) => p.kind === "sync_now")} />
+      <SyncBar rows={sync as never} sources={["calendar", "tasks"]} back="/admin/dzien" pending={pending.length > 0} syncing={pending.some((p) => p.kind === "sync_now")} />
       <div className="grid gap-4 lg:grid-cols-[1.1fr_1fr]">
         <Card title="Dziś" note={dayLabel(today)}>
           {todays.length ? <ul className="divide-y divide-[var(--mf-surface-hover)]">{todays.map((e) => <Event key={e.id} e={e} />)}</ul> : <p className="py-2 text-[15px] text-[var(--mf-ink-2)]">Na dziś nic w kalendarzu.</p>}
